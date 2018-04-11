@@ -1,0 +1,34 @@
+<div onClick="$('#ctnPopupScorm').dialog('close');">
+
+<h4>Le fichier .zip que vous allez télécharger est utilisable directement dans votre plateforme de formation (Moodle par exemple). </h4>
+
+<form action= "php/scormise_v4.php" method = "post" target="_blank">
+<!--<input type = "hidden" name = "moduleId" id = "ctnId" value = "" />-->
+<input type = "hidden" name = "data" id = "ctnData" value = "" />
+<input type = "hidden" name = "ST" id = "ctnST" value = "" />
+<input type = "hidden" name = "nom" id = "ctnNom" value = "" />
+<input type = "submit" value = "Générer le scorm" />
+</form>
+
+</div>
+
+<script>
+$(function(){
+	//mettre le tblExo dasn ctn data et envoie au php
+	var temp = tblExo;
+	
+	document.getElementById("ctnST").value = temp.sousTitrage1;
+	
+	temp.sousTitrage1 = "";
+	document.getElementById("ctnData").value = JSON.stringify(temp);
+	document.getElementById("ctnNom").value = nettoieChaine2(tblExo.titre);
+	
+});
+
+function nettoieChaine2(entree){//pour nettoyer nom des fichier à enregistrer (copie de fonction dans lglg)
+	var regExp1 = /\W/g;
+	var sortie ;
+	sortie = entree.replace(regExp1 , "");
+	return sortie.substr(0 , 15);
+}
+</script>

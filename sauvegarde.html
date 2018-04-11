@@ -1,0 +1,68 @@
+
+<div id="container">
+  <input type="hidden" id="txtNomFichier" value="nom de fichier" placeholder="filename.txt" style="width:100%">
+    <output></output>
+</div>
+
+<script>
+var container = document.querySelector('#container');
+var typer = document.querySelector('#txtSortie');
+var output = container.querySelector('output');
+
+var MIME_TYPE = 'text/plain';
+
+$(function(){
+
+});
+
+var downloadFile = function() {
+	var maDate = new Date();
+	console.log("maDate =" + )
+	tblExo.tempsPon = Date.parse(maDate);
+	document.getElementById("txtNomFichier").value = tblExo.titre;
+	//nomFichier += "_" + date.toDateString();
+	//window.URL = window.webkitURL || window.URL;
+
+	var prevLink = output.querySelector('a');
+	if (prevLink) {
+		window.URL.revokeObjectURL(prevLink.href);
+		output.innerHTML = '';
+	 }
+
+  var bb = new Blob([JSON.stringify(tblExo)], {type: MIME_TYPE});
+
+  var a = document.createElement('a');
+  a.download = container.querySelector('#txtNomFichier').value + ".json";
+  a.href = window.URL.createObjectURL(bb);
+  a.textContent = "Télécharger le fichier : " + a.download;
+
+  a.dataset.downloadurl = [MIME_TYPE, a.download, a.href].join(':');
+  a.draggable = true; // Don't really need, but good practice.
+  a.classList.add('dragout');
+
+  output.appendChild(a);
+
+  a.onclick = function(e) {
+    if ('disabled' in this.dataset) {
+      return false;
+    }
+
+    cleanUp(this);
+  };
+};
+
+var cleanUp = function(a) {
+  a.textContent = 'Downloaded';
+  a.dataset.disabled = true;
+
+  // Need a small delay for the revokeObjectURL to work properly.
+  setTimeout(function() {
+    window.URL.revokeObjectURL(a.href);
+	//je rajoute fermeture fenetre :
+	$("#ctnPopupSauveFichier").dialog("close");
+  }, 1500);
+
+  tblExoSauv = JSON.stringify(tblExo);// pour savoir si le fichier est sauvegardé
+};
+
+</script>

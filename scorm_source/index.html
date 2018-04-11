@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>LeGoLanG</title>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<style>
+
+/***************
+*    LAYOUT    *
+***************/
+html {
+  height:100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: Lato, arial, helvetica, sans-serif;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+  }
+  
+</style>
+
+</head>
+
+
+<body onUnload="SCOFinish();">
+<div id="ctnLglg"></div>
+
+<script src="https://code.jquery.com/jquery-2.1.1.js"></script>
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<script src="SCORMGenericLogic.js"></script>
+<script>
+
+	var affichTitre = false; // pour masquer le titre dans moodle 
+$(function(){
+	//on teste si on a une plateformeScorm
+	var plateforme = SCOInitialize();
+	sessionStorage.exotonome = "true";
+	if (plateforme == 'true'){
+		sessionStorage.scorm = "true"; // pour passer l'init scorm à lglg
+		utilisateur = SCOGetValue("cmi.core.student_name");
+	}
+	
+	$("#ctnLglg").load("lglg/lglg.html");
+	
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<div style="border-top:.25em solid #28b2aa;">
+	<p style="margin: 1em auto 0; font-size:large">Votre auto-évaluation &nbsp;:</p>
+	
+	<!--<progress id="maProgress" value="0" max="4" style="background-color:#b22;"></progress>-->
+	<div id="imgMoins" style="display:inline-block;opacity:0.4;"></div>
+	<div  style="display:inline-block">
+		<div id="maProgress" style="display:inline-block; width:10em;height:1em;" ></div>
+	</div>
+	<div id="imgPlus" style="display:inline-block;opacity:0.4;"></div>
+	<!--<meter id="maProgress" value="0" min="0" max="4"></meter>-->
+</div>
+<!--<span id="nbEtoiles"></span>-->
+<script>
+$(function(){
+	//eltBase = document.getElementById("maProgress");
+	$("#imgMoins").load("lglg/lglg_interface/images/minus_alt.svg");	
+	$("#imgPlus").load("lglg/lglg_interface/images/plus_alt.svg");	
+	$( "#maProgress").progressbar({
+      value: 0,
+	  max : AEValeurMax
+    });
+	
+	//$( "#maProgress" ).find( ".ui-progressbar-value" ).css({"background": '#28b2aa'});
+	
+	
+	majAE();
+});
+
+function majAE(){
+	var somme = 0;
+	var nbRep =0 ;
+	for (var pageAE = 0 ; pageAE < tblReponses.length ; pageAE++){
+		for (var questionAE = 0 ; questionAE < tblReponses[pageAE].AE.length ; questionAE++){
+			if 	(tblReponses[pageAE].AE[questionAE] > -1){
+				nbRep += 1;
+				somme += parseInt(tblReponses[pageAE].AE[questionAE]);
+				if ( $('#ctnAEAffich').css('display') == "none"){ $('#ctnAEAffich').show("slow");}
+			}
+		}
+	}
+	$("#maProgress").progressbar("value" , somme/nbRep);
+}
+</script>

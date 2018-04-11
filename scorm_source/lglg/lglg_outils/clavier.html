@@ -1,0 +1,41 @@
+<style>
+
+
+#clavier button.inactif{
+	color:#F70004;
+}
+
+</style>
+
+<div id="clavier" >
+
+</div>
+<script>
+$(function(){
+	for (var car in tblExo.clavier){
+		var newButton = document.createElement("button");
+		newButton.innerHTML = tblExo.clavier[car];
+		document.querySelector("#clavier").appendChild(newButton);
+	}
+		
+	$("#clavier button").click(function(evt){
+		if (champSaisie.type = "textarea"){
+			var selectionFin = champSaisie.selectionStart + 1;
+			champSaisie.value = champSaisie.value.substring(0 ,champSaisie.selectionStart) + evt.target.innerHTML +  champSaisie.value.substring(champSaisie.selectionEnd, champSaisie.length);
+			champSaisie.focus();
+			champSaisie.setSelectionRange(selectionFin ,selectionFin); 
+			//**pour sauver saisie :
+			var q = champSaisie.parentElement.id.split("_")[1]
+			tblReponses[pCourante].reps[q] = champSaisie.value;
+			verifAccesCorr();
+		}
+	});
+});
+
+/*********NOTES ***
+**  selText = text.substring (document.activeElement.selectionStart, document.activeElement.selectionEnd);
+	from http://help.dottoro.com/ljtfkhio.php										 
+****/
+</script>
+
+

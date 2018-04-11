@@ -1,0 +1,36 @@
+<video id="video" width="100%"  controls >
+                
+<track id="trackST"  kind="captions" ></track>
+            </video>
+	
+<script>
+$(function(){
+	var antiCache = new Date();
+	$("#trackST").attr("src" , "_vtt/st_" + siege +".vtt?" + antiCache);
+});
+
+
+function lireExtrait(deb , fin){ 
+	"use strict";
+	var objVideo = document.querySelector('#video');
+	
+	objVideo.currentTime = 	deb;
+	objVideo.play();
+	var timer = setInterval (function(){
+		if (objVideo.currentTime > fin){
+			objVideo.pause();
+			clearInterval(timer);
+		}
+	},100);
+}
+
+function videoDonnePosition(){
+	var objVideo = document.querySelector('#video');
+	return objVideo.currentTime.toFixed(2);	
+}
+
+function videoPause(){
+	document.querySelector('#video').pause();
+}
+
+</script>

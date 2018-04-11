@@ -1,0 +1,60 @@
+<img id="btnEdit" onclick="modifierTitrePage(event)" src="img/editstring.svg"  alt="" title="modifier">
+<img id="btnQDeplH" onClick="btnPDeplHdlr(event , -1); " src="img/haut.png" alt="" title="Déplacer">
+<img id="btnQDeplB" onClick="btnPDeplHdlr(event , 1); " src="img/bas.png"   alt=""  title="Déplacer">
+<img id="btnPSuppr" onClick="btnPSupprHdlr(event); " title="Supprimer cette page" src="img/delete.svg" alt="">
+
+
+<button id="btnQAjout" onClick="btnPAjoutrHdlr(event); "  title="Ajouter une page après celle-ci"> Ajouter une page après </button>
+
+<script>
+$(function(){
+});
+
+function btnPSupprHdlr(evt){
+	localStorage.removeItem(tblExo.moduleId);
+	var pageOrdre = evt.currentTarget.parentElement.id.split("_")[1];
+	if (tblExo.pages[pageOrdre].questions == 0){
+		tblExo.pages.splice(pageOrdre , 1);
+		$('#ctnContenu').load('editQuestions.html');
+	}else{
+		alert('La page contient des questions' , 'Opération impossible');
+	}
+}
+
+function btnPAjoutrHdlr(evt){
+	localStorage.removeItem(tblExo.moduleId);
+	var pageOrdre = evt.currentTarget.parentElement.id.split("_")[1];
+	tblExo.pages.splice(parseInt(pageOrdre)+1 , 0 , {
+		"titre":"nouvelle page",
+		"questions" : [
+        {
+          "type": "qo",
+          "titreQ": "",
+          "txtQuestion": "nouvelle question",
+          "txtCorrection": "",
+          "extraitCorrection": {
+            "debut": "0",
+            "fin": "0"
+          },
+          "extraitQuestion": {
+            "debut": 0,
+            "fin": 0
+          }
+        }
+      ]
+		});
+	$('#ctnContenu').load('editQuestions.html');
+}
+
+function btnPDeplHdlr(evt , sens){
+	localStorage.removeItem(tblExo.moduleId);
+	var pageOrdre = parseInt(evt.currentTarget.parentElement.id.split("_")[1]);
+	sens= parseInt(sens);
+	if ((pageOrdre + sens) >-1 && (pageOrdre + sens) < tblExo.pages.length){
+		var page = tblExo.pages.splice(pageOrdre , 1);
+		tblExo.pages.splice(pageOrdre+sens  , 0 , page[0]);
+		$('#ctnContenu').load('editQuestions.html');
+	}
+}
+
+</script>

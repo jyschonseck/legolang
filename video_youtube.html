@@ -1,0 +1,101 @@
+<style>
+/**************************
+**dimension video adaptive***
+***************************/
+
+#ctnYoutube {
+	 position: relative;
+	  padding-bottom: 56.25%; /* correspond à 16/9 ....*/
+	  height: 0;
+	  overflow:hidden;
+	  max-width: 100%;
+	   } 
+#ctnYoutube iframe {
+	position: absolute; 
+	top: 0; left: 0; width: 100%; height: 100%;
+	 }
+</style>
+<!--<center><h1> video youtube</h1>
+<h2>soune euvélièbeule</h2>-->
+<div id="ctnYoutube">
+</div>
+			
+
+<div id="placeAPI"></div><!-- emplacement du script de l'API you tube-->
+<script>
+var videoYT;
+$(function(){
+	 /***********************
+	 **code source : https://developers.google.com/youtube/iframe_api_reference?hl=fr#Loading_a_Video_Player**
+	 ************************/
+		 
+	if (window['YT']){
+		//on a déjà l'api donc on cree maVideo: ") 
+		creationVideo();
+	}else{
+		//on a pas core l'api donc on la créé ") 
+		var tag = document.createElement('script');
+		tag.src = "https://www.youtube.com/iframe_api";
+	 	var placeAPI = document.getElementById('placeAPI');
+		placeAPI.parentNode.insertBefore(tag, placeAPI);
+	}
+});
+
+function onYouTubeIframeAPIReady() {
+	creationVideo();
+}
+
+function creationVideo(){
+	//VIDER la DIV #lecteur
+	var div = document.getElementById('ctnYoutube');
+	while(div.firstChild){
+		div.removeChild(div.firstChild);
+	}
+	div = document.createElement("div");
+	div.id = "lecteur";
+	document.getElementById("ctnYoutube").appendChild(div);
+	videoYT = new YT.Player('lecteur', {
+		height: '390',
+		width: '100%',
+		videoId: videoYTId2(),
+		playerVars: { 
+			'autoplay': 0,
+			'controls': 1,
+			'fs':0, //fullScreen
+			'rel':0, // vidéo "related" à la fin 
+			'modestbranding' : 1 //1 = plus de logo youtube
+		},
+		events: {}
+	});
+	
+}
+	
+	function videoYTId2(){
+		if (tblExo["videoUrl"].indexOf("watch") > -1){
+			var temp = tblExo["videoUrl"].split("=");
+			return temp[temp.length - 1];
+		}else{	
+			var temp = tblExo["videoUrl"].split("/");
+			return temp[temp.length - 1];
+		}
+	}
+	
+function videoDonnePosition(){
+	return videoYT.getCurrentTime().toFixed(2);
+}
+
+function lireExtrait(deb , fin){ 
+	videoYT.seekTo(deb, true);
+	videoYT.playVideo();
+	var timer = setInterval (function(){
+		if (videoYT.getCurrentTime() > fin){
+			videoYT.pauseVideo();
+			clearInterval(timer);
+		}
+	},100);
+}
+
+function videoPause(){
+	if (videoYT) { videoYT.pauseVideo();} // c'est un peu le bordel : je pause dans editParam alors que creationVideo n'est aps encore lancé.. donc je teste l'existence de videoYT
+}
+</script>

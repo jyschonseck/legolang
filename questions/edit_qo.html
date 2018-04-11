@@ -1,0 +1,86 @@
+
+<h3>Question : </h3>
+<textarea id="taTxtQuestionQo"   ></textarea><!---->
+
+<h4>Extrait vidéo "question" : </h4>
+<div> <span class="clicHeure">début : </span>
+    <input type="number" id="extQDebQo" onChange="heureChange('Q');"/>
+    <span class="clicHeure">fin : </span>
+    <input type="number" id="extQFinQo" onChange="heureChange('Q');"/>
+    <span id="btnLireExtraitQ" onClick="lireExtrait(document.getElementById('extQDebQo').value, document.getElementById('extQFinQo').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span> </div>
+
+<p style="border-bottom:solid 1px;width:100%;"></p>
+
+<h3>Correction :</h3>
+<textarea id="taTxtCorrectionQo"></textarea>
+
+<h4 onDblClick="$('#optFBvidInde').show('fast');">Extrait vidéo "correction" : </h4>
+<div> <span class="clicHeure">début : </span>
+    <input type="number" id="extCDebQo" onChange="heureChange('C');"/>
+    <span class="clicHeure">fin : </span>
+    <input type="number" id="extCFinQo" onChange="heureChange('C');"/>
+    <span id="btnLireExtraitC" onClick="lireExtrait(document.getElementById('extCDebQo').value, document.getElementById('extCFinQo').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span> </div>
+<div id="optFBvidInde"  style="display:none;"><span> l'extrait vidéo sera proposé après la frappe de
+        <input type="number" id="inputAffichA" style="width:2rem">
+        caractères (0 pour l'afficher seulement avec la correction)</span></div>
+
+<script>
+
+    $(function () {
+        console.log ("Ouverture edition QO : " + pageCourante + " - " + questionCourante);
+        
+         ///**** ajouter nicedit
+        if (!nicEditors.findEditor('taTxtCorrectionQo'))
+            editeur2 = new nicEditor().panelInstance('taTxtCorrectionQo');
+        if (!nicEditors.findEditor('taTxtQuestionQo'))
+            editeur3 = new nicEditor().panelInstance('taTxtQuestionQo');
+
+        //edition de qo et qtrous pareilles pour le moment !!!
+        //document.getElementById('txtTitreQo').value = tblExo.pages[pageCourante].questions[questionCourante].titreQ;
+
+        nicEditors.findEditor('taTxtQuestionQo').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
+
+        document.getElementById('extQDebQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut;
+        document.getElementById('extQFinQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin;
+        if (parseFloat(document.getElementById('extQDebQo').value) > 0)
+            $("#btnLireExtraitQ").show("fast");
+        else
+            $("#btnLireExtraitQ").hide("fast");
+        nicEditors.findEditor('taTxtCorrectionQo').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
+
+        document.getElementById('extCDebQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut;
+        document.getElementById('extCFinQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin;
+        if (parseFloat(document.getElementById('extCDebQo').value) > 0)
+            $("#btnLireExtraitC").show("fast");
+        else
+            $("#btnLireExtraitC").hide("fast");
+        if (tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichA) {
+            document.getElementById('inputAffichA').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichA;
+        } else {
+            document.getElementById('inputAffichA').value = 0;
+        }
+
+    });
+
+ function questionEnregistre() {
+        
+        tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(nicEditors.findEditor('taTxtQuestionQo').getContent());
+        tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut = document.getElementById('extQDebQo').value;
+        tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin = document.getElementById('extQFinQo').value;
+        tblExo.pages[pageCourante].questions[questionCourante].txtCorrection = questionFormat(nicEditors.findEditor('taTxtCorrectionQo').getContent());
+        tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut = document.getElementById('extCDebQo').value;
+        tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin = document.getElementById('extCFinQo').value;
+        tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichA = document.getElementById('inputAffichA').value;
+        affichTableauQuestions();
+        $("#popupModifQuestion").dialog("close");
+        $("#ctnVideo").dialog("close");
+
+    }
+
+ $(".clicHeure").click(function (e) {
+            console.log("clic heure " + e);
+            var champNum = e.currentTarget.nextElementSibling; // e.currentTarget.parentElement.querySelector("input");
+            champNum.value = videoDonnePosition();
+            heureChange(champNum.id.substr(3, 1));
+        });
+</script>

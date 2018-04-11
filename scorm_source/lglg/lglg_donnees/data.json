@@ -1,0 +1,123 @@
+{
+  "titre": "Une famille recomposée",
+  "sousTitre": "cdans l'air",
+  "consigne": "MA conSigne pour commencer<br>elle reviendra si on revient sur l'onglet 'vidéo'. Ceci a été édité dans http://www.jsoneditoronline.org/ qui est très cool comme outil.",
+  "videoUrl": "http://calao.univ-littoral.fr/transfert/certif_langues/legolang/videos/test.mp4",
+  "clavier": "ÀàÉéèêëîïôùüœÇç",
+  "btnOutil": {"format":"1",
+  "liste" : [
+    {
+      "etiquette": "Sous-titres",
+      "fonction": "sousTitrage1"
+    },
+    {
+      "etiquette": "Impression",
+      "fonction": "impression"
+    },
+    {
+      "etiquette": "Clavier",
+      "fonction": "clavier"
+    },
+    {
+      "etiquette": "Doc-ACTU",
+      "fonction": "doc"
+    },
+    {
+      "etiquette": "",
+      "fonction": "--"
+    }
+  ]
+  },
+  "scenario": {
+    "accesQ": "0",
+    "qoAccesC": "3"
+  },
+  "pages": [
+    {
+      "titre": "<p>titre de la page 1</p>",
+      "questions": [
+        {
+          "type": "qo",
+          "titre1": "QUESTIONS GLOBALES",
+          "titreQ": "",
+          "txtQuestion": "<strong>Question 1</strong> <br>la question qui <i>dit</i> quoi ... ",
+          "txtCorrection": "correction de la q1",
+          "extraitCorrection": {
+            "debut": "10.65",
+            "fin": "21.89",
+			"affichA" : "2"
+          },
+          "extraitQuestion": {
+            "debut": "0",
+            "fin": "0"
+          }
+        },
+        {
+          "type": "qtrous",
+          "titreQ": "titre question à trous",
+          "txtQuestion": "BBB texte de question 2 avec des :SHORTANSWER: patatiti patata et puis on a un autre :SHORTANSWER: qui arrive à point nommé !",
+          "txtCorrection": "texte de correction 2",
+          "extraitCorrection": {
+            "debut": "0",
+            "fin": "0"
+          },
+          "extraitQuestion": {
+            "debut": "3",
+            "fin": "8"
+          }
+        }
+      ]
+    },
+    {
+      "titre": "<p>titre de la page 2</p>",
+      "questions": [
+        {
+          "type": "qo",
+          "titre1": "QUESTIONS détaillées",
+          "titreQ": "",
+          "txtQuestion": "txt question 4)",
+          "txtCorrection": "corr 4",
+          "extraitCorrection": {
+            "debut": "0",
+            "fin": "0"
+          },
+          "extraitQuestion": {
+            "debut": "12",
+            "fin": "15"
+          }
+        },
+        {
+          "type": "qo",
+          "titre1": "QUESTIONS GLOBALES",
+          "titreQ": "",
+          "txtQuestion": "txt question 5",
+          "txtCorrection": "correction 5",
+          "extraitCorrection": {
+            "debut": "150.89",
+            "fin": "178.62"
+          },
+          "extraitQuestion": {
+            "debut": "88",
+            "fin": "95"
+          }
+        },
+        {
+          "type": "qo",
+          "titre1": "QUESTIONS GLOBALES",
+          "titreQ": "",
+          "txtQuestion": "txt question 6",
+          "txtCorrection": "corr 6",
+          "extraitCorrection": {
+			"affichA": "3",
+            "debut": "185",
+            "fin": "193"
+          },
+          "extraitQuestion": {
+            "debut": "122",
+            "fin": "138"
+          }
+        }
+      ]
+    }
+  ]
+}

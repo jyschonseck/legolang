@@ -1,0 +1,80 @@
+
+<div  class="pageContenuPetit">
+<h2>Formulaire de contact</h2>
+	<div id="form_contact">
+				<form method="POST" action="html/formmail.php" onsubmit="return checkform(this);">
+<input type="hidden" name="subject" value="certiflangue">
+<table>
+<tr><td>Votre Nom:</td>
+    <td><input type="text" name="realname" size="30"></td></tr>
+<tr><td>Votre Email:</td>
+    <td><input type="text" name="email" size="30"></td></tr>
+<tr><td>Sujet:</td>
+    <td><input type="text" name="title" size="30"></td></tr>
+<tr><td colspan="2">Commentaires:<br>
+  <textarea COLS="50" ROWS="6" name="comments"></textarea><br />
+  <label for="code">Ecrivez le code ci-dessous <span id="txtCaptchaDiv" style="color:#F00"></span>
+                <!-- this is where the script will place the generated code -->
+                <br/>
+            </label>
+        <font color="#DD0000">Entrez le code  : </font> 
+<input type="hidden" id="txtCaptcha" />
+<input type="text" name="txtInput" id="txtInput" size="15" />
+            
+</td></tr>
+</table>
+<br> <input type="submit" value="Envoyer">
+     </form>  
+
+	 <!--<button onClick="$('#ctnContenu').load('html/aPropos.html');" >Annuler</button>-->
+	</div>
+</div>
+<script type="text/javascript">
+function checkform(theform){
+	var why = "";
+	
+	if(theform.txtInput.value == ""){
+		why += "- Code de sécurité ne doit pas être vide.\n";
+	}
+	if(theform.txtInput.value != ""){
+		if(ValidCaptcha(theform.txtInput.value) == false){
+			why += "- Code de sécurité ne correspond.\n";
+		}
+	}
+	if(why != ""){
+		alert(why);
+		return false;
+	}
+}
+
+//Generates the captcha function
+var a = Math.ceil(Math.random() * 9)+ '';
+var b = Math.ceil(Math.random() * 9)+ '';
+var c = Math.ceil(Math.random() * 9)+ '';
+var d = Math.ceil(Math.random() * 9)+ '';
+var e = Math.ceil(Math.random() * 9)+ '';
+
+var code = a + b + c + d + e;
+document.getElementById("txtCaptcha").value = code;
+document.getElementById("txtCaptchaDiv").innerHTML = code;
+
+// Validate the Entered input aganist the generated security code function
+function ValidCaptcha(){
+	var str1 = removeSpaces(document.getElementById('txtCaptcha').value);
+	var str2 = removeSpaces(document.getElementById('txtInput').value);
+	if (str1 == str2){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+// Remove the spaces from the entered and generated code
+function removeSpaces(string){
+return string.split(' ').join('');
+}
+</script>
+   
+
+
+

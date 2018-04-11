@@ -1,0 +1,132 @@
+<style>
+#ctnSTImport{
+	width:620px;
+}
+
+#txtST{
+	width:620px;
+	min-height:300px;
+}
+</style>
+<div id="ctnEditST"  class="pageContenuPetit">
+	<div id="ctnSTYoutube" style="display:none">
+		<p> Votre vidéo est hébergée chez youtube, vous devez utiliser les sous-titres proposés par youtube.</p>
+		<p> Vous pouvez choisir la langue des sous-titres (parmi celles disponibles sur la video) : </p>
+		<select id="selectCaptionsLang" onChange="tblExo.videoLang = this.options[this.selectedIndex].text"></select>
+	</div>
+	<div id="ctnSTHtml5" style="display:none">
+		<div id="ctnSTImport" >
+			<h3>Importer des sous-titres</h3>
+			<p>Vous pouvez importer des sous-titres au format .srt ou au format .vtt.<br>
+			<button onClick="chargeSTHdlr();" >Importer</button> 
+			</p>
+			<p>Vous pouvez modifier les sous-titres dans la fenêtre ci-dessous. Attention de bien respecter la structure du texte.</p>
+		</div>
+		<textarea id="txtST" onChange="txtSTChangeHdlr();" ></textarea>
+		
+		<p> Actualiser les sous-titres dans la vidéo ci-contre ( et dans l'onglet prévisualisation )  : 
+		</p>
+		<button onClick="actualiserST();">Actualiser les sous-titres</button>
+	</div>
+</div>
+
+<div id="ctnPopupOuvreST">
+	<input style="width:100%" type="file" id="txtFichierST"/>
+</div>
+
+<script>
+tblLang = [ "fr", "en" , "es" , "de" , "it" , "ru"]
+$(function(){
+	if (tblExo.videoType === "2") {
+		document.getElementById("ctnSTYoutube").style.display = "block";
+		
+		for (var k = 0 ; k < tblLang.length ; k++){
+			var option = document.createElement('option');
+			option.textContent = tblLang[k];
+			selectCaptionsLang.appendChild(option);
+		}
+		var j = tblLang.indexOf(tblExo.videoLang);
+		if (j == -1) j = 0;
+		selectCaptionsLang.selectedIndex = j;
+		
+		
+	}else{
+		document.getElementById("ctnSTHtml5").style.display = "block";
+		document.getElementById("txtST").value = tblExo.sousTitrage1;
+		document.getElementById("ecritST").value = tblExo.sousTitrage1;
+	}
+	
+	$( "#ctnPopupOuvreST" ).dialog({
+		modal: true,
+		autoOpen: false,
+		width: 500,
+		show: {
+			effect: "fade",
+			duration: 333
+		},
+		hide: {
+			effect: "fade",
+			duration: 333
+		},
+		buttons: {
+			"OK": function() {
+				var fileInput = document.querySelector('#txtFichierST');
+				nomFichier = fileInput.files[0].name;
+				$("#txtNomFichier").val(nomFichier.replace(".vtt", ""));
+				var lecteur = new FileReader();
+				lecteur.onload = function(){
+					validOuvrirST(lecteur.result);
+				}
+				lecteur.readAsText(fileInput.files[0]);
+				$( this ).dialog("close" );
+			},
+			"Annuler": function(){
+				$( this ).dialog( "close" );
+			}
+		}
+    });
+	
+	
+	$("#ctnVideo" ).dialog("open");
+	if (videoARecharger) { chargerVideo();}
+}); // fin $ ouverture
+
+function validOuvrirST(txtST){
+	var ligneST = txtST.split("\n");
+	if ( ligneST[0].indexOf("WEBVTT") === 0 ){
+		//on a du  vvt -> on le garde tel quel (attention aux virgules !!!");
+		document.getElementById("txtST").value = eDblQ(txtST);
+		tblExo.sousTitrage1 = eDblQ(txtST);
+	}else{
+		//on a du pas vvt -> on suppose du srt ?");
+		var blocST = txtST.split("\r\n\r\n");
+		var txtVTT = "WEBVTT \nKind: captions\n\n";
+		for (var i = 0 ; i < blocST.length ; i++){
+			var ligneS = blocST[i].split("\n");//split("\r\n") voir suivant source ...
+			for (var j = 1 ; j < ligneS.length ; j++){
+				txtVTT += eDblQ(ligneS[j]) ;
+				txtVTT += "\n";
+			}
+			txtVTT += "\n";
+		}
+		/// virer les séparation virgule ..
+		var re = /:([0-9]{2}),([0-9]{3})/g;
+		document.getElementById("txtST").value =  txtVTT.replace(re , ":$1.$2");
+	}
+	tblExo.sousTitrage1 = document.getElementById("txtST").value;
+	document.getElementById("ecritST").value = tblExo.sousTitrage1;
+}
+
+function txtSTChangeHdlr(){
+	"use strict";
+	tblExo.sousTitrage1 = document.getElementById("txtST").value;
+	document.getElementById("ecritST").value = eDblQ(document.getElementById("txtST").value);
+}
+
+function chargeSTHdlr(){
+	$( "#ctnPopupOuvreST" ).dialog("open");
+}
+
+
+
+</script>

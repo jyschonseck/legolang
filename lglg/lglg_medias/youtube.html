@@ -1,0 +1,165 @@
+<style>
+/**************************
+**dimension video adaptive***
+***************************/
+
+#ctnYoutube {
+	 position: relative;
+	  padding-bottom: 56.25%; /* correspond à 16/9 ....*/
+	  height: 0;
+	  overflow:hidden;
+	  max-width: 100%;
+	   } 
+#ctnYoutube iframe {
+	position: absolute; 
+	top: 0; left: 0; width: 100%; height: 100%;
+	 }
+</style>
+
+<div id="ctnYoutube">
+	<div id="lecteur"></div>
+</div>
+			
+
+<div id="placeAPI"></div><!-- emplacement du script de l'API you tube-->
+
+<script>
+
+var video;
+var videoBarInitial = 0;
+
+$(function(){
+	 /***********************
+	 **code source : https://developers.google.com/youtube/iframe_api_reference?hl=fr#Loading_a_Video_Player**
+	 ************************/
+	 if (tblExo.scenario.accesQ === "0" || $("#nav_3").hasClass("actif")){//acces immédiat ou déja repondu, donc onglet 2 actif
+		videoBarInitial = 1;
+		$("#nav_2").addClass("actif");
+	 }
+	 
+	if (window['YT']){
+		//on a déjà l'api donc on cree maVideo: ") 
+		creationMaVideo(videoBarInitial);
+	}else{
+		var tag = document.createElement('script');
+		tag.src = "https://www.youtube.com/iframe_api";
+	 	var placeAPI = document.getElementById('placeAPI');
+		placeAPI.parentNode.insertBefore(tag, placeAPI);
+	}
+	
+	
+	 
+});
+
+	function onYouTubeIframeAPIReady() {
+		creationMaVideo(videoBarInitial);
+	}
+	
+function creationMaVideo(maVideoControl){
+	//VIDER la DIV #lecteur
+	var div = document.getElementById('ctnYoutube');
+	while(div.firstChild){
+		div.removeChild(div.firstChild);
+	}
+	div = document.createElement("div");
+	div.id = "lecteur";
+	document.getElementById("ctnYoutube").appendChild(div);
+	video = new YT.Player('lecteur', {
+		height: '390',
+		width: '100%',
+		videoId: videoYTId(),
+		playerVars: { 
+			'autohide' : 0, 
+			'autoplay': 0,
+			'controls': maVideoControl,
+			'fs':0, //fullScreen
+			'rel':0, // vidéo "related" à la fin 
+			'info' : 0 ,
+			'modestbranding' : 1,//, //1 = plus de logo youtube
+			'enablejsapi' : 1,
+			'cc_lang_pref' : tblExo.videoLang //test pour sous-titrage
+		},
+		events: {
+			'onReady' : onPlayerReadyHdlr
+		}
+	});
+	if (maVideoControl == 0){
+		video.addEventListener('onStateChange' , 'onPlayerStateChange');
+	}
+}
+function onPlayerReadyHdlr(){
+	video.setOption("captions", "track", {"languageCode": "es"});
+	//video.setOption("captions", "track", {"fontSize": 8}); 
+	video.playVideo();
+	//video.pauseVideo();
+	var toto = setTimeout(function(){ 
+		video.unloadModule('captions');
+		video.pauseVideo();
+		video.seekTo( "0" , true);
+		} , 800); // pour commencer sans ST... tempo sem
+	//
+}
+
+function maVideoPlay(){
+	video.playVideo();
+}
+function maVideoPause(){
+	video.pauseVideo();
+}
+function maVideoSeek(pos){
+	video.seekTo( pos , true);
+}
+function maVideoCurrentTime(){
+	return video.getCurrentTime();
+}
+function maVideoSousTitreActif(){
+	return !$("#outil-sousTitrage1").hasClass("choisi");
+}
+
+function poseEcouteurFin(){//pour déverouiller accès au questionnaire...
+	if (tblExo.scenario.accesQ === "1") {
+		video.addEventListener("ended" , maVideoActiveNav);
+	}/*else{// si on veux un accès apreès x secondes // c'est pas encore en place dans la grille auteur :)
+		var timer= setInterval(function(){
+			if (video.currentTime > tblExo.scenario.accesQ ){
+				maVideoActiveNav();
+				clearInterval(timer);
+			}
+		}, 500);
+	}*/
+}
+
+function maVideoActiveNav(){
+	$("#nav_2").addClass("actif");
+	creationMaVideo(1);
+	
+}
+
+function sousTitrage1(){
+	//if ( video.getOptions().indexOf("captions") !== -1){
+	if ($("#outil-sousTitrage1").hasClass("choisi")){
+		video.unloadModule('captions');
+		$("#outil-sousTitrage1").removeClass("choisi");
+	}else{
+		video.loadModule('captions');
+		//video.setOption("captions", "track", {"languageCode": "fr"});
+		$("#outil-sousTitrage1").addClass("choisi");
+	}
+}
+
+function videoYTId(){
+	if (tblExo["videoUrl"].indexOf("watch") > -1){
+		var temp = tblExo["videoUrl"].split("=");
+	}else{	
+		var temp = tblExo["videoUrl"].split("/");
+	}
+	return temp[temp.length - 1];
+}
+
+function onPlayerStateChange(e){
+	if (e.data === 0){
+		maVideoActiveNav();
+	}
+}
+
+</script>

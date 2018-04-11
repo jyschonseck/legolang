@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This is a Reload version 2.5.5 SCORM 1.2 Content Package document-->
+<!--Spawned from the Reload Content Package Generator - http://www.reload.ac.uk-->
+<manifest xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2" xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_rootv1p2p1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2" identifier="MANIFEST-E420E7F4AB8F58EF63E27C20BE3840E7" xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+  <organizations default="ORG-431F579CE05C5818290F34E8DC062501">
+    <organization identifier="ORG-431F579CE05C5818290F34E8DC062501" structure="hierarchical">
+      <title>Organization</title>
+      <item identifier="ITEM-2C9F4EF0154378B4B690F839B0DA17F6" isvisible="true" identifierref="RES-966A93E03C32A61433CAB512A25F6A62">
+        <title>Compréhension orale</title>
+      </item>
+    </organization>
+  </organizations>
+  <resources>
+    <resource identifier="RES-966A93E03C32A61433CAB512A25F6A62" type="webcontent" href="index.html" adlcp:scormtype="sco">
+      <file href="index.html" />
+    </resource>
+  </resources>
+</manifest>
+

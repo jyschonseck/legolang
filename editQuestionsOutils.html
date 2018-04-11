@@ -1,0 +1,102 @@
+
+<img id="btnEdit" onclick="modifierQuestion(event)" src="img/editstring.svg"  alt="" title="modifier">
+<img id="btnEditHaut" onclick="btnQDeplHdlr(this.parentElement.id.split('_')[1], this.parentElement.id.split('_')[2], -1);" src="img/haut.png" alt="" class="outilAcache" title="Déplacer">
+<img id="btnEditBas" onclick="btnQDeplHdlr(this.parentElement.id.split('_')[1], this.parentElement.id.split('_')[2], 1);" src="img/bas.png"   alt="" title="Déplacer">
+<img id="btnEditSuppr" onclick="btnQSupprHdlr(this.parentElement.id.split('_')[1], this.parentElement.id.split('_')[2]);" src="img/delete.svg" title="Supprimer" alt="">
+
+<div>Vers page : 
+    <input type="number" id="btnQChgPageCible" min="1"  onChange="pageArr = (this.value - 1);">
+    <button id="btnQChgPage" onClick="btnQChgPageHdlr(event);">ok</button></div>
+
+<select onChange="selectChangeHdlr(event);">
+    <option value="0">Ajouter une question </option>
+    <option value="qo">Question ouverte</option>
+    <option value="qtrous">Question à trous</option>
+    <option value="qcm">Question à choix multiples</option>
+</select>
+
+<script>
+    var pageArr = "0";
+
+    $(function () {
+	$("input").attr("max", tblExo.pages.length);
+    });
+
+    function btnQSupprHdlr(pageOrdre, questionOrdre) {
+	localStorage.removeItem(tblExo.moduleId);
+	tblExo.pages[pageOrdre].questions.splice(questionOrdre, 1);
+	$('#ctnContenu').load('editQuestions.html');
+    }
+
+//function btnQAjoutrHdlr(pageOrdre , questionOrdre , questionType){
+//	//var question = tblExo.questions[i];
+//	localStorage.removeItem(tblExo.moduleId);
+//	
+//	//****type question QO & Qtrous ****
+//	tblExo.pages[pageOrdre].questions.splice(parseInt(questionOrdre)+1 , 0 , {
+//		"type":"qo",
+//		"titreQ": "" ,
+//		"txtQuestion":"Nouvelle question",
+//		"extraitQuestion":{"debut": "0" , "fin":"0"},
+//		"txtCorrection":"",
+//		"extraitCorrection":{"debut": "0" , "fin":"0"}	});
+//	$('#ctnContenu').load('editQuestions.html');
+//}
+
+    function selectChangeHdlr(e) {
+	localStorage.removeItem(tblExo.moduleId);
+	var pageOrdre = parseInt(e.currentTarget.parentElement.id.split('_')[1]);
+	var questionOrdre = parseInt(e.currentTarget.parentElement.id.split('_')[2]);
+	var questionType = e.currentTarget.value;
+        var questionNum =  parseInt(questionOrdre) + 1;
+	//**** creation type question ****
+	console.log("on cree une question de type : " + questionType);
+	tblExo.pages[pageOrdre].questions.splice( questionNum , 0, {
+	    "type": questionType,
+	    "titreQ": "",
+	    "txtQuestion": "Nouvelle question ( " + questionType +  " ) (" + (questionNum+1) + " / " + (pageOrdre+1) + ")",
+	    "extraitQuestion": {"debut": "0", "fin": "0"},
+	    "txtCorrection": "",
+	    "extraitCorrection": {"debut": "0", "fin": "0", "affichA": "0"}
+	});
+        if (questionType === "qcm"){
+            tblExo.pages[pageOrdre].questions[questionNum].propositions = [{
+              "texte": "proposition A",
+              "reponseCorrecte": false},{
+              "texte": "proposition B",
+              "reponseCorrecte": true}];
+        }
+
+	$('#ctnContenu').load('editQuestions.html');
+
+	//**** pour remettre le select à l'origine
+	var selects = document.getElementsByTagName('select');//
+	for (var i = 0; i < selects.length; i++) {
+	    selects[i].selectedIndex = 0;
+	}
+    }
+
+    function btnQDeplHdlr(i, j, sens) {
+	localStorage.removeItem(tblExo.moduleId);
+	var questionOrdre = parseInt(j);
+	var pageOrdre = parseInt(i);
+	var k = parseInt(sens);
+	if ((questionOrdre + k) > -1 && (questionOrdre + k) < tblExo.pages[pageOrdre].questions.length) {
+	    var question = tblExo.pages[pageOrdre].questions.splice(questionOrdre, 1);
+	    tblExo.pages[pageOrdre].questions.splice(questionOrdre + k, 0, question[0]);
+	    $('#ctnContenu').load('editQuestions.html');
+	}
+    }
+
+    function btnQChgPageHdlr(evt) {
+	localStorage.removeItem(tblExo.moduleId);
+	var questCible = evt.currentTarget.parentElement.parentElement.id.split("_")[2];
+	var pageDep = evt.currentTarget.parentElement.parentElement.id.split("_")[1];
+	//AAA
+	var question = tblExo.pages[pageDep].questions.splice(questCible, 1);
+	tblExo.pages[pageArr].questions.splice(tblExo.pages[pageArr].questions.length, 0, question[0]);
+	$('#ctnContenu').load('editQuestions.html');
+    }
+
+
+</script>

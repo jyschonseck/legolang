@@ -1,0 +1,254 @@
+
+<div id="ctnEditParam" class="pageContenuPetit" onMouseOut="valideModif(event);">
+    <!--  " JY : MouseOut pour sauver les modifs des nicedits & autres ...  (C a l'arrache  mais ça marche aussi pour le focusOut !--> 
+
+<h2>Paramètres Généraux</h2>
+<div class="boite1">
+		<h3><img src="img/help.svg" id="aide_titre" class="aide" alt="aide" >Nom de l'exercice <!--<button onClick="alert(nettoieChaine($('#txtTitreParam').val()));">test</button>--></h3>
+			
+		<input type="text" id="txtTitreParam" style="width:50%" onChange="tblExo.titre = this.value;"><!-- -->
+				<span>Date de sauvergarde : </span><span id="txttempsPon">xx:xx</span>
+		
+		<h3><img src="img/help.svg" id="aide_sousTitre" class="aide" alt="aide">Sous-titre </h3>
+		<input type="text" id="txtSTitre" style="width:100%" onChange="tblExo.sousTitre = this.value;">
+		
+		<h3 class="clicableUtilisateurPlus" ><img src="img/help.svg" id="aide_videoUrl" class="aide" alt="aide"><img id="imgVideoVerrou" src="img/verrou.png" alt="verrou">Vidéo </h3>
+		<form  id="videoBlocType" onClick="tblExo.videoType = this.videoType.value;">
+				<input type="radio" name="videoType" value="0" >Serveur <img src="img/help.svg" id="aide_videoType0" class="aide" alt="aide">
+				<input type="radio" name="videoType" value="1">Owncloud<img src="img/help.svg" id="aide_videoType1" class="aide" alt="aide">
+				<input type="radio" name="videoType" value="2">Youtube<img src="img/help.svg" id="aide_videoType2" class="aide" alt="aide">
+			</form>
+			<input type="text" id="taVideoUrl" style="width:100%"  onChange="tblExo.videoUrl = this.value;videoARecharger = true" >
+			<div class="cachableUtilisateurPlusPlus" >
+			<h3><img src="img/help.svg" id="aide_moduleId" class="aide" alt="aide">ID du module</h3>
+			<input type="text" id="tiModuleId" style="width:100%"  onChange="tblExo.moduleId = this.value;">
+		</div>
+</div>
+			
+
+<h2><img src="img/help.svg" id="aide_btnOutils" class="aide" alt="aide">Boutons outils</h2>
+<div class="boite1">
+			
+			<h3><img src="img/help.svg" id="aide_btnOutilsEtiq" class="aide" alt="aide">Format bouton</h3><form name="frmEtiq">
+				<input type="radio" id="cbfrmEtiq0" name="btnOutilEtiq" value="0">Texte + icone
+				<input type="radio" id="cbfrmEtiq1" name="btnOutilEtiq" value="1">Icone</form>
+			
+		<h3>Bouton 1 : <!--<img src="img/help.svg" id="aide_btnOutilsEtiq" class="aide" alt="aide">-->étiquette / <img src="img/help.svg" id="aide_btnOutilFnctn" class="aide" alt="aide">fonction</h3>
+			<input type="text" id="txtBtn1Etiq"/> / <select id="select1Fnctn"></select>
+			
+		<h3>Bouton 2 : étiquette / fonction</h3>
+			<input type="text" id="txtBtn2Etiq"/> / <select id="select2Fnctn"></select>
+		
+		<h3>Bouton 3 : étiquette / fonction</h3>
+			<input type="text" id="txtBtn3Etiq"/> / <select id="select3Fnctn"></select>
+			
+			<h3>Bouton 4 : étiquette / fonction</h3>
+			<input type="text" id="txtBtn4Etiq"/> / <select id="select4Fnctn"></select>
+		</div>
+
+
+	
+<h2><img src="img/help.svg" id="aide_listClavier" class="aide" alt="aide">Caractères accentués</h2>
+<div class="boite1">
+	<input type="text" id="txtClavier" style="width:60%;margin:0.3rem 0;" />
+	<select id="selectClavier" onChange="document.getElementById('txtClavier').value = tblClaviers[this.selectedIndex].car"></select>
+</div>
+
+
+<h2><img src="img/help.svg" id="aide_consigne" class="aide" alt="aide">Consigne initiale</h2>
+			<div class="boite1"><textarea id="taConsigne0" style="height:180px" ></textarea></div>
+		
+<h2>Scénario</h2>
+<div class="boite1">
+	<h3><img src="img/help.svg" id="aide_scenAccesQ" class="aide" alt="aide"> Accès au questionnaire</h3>
+		<form name="accesQuestionnaire" id="accesQuestionnaire">
+			<input type="radio" name="accesQ" id="btnAccesQ0" value="0">Accès immédiat
+			<input type="radio" name="accesQ" id="btnAccesQ1" value="-1"/>Accès à la fin de la vidéo
+		</form>
+        
+        <h3><img src="img/help.svg" id="aide_verrouCorr" class="aide" alt="aide">Retour à l'édition après correction</h3>
+		<form name="verrCorr" id="verrCorr">
+			<input type="radio" name="verrCorr" id="btnVerrCorrQ0" value="0">retour à l'édition autorisé
+			<input type="radio" name="verrCorr" id="btnVerrCorrQ1" value="1"/>retour à l'édition interdit
+		</form>
+		
+		<h3><img src="img/help.svg" id="aide_nbCarCorrection" class="aide" alt="aide">Nombre de caractères pour correction</h3>
+		<input type="text" id="saisieQoAccesC" style="width:4rem;"/>
+			
+		<h3><img src="img/help.svg" id="aide_msgAE" class="aide" alt="aide">Question pour l'auto-évaluation</h3>
+		<input type="text" id="saisieMsgAE" style="width:40rem;"/>
+        
+        <h3><img src="img/help.svg" id="aide_scormNote" class="aide" alt="aide">"Note" à remonter vers Moodle</h3>
+        <select id="selectScormNote" onChange="tblExo.scenario.scormScoreRaw = this.value"><option value="rep">% de reponses données</option><option value="ae">% d'auto-évaluation</option></select>
+</div>
+
+<h2>Interface</h2>
+	<div class="boite1">
+		<h3><img src="img/help.svg" id="aide_guiCouleur" class="aide" alt="aide">Couleur </h3>
+		<input type="color" id="inputCouleur1">
+	</div>
+		<!--<button onClick="valideModif()" >Valider les modifications</button>-->
+		
+</div>
+
+<script>
+var tblFnctn = new Array("--" , "sousTitrage1" , "impression" , "doc" , "clavier" )
+
+$(function(){
+	
+	$(".aide").on("click", function(){ affichAide(this);});
+	
+	document.getElementById("txtTitreParam").value = tblExo.titre;
+	if (tblExo.tempsPon) {
+		 document.getElementById("txttempsPon").innerHTML =tempsPon2lisible(tblExo.tempsPon); 
+	}else {
+		document.getElementById("txttempsPon").innerHTML = "hh:mm le, jj/mm/aa";
+	}
+	if (tblExo.sousTitre) document.getElementById("txtSTitre").value = tblExo.sousTitre; else document.getElementById("txtSTitre").value = "";
+	document.getElementById("taVideoUrl").value = tblExo["videoUrl"];
+	document.getElementById("videoBlocType").videoType.value = tblExo.videoType;
+	if (tblExo.moduleId) {
+		document.getElementById("tiModuleId").value = tblExo.moduleId;
+	} else {
+		//le fichier ouvert n'avait pas d'Id : j'en rajoute une aléatoire");
+		document.getElementById("tiModuleId").value = randomString(8);
+		tblExo.moduleId = document.getElementById("tiModuleId").value;
+	}
+	
+	/*** gestion "utilisateurPlus" : */
+	// on déverouille le champ videoURL sur doubleClic. Si on ctrl+alt+shift on affiche aussi l'ID de l'exo (cachableUtilisateurPlusPlus !)
+	$(".clicableUtilisateurPlus").on("dblclick",function( event ){
+		if ( event.altKey && event.ctrlKey && event.shiftKey){
+			$(".cachableUtilisateurPlusPlus").show();
+		}
+		utilisateurPlus = !utilisateurPlus;
+		interfaceUtilisateurPlus();
+	});
+	
+	interfaceUtilisateurPlus(); // à l'affichage de la page
+	
+	//***bouton
+	//document.frmEtiq.btnOutilEtiq[tblExo.btnOutil.format].checked = true; pb FF31
+	if (tblExo.btnOutil.format == 1){
+		document.getElementById("cbfrmEtiq1").checked = true;
+	}else{
+		document.getElementById("cbfrmEtiq0").checked = true;
+	}
+	
+	for (var i=0 ; i < 4 ; i++){
+		var etiqId = "txtBtn" + ( i + 1 ) + "Etiq";
+		document.getElementById(etiqId).value = tblExo.btnOutil.liste[i].etiquette;
+		//creation des option du select
+		var selectEncours = document.getElementById("select" + (i+1) + "Fnctn");
+		for (var k = 0 ; k < tblFnctn.length ; k++){
+			var option = document.createElement('option');
+			option.textContent = tblFnctn[k];
+			selectEncours.appendChild(option);
+		}
+		var j = tblFnctn.indexOf(tblExo.btnOutil.liste[i].fonction);
+		if (j == -1) j = 0;
+		selectEncours.selectedIndex = j;
+	}
+	
+	//les caractères spéciaux pour clavier
+	if (tblExo.clavier) document.getElementById("txtClavier").value = tblExo.clavier;
+	for (var k = 0 ; k < tblClaviers.length ; k++){
+			var option = document.createElement('option');
+			option.textContent = tblClaviers[k].id;
+			document.getElementById("selectClavier").appendChild(option);
+		}
+	
+	
+	// La consigne
+	if (!nicEditors.findEditor('taConsigne0')) editeur1 = new nicEditor().panelInstance('taConsigne0');
+	nicEditors.findEditor('taConsigne0').setContent(tblExo["consigne"]);
+	
+	//***** scenario 
+	if (tblExo.scenario){ // encore nécessaire ? 
+		if (tblExo.scenario.accesQ === "1") {
+			document.getElementById("btnAccesQ1").checked = true;
+		}else{
+			document.getElementById("btnAccesQ0").checked = true;
+		}
+	}else{
+		var objScenario = {
+    "accesQ": "0",
+    "verrCorr": "0",
+    "qoAccesC": "",
+    "msgAE": "",
+    "scormScoreRaw": "rep"
+  };
+		tblExo.scenario = objScenario;
+	}
+	// verrCorr
+	if (tblExo.scenario.verrCorr === "1") {
+			document.getElementById("btnVerrCorrQ1").checked = true;
+		}else{
+			document.getElementById("btnVerrCorrQ0").checked = true;
+		}
+	if (tblExo.scenario.qoAccesC) document.getElementById("saisieQoAccesC").value = tblExo.scenario.qoAccesC;
+	if (tblExo.scenario.msgAE) document.getElementById("saisieMsgAE").value = tblExo.scenario.msgAE;
+	if (tblExo.scenario.scormScoreRaw) document.getElementById("selectScormNote").value = tblExo.scenario.scormScoreRaw;
+	
+	
+	if (tblExo.interface){
+		document.getElementById("inputCouleur1").value = tblExo.interface.couleur1;
+	}
+	
+	
+	$("#ctnVideo" ).dialog("close");
+
+});//fin Init $(function... !
+
+
+
+function valideModif(e){
+        console.log("valideModif : " + e.target.id);
+	// sauv des modifs pas sur des onChange (cas des nicEdit...)
+	tblExo["consigne"] = eDblQ(nicEditors.findEditor('taConsigne0').getContent());
+	
+	//tblExo.btnOutil.format = document.frmEtiq.btnOutilEtiq.value;//marche pas sur FF31
+	if ( document.getElementById("cbfrmEtiq1").checked){
+		tblExo.btnOutil.format = 1;
+	}else{
+		tblExo.btnOutil.format = 0;
+	}
+	
+	for (var i =0  ; i < 4 ; i++){
+		tblExo.btnOutil.liste[i].etiquette = document.getElementById("txtBtn" + ( i + 1 ) + "Etiq").value;
+		var selectEnCours = document.getElementById("select" + (i+1) + "Fnctn");
+		tblExo.btnOutil.liste[i].fonction = selectEnCours.options[selectEnCours.selectedIndex].text;
+	}
+	
+	tblExo.clavier = document.getElementById("txtClavier").value;
+	
+	//***scenario
+	if ( document.getElementById("btnAccesQ0").checked) tblExo.scenario.accesQ = "0" ; else tblExo.scenario.accesQ = "1";
+	if ( document.getElementById("btnVerrCorrQ0").checked) tblExo.scenario.verrCorr = "0" ; else tblExo.scenario.verrCorr = "1";
+	tblExo.scenario.qoAccesC = document.getElementById("saisieQoAccesC").value;
+	tblExo.scenario.msgAE = document.getElementById("saisieMsgAE").value;
+	
+	if (tblExo.interface) { // a cause de fichier json pas complet 
+		tblExo.interface.couleur1 = document.getElementById("inputCouleur1").value;
+	}else{
+		var interface = new Object({"couleur1" : document.getElementById("inputCouleur1").value});
+		tblExo.interface = interface;
+	}
+}
+
+function interfaceUtilisateurPlus(){
+	document.getElementById("taVideoUrl").disabled = !utilisateurPlus;
+	$("#videoBlocType>input").attr("disabled" , !utilisateurPlus);
+	if (utilisateurPlus){
+		$(".cachableUtilisateurPlus").show();
+		$(".clicableUtilisateurPlus").css("color" , "#000");
+		$("#imgVideoVerrou").hide("fast");
+	}else{
+		$(".cachableUtilisateurPlus").hide();
+		$(".cachableUtilisateurPlusPlus").hide();
+		$(".clicableUtilisateurPlus").css("color" , "#828282");
+		$("#imgVideoVerrou").show("fast");
+	}
+}
+
+</script>
