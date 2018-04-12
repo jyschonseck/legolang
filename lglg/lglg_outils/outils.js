@@ -5,7 +5,7 @@ function clavier() { // handler du bouton outils
     affichClavier = !affichClavier;
     if (affichClavier) {
 	$("#outil-clavier").addClass("choisi");
-	if (champSaisie.parentElement) {  // comme champ saisie est chargé dans qo il existe si on a une qo dans la page (il faut qu'il soit initialisé dans l'affichage page 
+	if (champSaisie.parentElement) {  // comme champ saisie est chargé dans qo il existe si on a une qo dans la page (il faut qu'il soit initialisé dans l'affichage page
 	    afficherClavier(champSaisie.parentElement.id.split("_")[1]);
 	}
     } else {
@@ -105,6 +105,7 @@ function impression() {
 	    }
 	}
     }
+		console.log("on va imprimer : " + JSON.stringify(docDefinition));
     pdfMake.createPdf(docDefinition).open();
 }
 
