@@ -63,7 +63,7 @@ h2 {
 
 /*****JY test pour mettre ascenseur sur les question et non sur toute la page*/
 #ctnPageQ{
-	overflow:auto;	
+	overflow:auto;
 }
 
 /*** consigne prend le style voulu dans l'éditeur...*/
@@ -105,7 +105,7 @@ h2 {
   max-width: 4em;
 }
 #ctnOutils span {
-  
+
 }
 #ctnOutils a:hover {
   opacity: 0.6;
@@ -234,18 +234,18 @@ textarea:focus {
 /*[type="checkbox"]:not(:checked).QCMCocheBon + label:before,
 [type="checkbox"]:checked + label:before {
     color:green;
-    
+
 }*/
 
 [type="checkbox"]:not(:checked).QCMCocheBon + label::before,
 [type="checkbox"]:checked.QCMCocheBon + label::before{
-    background:#33ff66;
+    background:#08dd0a;
 }
- 
+
 
 [type="checkbox"]:not(:checked).QCMCocheFaux + label::before,
 [type="checkbox"]:checked.QCMCocheFaux + label::before{
-    background:#ff3377;
+    background:#fb1328;
 }
 
 /* Aspect général de la coche */
@@ -361,7 +361,7 @@ textarea:focus {
 }
 
 .ui-progressbar-value {
-	background : #28b2aa !important;	
+	background : #28b2aa !important;
 	border-radius:0 !important;
 	border : none !important;
 }
@@ -378,7 +378,7 @@ textarea:focus {
 	margin-bottom:0.8em;
 	background:none !important;
   }
-  
+
 
 
 /***************************************************************
@@ -400,7 +400,7 @@ video::-webkit-media-controls-enclosure {
 /***************************/
 /***** en dessou sde 720 on reduit les tailles de caractères et margin, */
 @media screen and (max-width:760px) {
-    
+
     .txtTitrePage {
   font-weight:bold;
   font-size: 1rem;
@@ -431,7 +431,7 @@ video::-webkit-media-controls-enclosure {
 #ctnOutils img {
   width: 60%;
 }
-    
+
 }
 
 /***** en dessou sde 640 on passe en une seule colonne*/
