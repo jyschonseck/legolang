@@ -289,7 +289,19 @@ function previsualisation(){
 };
 
 function ouvrirNouveau(){
-	tblExo = jQuery.parseJSON('{"titre":"Nom","sousTitre":"","consigne":"<font size=\'4\'>Répondez aux questions</font>","videoUrl":"https://youtu.be/TiObBlwTJrY","btnOutil":{"format":1,"liste":[{"etiquette":"","fonction":"--"},{"etiquette":"","fonction":"--"},{"etiquette":"","fonction":"--"},{"etiquette":"","fonction":"impression"},{"etiquette":"","fonction":"--"}]},"clavier":"","scenario":{"accesQ": "0","verrCorr": "0","qoAccesC": "3", "msgAE": "","scormScoreRaw": "rep" }, "pages":[{"titre":"Page 1", "questions":[{"type":"qo","titreQ":"","txtQuestion":"Question 1", "txtCorrection":"", "extraitCorrection":{"debut":"0", "fin":"0", "affichA":"0"}, "extraitQuestion":{"debut":"0", "fin":"0"}}, {"type":"qo","titreQ":"","txtQuestion":"Question 2","extraitQuestion":{"debut":"0", "fin":"0"}, "txtCorrection":"", "extraitCorrection":{"debut":"0", "fin":"0", "affichA":"0"}}]}, {"titre":"Page 2", "questions":[{"type":"qo","titreQ":"","txtQuestion":"Question 1","txtCorrection":"","extraitCorrection":{"debut":"0","fin":"0","affichA":"0"}, "extraitQuestion":{"debut":"0","fin":"0"}}]}],"stUrl":"", "interface":{"couleur1":"#000000"},"sousTitrage1":"", "videoType":"2"}');
+	// tblExo = jQuery.parseJSON(',"stUrl":"", "interface":{"couleur1":"#000000"},"sousTitrage1":"", "videoType":"2"}');
+tblExo ={};
+tblExo.titre = "nom du fichier";
+tblExo.sousTitre = "le sous-titre ";
+tblExo.consigne = "<font size=\'4\'>Répondez aux questions</font>";
+tblExo.videoUrl = "https://youtu.be/TiObBlwTJrY";
+tblExo.btnOutil = {"format": 1,"liste": [{"etiquette":"","fonction":"--"},{"etiquette":"","fonction":"--"},{"etiquette":"","fonction":"--"},{"etiquette":"","fonction":"impression"},{"etiquette":"","fonction":"--"}]};
+tblExo.clavier = "";
+tblExo.interface = {"couleur1":"#000000" };
+tblExo.scenario = {"accesQ": "0","verrCorr": "0","qoAccesC": "3", "msgAE": "","scormScoreRaw": "rep" };
+tblExo.pages = [{"titre":"Page 1", "questions":[{"type":"qo","titreQ":"","txtQuestion":"", "txtCorrection":"", "extraitCorrection":{"debut":"0", "fin":"0", "affichA":"0"}, "extraitQuestion":{"debut":"0","fin":"0"}}]}];
+
+
 	tblExoSauv = JSON.stringify(tblExo);
 	$('#ctnContenu').load('editParametres.html');
 	$('div').removeClass('active');

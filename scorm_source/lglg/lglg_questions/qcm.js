@@ -1,4 +1,4 @@
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -28,7 +28,7 @@ function creationQCM(i) {
     question.appendChild(txtQuestion);
     questionEnCours.appendChild(question);
 
-    
+
     //propositions
     for (var j = 0; j < tblExo.pages[pCourante].questions[i].propositions.length; j++) {
 	var propComplete = document.createElement("div");
@@ -92,7 +92,6 @@ function creationQCM(i) {
 
 function QCMClckHdlr(e){
 	var q = e.currentTarget.id.split("_")[1];
-	console.log (tblExo.pages[pCourante].questions[q].propositions.length);
 	tblReponses[pCourante].reps[q] = "";
 	for (var i = 0 ; i < tblExo.pages[pCourante].questions[q].propositions.length ; i++){
 	    if (document.getElementById("cb_" + q + "_" + i).checked){
@@ -113,5 +112,5 @@ function QCMClckHdlr(e){
 //	var i = e.target.parentElement.id.split("_")[1];
 //	if (affichClavier) {
 //		afficherClavier(i);
-//	}	
+//	}
 // }

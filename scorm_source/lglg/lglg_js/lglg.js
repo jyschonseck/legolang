@@ -45,7 +45,6 @@ function afficheExo(){
 		//on charge suspend_data dans tblReponse:
 		if (SCOGetValue("cmi.suspend_data")){
 			tblReponses = jQuery.parseJSON(SCOGetValue("cmi.suspend_data"));
-			// pourqoi pas JSON.parse(
 		}
 	}else{
 		if (tblExo.moduleId && localStorage.getItem(tblExo.moduleId)){
