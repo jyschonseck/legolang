@@ -2,7 +2,7 @@
     <div id="ctnEdQuestions" > </div>
 </div>
 
-<div id="popupModifQuestion" title="Édition question " > 
+<div id="popupModifQuestion" title="Édition question " >
 
 </div>
 
@@ -73,7 +73,7 @@
             }
         });
 
-       
+
 
 
         //$("#ctnVideo" ).dialog("open");
@@ -110,7 +110,7 @@
                 var question = document.createElement("div");
                 //var quest = document.createElement("td");
                 question.className = "eqQuestion edQtype_"+tblExo.pages[i].questions[j].type; //TODO : faire les style ...
-                
+
                 var textQ = document.createElement("div");
                 textQ.innerHTML = tblExo.pages[i].questions[j].txtQuestion;
                 textQ.ondblclick = modifierQuestion;
@@ -137,23 +137,20 @@
 function modifierQuestion(modEvt) {
         pageCourante = modEvt.currentTarget.parentElement.id.split("_")[1];
         questionCourante = modEvt.currentTarget.parentElement.id.split("_")[2];
-        
+
         var typeQuestion = tblExo.pages[pageCourante].questions[questionCourante].type;
-        console.log("on edit une question de type = " + typeQuestion);
         if (typeQuestion === "qtrous") {
             $("#popupModifQuestion").load("questions/edit_qtrous.html");
-//            $("#txtExplicQtrous").show("fast");
         } else if (typeQuestion === "qo") {
             $("#popupModifQuestion").load("questions/edit_qo.html");
-//            $("#txtExplicQtrous").hide(0);
         } else if (typeQuestion === "qcm"){
             $("#popupModifQuestion").load("questions/edit_qcm.html");
         }
-    
+
         $('#popupModifQuestion').dialog('open');
         $("#ctnVideo").dialog("open");
-        
-       
+
+
 
 
 
@@ -177,7 +174,7 @@ function modifierQuestion(modEvt) {
         }
     }
 
-   
+
 
     function modifierTitrePage(modEvt) {
         pageCourante = modEvt.currentTarget.parentElement.id.split("_")[1];

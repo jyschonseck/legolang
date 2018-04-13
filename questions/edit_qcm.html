@@ -117,9 +117,8 @@
             var eltAvirer = evt.currentTarget.parentElement;
             document.getElementById("ctnPropositions").removeChild(eltAvirer);
         }
-        
+
  $(".clicHeure").click(function (e) {
-            console.log("clic heure " + e);
             var champNum = e.currentTarget.nextElementSibling; // e.currentTarget.parentElement.querySelector("input");
             champNum.value = videoDonnePosition();
             heureChange(champNum.id.substr(3, 1));

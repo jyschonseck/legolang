@@ -27,16 +27,12 @@
 <script>
 
     $(function () {
-        console.log ("Ouverture edition QO : " + pageCourante + " - " + questionCourante);
-        
          ///**** ajouter nicedit
         if (!nicEditors.findEditor('taTxtCorrectionQo'))
             editeur2 = new nicEditor().panelInstance('taTxtCorrectionQo');
         if (!nicEditors.findEditor('taTxtQuestionQo'))
             editeur3 = new nicEditor().panelInstance('taTxtQuestionQo');
 
-        //edition de qo et qtrous pareilles pour le moment !!!
-        //document.getElementById('txtTitreQo').value = tblExo.pages[pageCourante].questions[questionCourante].titreQ;
 
         nicEditors.findEditor('taTxtQuestionQo').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
 
@@ -63,7 +59,7 @@
     });
 
  function questionEnregistre() {
-        
+
         tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(nicEditors.findEditor('taTxtQuestionQo').getContent());
         tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut = document.getElementById('extQDebQo').value;
         tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin = document.getElementById('extQFinQo').value;
@@ -78,7 +74,6 @@
     }
 
  $(".clicHeure").click(function (e) {
-            console.log("clic heure " + e);
             var champNum = e.currentTarget.nextElementSibling; // e.currentTarget.parentElement.querySelector("input");
             champNum.value = videoDonnePosition();
             heureChange(champNum.id.substr(3, 1));

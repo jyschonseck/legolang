@@ -29,8 +29,7 @@
 <script>
 
     $(function () {
-        console.log ("Ouverture edition QO : " + pageCourante + " - " + questionCourante);
-        
+
          ///**** ajouter nicedit
         if (!nicEditors.findEditor('taTxtCorrectionQo'))
             editeur2 = new nicEditor().panelInstance('taTxtCorrectionQo');
@@ -65,7 +64,7 @@
     });
 
  function questionEnregistre() {
-        
+
         tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(nicEditors.findEditor('taTxtQuestionQo').getContent());
         tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut = document.getElementById('extQDebQo').value;
         tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin = document.getElementById('extQFinQo').value;
@@ -78,10 +77,9 @@
         $("#ctnVideo").dialog("close");
 
     }
-    
+
      $(".clicHeure").click(function (e) {
-            console.log("clic heure " + e);
-            var champNum = e.currentTarget.nextElementSibling; // e.currentTarget.parentElement.querySelector("input");
+            var champNum = e.currentTarget.nextElementSibling;
             champNum.value = videoDonnePosition();
             heureChange(champNum.id.substr(3, 1));
         });

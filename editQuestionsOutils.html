@@ -4,7 +4,7 @@
 <img id="btnEditBas" onclick="btnQDeplHdlr(this.parentElement.id.split('_')[1], this.parentElement.id.split('_')[2], 1);" src="img/bas.png"   alt="" title="Déplacer">
 <img id="btnEditSuppr" onclick="btnQSupprHdlr(this.parentElement.id.split('_')[1], this.parentElement.id.split('_')[2]);" src="img/delete.svg" title="Supprimer" alt="">
 
-<div>Vers page : 
+<div>Vers page :
     <input type="number" id="btnQChgPageCible" min="1"  onChange="pageArr = (this.value - 1);">
     <button id="btnQChgPage" onClick="btnQChgPageHdlr(event);">ok</button></div>
 
@@ -28,20 +28,6 @@
 	$('#ctnContenu').load('editQuestions.html');
     }
 
-//function btnQAjoutrHdlr(pageOrdre , questionOrdre , questionType){
-//	//var question = tblExo.questions[i];
-//	localStorage.removeItem(tblExo.moduleId);
-//	
-//	//****type question QO & Qtrous ****
-//	tblExo.pages[pageOrdre].questions.splice(parseInt(questionOrdre)+1 , 0 , {
-//		"type":"qo",
-//		"titreQ": "" ,
-//		"txtQuestion":"Nouvelle question",
-//		"extraitQuestion":{"debut": "0" , "fin":"0"},
-//		"txtCorrection":"",
-//		"extraitCorrection":{"debut": "0" , "fin":"0"}	});
-//	$('#ctnContenu').load('editQuestions.html');
-//}
 
     function selectChangeHdlr(e) {
 	localStorage.removeItem(tblExo.moduleId);
@@ -50,7 +36,6 @@
 	var questionType = e.currentTarget.value;
         var questionNum =  parseInt(questionOrdre) + 1;
 	//**** creation type question ****
-	console.log("on cree une question de type : " + questionType);
 	tblExo.pages[pageOrdre].questions.splice( questionNum , 0, {
 	    "type": questionType,
 	    "titreQ": "",
