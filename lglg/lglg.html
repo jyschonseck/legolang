@@ -12,7 +12,7 @@
 <h2 id="txtTitre" style="display:none"></h2>
 <div id="cols">
   <section id="docu">
-  
+
     <div id="ctnTitres">
     	<!--<img id="logo" src="lglg/lglg_interface/images/plus_alt.svg"  style="float:left; margin-right:0.3rem;"/>-->
 		<span id="txtSousTitre" onDblClick="logoClckHdlr(event)"></span>
@@ -20,9 +20,9 @@
     <div id="ctnMedia" ></div>
     <div id="ctnOutils" ></div>
 	<div id="ctnAEAffich" style="display:none"></div>
-	
+
   </section>
-  
+
   <section id="questionnaire">
     <div id="ctnOnglets" onClick="ongletsClickHdlr(event);">
       <div id="nav_1" class="actif choisi">vidéo</div><!--
@@ -55,39 +55,39 @@
 <script>
 
 $(function(){
-	
+
 	if (affichTitre){
 		$("#txtTitre").css("display","block");
 		$("#breadcrumbs").css("display","block");
 		};
-	
+
 	if (sessionStorage.getItem("lglg_data") == null){ //test présence donnée du mode auteur
 		chargeFichierData();
 	}else{
 		tblExo = jQuery.parseJSON(sessionStorage.lglg_data);
 		modeAuteur = true;
-		afficheExo(); 
-	}	
-	
+		afficheExo();
+	}
+
 	//******** resize de la partie question (pas réussi à gérer en css ...
 	//si on redimensionne la fenetre
 	window.addEventListener("resize", redimCtnQuestions);
-	
-	
+
+
 });
 
 function chargeFichierData(){
 	var url='module/data.json';
 	// si on vient de lglg_auteur :
 	if (sessionStorage.getItem("lglg_lien") != null) url = sessionStorage.getItem("lglg_lien");
-		
+
 	$.ajax({
 		type: 'GET',
 		url: url,
 		dataType: 'json',
 		success: function(data) {
 			if (data) tblExo = data;
-			afficheExo(); 
+			afficheExo();
 		},
 		error: function() { alert('Pas de lecture du fichier : ' + url , 'erreur');}
 	});
@@ -96,13 +96,13 @@ function chargeFichierData(){
 
 function ongletsClickHdlr(e){
 	if (modeAuteur && e.target.id =="nav_3"){
-		$("#nav_3").addClass("actif");		
+		$("#nav_3").addClass("actif");
 	}
 
 	if ($(e.target).hasClass('actif') && !$(e.target).hasClass('choisi') ) { // donc on a cliqué sur un onglet 'actif' et pas encore choisi
-		
+
 		var onglet = e.target.id.split("_")[1];
-		
+
 		if (onglet === "1" ){
 			$("#ctnQuestionnaire").fadeOut("fast",function(){
 				$("#ctnConsigne").fadeIn("fast");
@@ -115,16 +115,16 @@ function ongletsClickHdlr(e){
 				var tempo = setTimeout(function(){$("#ctnOutils").removeClass("outilsInactif");},200);
 			}
 			if ($("#nav_1").hasClass("choisi")){ //on vient de consigne
-				 $(".feedback").hide(0); 
+				 $(".feedback").hide(0);
 				 $("#ctnConsigne").fadeOut("fast",function(){
-					$("#ctnQuestionnaire").fadeIn("fast" , function(){redimCtnQuestions();}); 
+					$("#ctnQuestionnaire").fadeIn("fast" , function(){redimCtnQuestions();});
 				});
 			}else{ //on vient de correction
 				edition();
 			}
 		}else if (onglet === "3"){
 			if (tblExo.scenario.verrCorr === "1"){//verrouille après correction
-				$("#nav_2").removeClass("actif")	
+				$("#nav_2").removeClass("actif")
 			}
 			effacerClavier();
 			if ($("#nav_1").hasClass("choisi")){ //on vient de consigne (donc c'était d'ja validé
@@ -135,7 +135,7 @@ function ongletsClickHdlr(e){
 				validation();
 			}
 		}
-		// on affiche les onglets 
+		// on affiche les onglets
 		ongletsAffich(onglet);
 	}
 }
@@ -154,7 +154,6 @@ function logoClckHdlr(e){ // pour débloquer la lecture obligatoire de la vidéo
 		alert("Version de legolang du 19 avril 2017" , "Version de legolang" );
 	}
 }
-
 </script>
 </body>
 </html>
