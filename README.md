@@ -2,7 +2,7 @@
 
 
 ## notes de version
-###18 avril 2018
+### 18 avril 2018
 _le scroll ne se déclenchait pas sur les questions mais sur toute la fenêtre_
 J'ai supprime le test de largeur dans la fonction redimCtnQuestions(). Elle n emarchait plus. Je supprime le scroll sur les questions pour les écrans étroits dans les mediaQueries.
 
