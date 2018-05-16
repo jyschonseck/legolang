@@ -16,5 +16,6 @@
   "verrouCorr" : "Vous pouvez empêcher l'étudiant de modifier sa réponse après qu'il ait lu la correction. Ce verrouillage sera effectif à l'intérieur de la tentative (au sens plateforme).",
   "msgAE": "Question posée à l'apprenant pour son auto-évaluation. Si le champ reste vide, l'autoÉvaluation ne sera pas proposée.",
   "scormNote": " L'exercice remonte une note à la plateforme (Moodle ou autre). Cette \"note\" peut-être calculée de deux manières : <ul><li>Le pourcentage de reponses ayant été données (paramètre \"Nombre de caractères pour correction\").</li><li>Le pourcentage d'autoévaluation.<br>Attention la barre d'auto-évaluation présentée dans l'exercices affiche le pourcentage par rapport au nb de questions pour lesquelles l'auto-évaluation a été fixée par l'apprenant. Pour la note remontée vers la plateforme toutes les questions sont prises en compte.<br>par ex. : un étudiant qui s'est évalué \"bon\" sur 5 réponses d'un questionnaire de 20 questions verra son curseur à 100%, mais la \"note\" remontée à la plateforme sera de 25/100</li></ul>",
-  "guiCouleur": "Couleur utilisée pour l'interface de l'exercice."
+  "guiCouleur": "Couleur utilisée pour l'interface de l'exercice.",
+  "affichLogo": "Possibilité de rajouter un deuxième logo à coté de celui de l'uLille"
 }

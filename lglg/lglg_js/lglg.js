@@ -26,12 +26,28 @@ var tempsDebut = new Date();
 //** fonctions**********//
 
 
-
 function afficheExo() {
   'use strict';
-	console.log("afficheExo");
+  console.log("afficheExo");
   if (tblExo.interface.couleur1) {
     useCustomColor(tblExo.interface.couleur1);
+  }
+
+  console.log("tblExo.interface.logoaffich = " + tblExo.interface.logoaffich);
+  if (tblExo.interface.logoaffich) {
+    $("#logo").css("display", "block");
+    console.log("affiche " + tblExo.interface.logourl);
+    console.log("affiche " + tblExo.interface.logourl.length);
+    if (tblExo.interface.logourl.length < 1) {
+
+      document.getElementById("logo").src = "lglg/lglg_interface/logo/UL-NOIR-WEB-h120.png";
+      document.getElementById("logo").title = "Dip - Université de Lille";
+      document.getElementById("lienLogo").href = "http://klip.univ-lille.fr/";
+    } else {
+      document.getElementById("logo").src = tblExo.interface.logourl;
+      document.getElementById("logo").title = tblExo.interface.logotitle;
+      document.getElementById("lienLogo").href = tblExo.interface.logolien;
+    }
   }
 
   //*******************
@@ -48,10 +64,10 @@ function afficheExo() {
       tblReponses = jQuery.parseJSON(SCOGetValue("cmi.suspend_data"));
     }
   } else {
-		// console.log("tblExo.moduleId = " + tblExo.moduleId + ", " + localStorage.getItem(tblExo.moduleId));
+    // console.log("tblExo.moduleId = " + tblExo.moduleId + ", " + localStorage.getItem(tblExo.moduleId));
     if (tblExo.moduleId && localStorage.getItem(tblExo.moduleId)) {
       tblReponses = jQuery.parseJSON(localStorage.getItem(tblExo.moduleId));
-				// console.log("on a des réponses en localStorage : \n" + JSON.stringify(tblReponses));
+      // console.log("on a des réponses en localStorage : \n" + JSON.stringify(tblReponses));
     }
   }
 
@@ -122,7 +138,7 @@ function shadeColor(color, percent) {
     t = percent < 0 ? 0 : 255,
     p = percent < 0 ? percent * -1 : percent,
     //R = f >> 16,
-		R = f >> 16,
+    R = f >> 16,
     G = f >> 8 & 0x00FF,
     B = f & 0x0000FF;
   return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
@@ -143,7 +159,7 @@ function useCustomColor(pColor) {
 
 
 function affichPage() {
-	'use strict';
+  'use strict';
   /****vidage ctnQuestions****/
   while (ctnPageQ.firstChild) {
     ctnPageQ.removeChild(ctnPageQ.firstChild);
@@ -192,7 +208,7 @@ function affichPage() {
     }
   }
   verifAccesCorr
-	();
+    ();
 }
 
 function verifAccesCorr() {
@@ -388,24 +404,24 @@ function svgChangeColor() {
 
 function redimCtnQuestions() {
   'use strict';
-	// console.log("function redimCtnQuestions()");
+  // console.log("function redimCtnQuestions()");
   ///*******le redimensionnement en hauteur : objet : faire le scroll sur la partie question seulement ...
 
   if (document.getElementById("ctnQuestions")) { // éviter erreur quand on redim sur onglets!="previsualisation" dans l'auteur
-	// console.log("on a bien un ctnQuestions " + window.innerWidth + " / " +
-      var temp = parseInt($("#ctnQuestions").offset().top);
-      var temp2 = $("#ctnNavigation").height();
-      var temp3 = temp + temp2 + 10;
-      var temp4 = window.innerHeight - temp3;
-			console.log("TOP de navig = " + temp + "\nnavig hauteur = "+ temp2 + "\nsomme des perte "+ temp3 + "\nhauteur max = "+ temp4 );
-      $("#ctnPageQ").css("max-height", temp4);
+    // console.log("on a bien un ctnQuestions " + window.innerWidth + " / " +
+    var temp = parseInt($("#ctnQuestions").offset().top);
+    var temp2 = $("#ctnNavigation").height();
+    var temp3 = temp + temp2 + 10;
+    var temp4 = window.innerHeight - temp3;
+    console.log("TOP de navig = " + temp + "\nnavig hauteur = " + temp2 + "\nsomme des perte " + temp3 + "\nhauteur max = " + temp4);
+    $("#ctnPageQ").css("max-height", temp4);
   }
 }
 
 //*****************************
 function tblReponsesReset() {
   'use strict';
-	console.log("tblReponsesReset" +  tblExo.pages.length);
+  console.log("tblReponsesReset" + tblExo.pages.length);
   for (var pageId = 0; pageId < tblExo.pages.length; pageId++) {
     tblReponses[pageId] = {};
     tblReponses[pageId].valid = false;

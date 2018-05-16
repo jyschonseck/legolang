@@ -45,12 +45,10 @@ h2 {
   padding-bottom: 1em;
   margin-bottom: 1em;
   min-height: 3.5rem;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flex;
-  display: -o-flex;
+
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
 }
 
 .txtTitrePage {
@@ -66,7 +64,15 @@ h2 {
   font-size: 1.2rem;
 }
 
-/*****JY test pour mettre ascenseur sur les question et non sur toute la page*/
+#ctnLogo{
+  display: flex;
+  flex-direction: row;
+}
+
+.logo{
+  max-height: 2rem;
+  margin: 1rem;
+}
 
 #ctnPageQ {
   overflow: auto;
