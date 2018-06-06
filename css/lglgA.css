@@ -3,7 +3,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
-/* 
+/*
     Created on : 9 mars 2017, 15:09:07
     Author     : jyschonseck
 */
@@ -69,7 +69,7 @@ nav{
 }
 
 #ctnTitre{
-	
+
 }
 
 
@@ -83,7 +83,7 @@ nav{
 
 
 .btnLireExtrait{
-	cursor:pointer;	
+	cursor:pointer;
 	margin: 0 15px;
 }
 
@@ -98,13 +98,13 @@ nav{
 
 
 #ctnPrincipal{
-	/*border:solid 1px blue;	
+	/*border:solid 1px blue;
 	background-color:#ddf;*/
 }
 
 
 #ctnPrincipal div{
-	
+
 }
 
 .btnLireExtrait{
@@ -116,7 +116,7 @@ nav{
 }
 
 .pageContenuPetit{
-	
+
 	margin:0rem ;/* auto;*/
 	padding:1rem 2rem;
 	max-width:950px;
@@ -219,7 +219,7 @@ nav div.active {
 /*************************
 ** page questions ********
 *************************/
-/*td textarea{ 
+/*td textarea{
 	width:100%;
 }
 
@@ -230,7 +230,7 @@ td div input{
 .clicHeure{
 	display:inline-block;
 	text-align:right;
-	width:70px;	
+	width:70px;
 	cursor:pointer;
 	color:blue;
 	background:#D0D0D0;
@@ -245,7 +245,7 @@ td div input{
 
 .eqPage{
 	margin:0.5rem;
-	background-color:#ccc;	
+	background-color:#ccc;
 }
 
 .eqPageEntete{
@@ -265,7 +265,7 @@ td div input{
 	/*font-size:16px;
 	font-weight:bold;
 	margin-top:5px;*/
-	cursor:pointer;	
+	cursor:pointer;
 	width:100%;
 	text-align:left;
 }
@@ -354,11 +354,16 @@ td div input{
 #ctnPropositions img {
     color:red;
     cursor: pointer;
-    
+
 }
 
 #ctnPropositions input[type="text"]{
     width: 70%;
+    margin:0.3rem 0.6rem;
+    /*background-color: purple;*/
+}
+#ctnPropositions input[type="number"]{
+    width: 3rem;
     margin:0.3rem 0.6rem;
     /*background-color: purple;*/
 }
@@ -375,4 +380,3 @@ td div input{
 	margin:0 1rem 1rem 1rem;
 	padding:0.5rem;
 }
-

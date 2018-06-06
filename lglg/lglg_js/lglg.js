@@ -11,7 +11,7 @@ var lancement = true;
 var modeAuteur = false;
 var scorm = false; //valeur à true si on a du scorm : utilisé dans enregistrementReponses
 var affichClavier = false; // variable pour affichage du clavier
-var affichST = false; // mettre à true lors de affichExo si on affiche les ST pour extrait)
+// var affichST = false; // mettre à true lors de afficheExo si on affiche les ST pour extrait)
 
 //**constante***********//
 // si je déclare const si je lance plusieur fois lglg j'ai une erreur 'déja déclaré'
@@ -33,7 +33,6 @@ function afficheExo() {
     useCustomColor(tblExo.interface.couleur1);
   }
 
-  console.log("tblExo.interface.logoaffich = " + tblExo.interface.logoaffich);
   if (tblExo.interface.logoaffich) {
     $("#logo").css("display", "block");
     console.log("affiche " + tblExo.interface.logourl);
@@ -103,9 +102,10 @@ function afficheExo() {
         window[this.id.substring(6)]();
       });
     }
-    if (tblExo.btnOutil.liste[i].fonction === "sousTitrage1") {
-      affichST = true;
-    }
+    //  ***jys : enlevé car affich feedbact avec ST même si pas outil
+    // if (tblExo.btnOutil.liste[i].fonction === "sousTitrage1") {
+    //   affichST = true;
+    // }
   }
 
   //****autoEvaluation
@@ -353,19 +353,30 @@ function lireExtraitVid(e) {
   var fin = tblExo.pages[pCourante].questions[params[2]][extrait].fin;
 
   if ((params[3] === "vo") != (maVideoSousTitreActif())) {
-    sousTitrage1();
+    sousTitrage(true);
+    // mettre écouteur en once sur clic pour virer ST
+    var temp = setTimeout(function() {
+      window.addEventListener("click", function() {
+        sousTitrage(false);
+        maVideoPause();
+      }, {
+        capture: true,
+        once: true
+      });
+    }, 2);
   }
 
   maVideoSeek(deb);
   maVideoPlay();
+
   var timer = setInterval(function() {
     if (maVideoCurrentTime() > fin) {
       maVideoPause();
       clearInterval(timer);
+      sousTitrage(false);
     }
   }, 100);
 }
-
 
 
 ///******changer le svg de couleur*******/
@@ -413,7 +424,7 @@ function redimCtnQuestions() {
     var temp2 = $("#ctnNavigation").height();
     var temp3 = temp + temp2 + 10;
     var temp4 = window.innerHeight - temp3;
-    console.log("TOP de navig = " + temp + "\nnavig hauteur = " + temp2 + "\nsomme des perte " + temp3 + "\nhauteur max = " + temp4);
+  //  console.log("TOP de navig = " + temp + "\nnavig hauteur = " + temp2 + "\nsomme des perte " + temp3 + "\nhauteur max = " + temp4);
     $("#ctnPageQ").css("max-height", temp4);
   }
 }
@@ -462,6 +473,7 @@ function QCMCorr() {
     if (tblExo.pages[pCourante].questions[i].type === "qcm") {
       //verrrouile les coches
       var qCorr = true;
+      var qScore = 0;
       for (var j = 0; j < tblExo.pages[pCourante].questions[i].propositions.length; j++) {
         //****coche
         var coche = document.getElementById("cb_" + i + "_" + j);
@@ -471,18 +483,17 @@ function QCMCorr() {
           coche.className = "QCMCocheFaux";
           qCorr = false;
         }
-        // coche.disabled = true;
-        // *** texte
-        //		    if (tblExo.pages[pCourante].questions[i].propositions[j].reponseCorrecte){
-        //			document.getElementById("txt_"+i+"_"+j).className += "QCMTxtBon";
-        //		    }
+        //****score
+        if (coche.checked){
+          var t = parseInt(tblExo.pages[pCourante].questions[i].propositions[j].score);
+          document.getElementById("score_" + i + "_" + j).innerHTML = t;
+          document.getElementById("score_" + i + "_" + j).style = "display:block";
+          qScore += t;
+        }
       }
-      if (qCorr) {
-        document.getElementById("ctnQuestion_" + i).className += " QCMQBon";
-      } else {
-        document.getElementById("ctnQuestion_" + i).className += " QCMQFaux";
-      }
-    }
+      document.getElementById("qScore_"+i).innerHTML = qScore;
+
+    } //***fin type === QCM
   }
 
   $("input[type='checkbox']").attr('disabled', 'disabled');

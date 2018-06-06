@@ -272,7 +272,6 @@ textarea:focus {
 /*[type="checkbox"]:not(:checked).QCMCocheBon + label:before,
 [type="checkbox"]:checked + label:before {
     color:green;
-
 }*/
 
 [type="checkbox"]:not(:checked).QCMCocheBon+label::before, [type="checkbox"]:checked.QCMCocheBon+label::before {
@@ -320,17 +319,29 @@ textarea:focus {
   cursor: auto;
 }
 
-.QCMQBon {
-  /*    border: solid 3px green;*/
-  /*Je fais rien pour le moement*/
-}
-
-.QCMQFaux {
-  /*border: solid 3px red;*/
-}
 
 .QCMprop {
   padding-left: 2rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.QCMprop .score{
+  margin-left: auto;
+  margin-right: .5rem;
+  font-size: small;
+  font-style: italic;
+}
+
+.ctnFlexH{
+  display: flex;
+  flex-direction: row;
+}
+
+.qScore{
+  font-weight: bold;
+    margin-left: auto;
+    margin-right: .5rem;
 }
 
 .QCMTxtBon {
@@ -423,11 +434,17 @@ textarea:focus {
   background: none !important;
 }
 
-/***************************************************************
+.ctnInfosResult{
+  display: flex;
+  flex-direction: row;
+  border-top:.25em solid #28b2aa;
+}
+
+**************************************************************
 *  CORRECTIF POUR vidéo - le download encouragé par Chrome 55  *
 *  patch rapide pour pallier au pb  *
 ***************************************************************/
-
+/*
 video::-internal-media-controls-download-button {
   display: none;
 }
@@ -439,9 +456,9 @@ video::-webkit-media-controls {
 video::-webkit-media-controls-enclosure {
   width: calc(100% + 32px);
   margin-left: auto;
-}
+} */
 
-/***************************************************************/
+/**************************************************************
 
 /***************************/
 

@@ -1,359 +1,418 @@
 <!doctype html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>LGLG - auteur</title>
-<link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-<link rel="stylesheet" href="css/lglgA.css" type="text/css" media="screen">
-<!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">-->
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<head>
+  <meta charset="UTF-8">
+  <title>LGLG - auteur</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+  <link rel="stylesheet" href="css/lglgA.css" type="text/css" media="screen">
+  <!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">-->
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 
 
 </head>
+
 <body>
-<div id="ctnBanniere" onClick="$('#ctnPageFichier').show('slow');">
-	<span style="position:absolute;left:1rem;">Université de Lille 3 - DUNE </span>
-	<span style="font-size:larger;position:absolute;width:100%;text-align:center;" >LeGoLanG</span>
-	<span style="position:absolute;right:1rem;font-size:smaller;">Version : 18 mai 2018</span>
-</div>
+  <div id="ctnBanniere" onClick="$('#ctnPageFichier').show('slow');">
+    <span style="position:absolute;left:1rem;">Université de Lille 3 - DUNE </span>
+    <span style="font-size:larger;position:absolute;width:100%;text-align:center;">LeGoLanG</span>
+    <span style="position:absolute;right:1rem;font-size:smaller;">Version : 18 mai 2018</span>
+  </div>
 
-<main>
-	<div id="ctnTest">
+  <main>
+    <div id="ctnTest">
 
-	</div>
-	<div id="ctnPrincipal">
-		<nav id="navA" style="display:none;">
-			<div id="nav0" >Fichier</div>
-			<div id="nav1" >Paramètres</div>
-			<div id="nav2" >Questions</div>
-			<div id="nav3" >Sous-Titres</div>
-			<div id="nav4" >Prévisualisation</div>
+    </div>
+    <div id="ctnPrincipal">
+      <nav id="navA" style="display:none;">
+        <div id="nav0">Fichier</div>
+        <div id="nav1">Paramètres</div>
+        <div id="nav2">Questions</div>
+        <div id="nav3">Sous-Titres</div>
+        <div id="nav4">Prévisualisation</div>
 
-		</nav>
-		<div id="ctnContenu">
-		</div>
-	</div>
-	<div  id="ctnPageFichier" onClick="$('#ctnPageFichier').hide('slow');">
-	<div id="pageFichier" > <img src="img/fleche_retour.png" onClick="$('#ctnPageFichier').hide('slow');" alt="flèche retour">
-		<ul>
-			<li onClick="ouvrir('Nouveau');">Nouveau</li>
-			<li onClick="ouvrir('Fichier');">Ouvrir</li>
-			<li id="txtLS" style="display:none;" onclick="rechargement();">Récent : <span id="txtTitreLS1" style="font-size:0.7rem;">--</span><span id="txtTitreLS2" style="font-size:0.7rem;">--</span></li>
-			<li onClick="$('#ctnPopupSauveFichier').dialog('open');downloadFile();">Enregistrer</li>
-			<li onClick="$('#ctnPopupScorm').load('scorm.html');$('#ctnPopupScorm').dialog('open');">Export en scorm</li>
-			<li onClick="$('#ctnPageFichier').hide('slow');$('#ctnContenu').load('html/aPropos.html');">À propos...</li>
-		</ul>
-	</div>
-	</div>
+      </nav>
+      <div id="ctnContenu">
+      </div>
+    </div>
+    <div id="ctnPageFichier" onClick="$('#ctnPageFichier').hide('slow');">
+      <div id="pageFichier"> <img src="img/fleche_retour.png" onClick="$('#ctnPageFichier').hide('slow');" alt="flèche retour">
+        <ul>
+          <li onClick="ouvrir('Nouveau');">Nouveau</li>
+          <li onClick="ouvrir('Fichier');">Ouvrir</li>
+          <li id="txtLS" style="display:none;" onclick="rechargement();">Récent : <span id="txtTitreLS1" style="font-size:0.7rem;">--</span><span id="txtTitreLS2" style="font-size:0.7rem;">--</span></li>
+          <li onClick="$('#ctnPopupSauveFichier').dialog('open');downloadFile();">Enregistrer</li>
+          <li onClick="$('#ctnPopupScorm').load('scorm.html');$('#ctnPopupScorm').dialog('open');">Export en scorm</li>
+          <li onClick="$('#ctnPageFichier').hide('slow');$('#ctnContenu').load('html/aPropos.html');">À propos...</li>
+        </ul>
+      </div>
+    </div>
 
-</main>
-<div id="ctnPopupOuvreFichier">
-	<input style="width:100%" type="file" id="txtFichier"/>
-</div>
-<div id="ctnPopupSauveFichier" title="Enregistrer"></div>
-<div id="ctnPopupScorm"></div>
-<div id="ctnPopupPasDeSauv" title="Vous n'avez pas sauvegardé">
-	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Vous n'avez pas sauvegardé vos modifications.<br>
-		Voulez-vous tout de même ouvrir un nouveau fichier ?</p>
-</div>
-<div id="ctnPopupAide" title="Aide"> </div>
-<div id="ctnVideo" title="Vidéo">
-	<h3>Fenêtre vidéo.</h3>
-	<p>Vidéo non-lisible. Vérifier le paramètre «video».</p>
-</div>
+  </main>
+  <div id="ctnPopupOuvreFichier">
+    <input style="width:100%" type="file" id="txtFichier" />
+  </div>
+  <div id="ctnPopupSauveFichier" title="Enregistrer"></div>
+  <div id="ctnPopupScorm"></div>
+  <div id="ctnPopupPasDeSauv" title="Vous n'avez pas sauvegardé">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Vous n'avez pas sauvegardé vos modifications.<br> Voulez-vous tout de même ouvrir un nouveau fichier ?</p>
+  </div>
+  <div id="ctnPopupAide" title="Aide"> </div>
+  <div id="ctnVideo" title="Vidéo">
+    <h3>Fenêtre vidéo.</h3>
+    <p>Vidéo non-lisible. Vérifier le paramètre «video».</p>
+  </div>
 
-<form id="form_sieges" action="php/ecritSieges.php" method = "post" target="_blank" >
-	<input type="hidden" id="txtSieges" name="sieges"/>
-</form>
+  <form id="form_sieges" action="php/ecritSieges.php" method="post" target="_blank">
+    <input type="hidden" id="txtSieges" name="sieges" />
+  </form>
 
-<form id="fm_ecrit_st" action= "php/ecritST.php" method = "post" target="_blank">
-	<input type = "hidden" name = "siege" id = "ecritId" value = "" />
-	<input type = "hidden"  name = "ST" id = "ecritST" value = "" />
-</form>
+  <form id="fm_ecrit_st" action="php/ecritST.php" method="post" target="_blank">
+    <input type="hidden" name="siege" id="ecritId" value="" />
+    <input type="hidden" name="ST" id="ecritST" value="" />
+  </form>
 
-<!--<script src="js/jquery-2.1.4.min.js" type="text/javascript" ></script>
+  <!--<script src="js/jquery-2.1.4.min.js" type="text/javascript" ></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>-->
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" ></script>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
-<!--<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <!--<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>-->
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
-<script src="js/nicEdit.js" type="text/javascript" ></script>
-<script src="js/lglgA.js" type="text/javascript" ></script>
-<script src="js/popupblocktest.js" type="text/javascript" ></script>
-<script>
- var ouvrirQuoi = "";
-$(function(){
-	/****test popup******/
-	if (!resultatTest){
-		$("#ctnContenu").load("html/messagePopup.html");
-	}
-  //***********************
+  <script src="js/nicEdit.js" type="text/javascript"></script>
+  <script src="js/lglgA.js" type="text/javascript"></script>
+  <script src="js/popupblocktest.js" type="text/javascript"></script>
+  <script>
+    var ouvrirQuoi = "";
+    console.log("Avant $");
+    $(function() {
+      /****test popup******/
+      // if (!resultatTest){
+      // 	$("#ctnContenu").load("html/messagePopup.html");
+      // }
+      //***********************
 
-	$( "#ctnPopupOuvreFichier" ).dialog({
-		modal: true,
-		autoOpen: false,
-		width: 500,
-		show: {
-			effect: "fade",
-			duration: 333
-		},
-		hide: {
-			effect: "fade",
-			duration: 333
-		},
-		buttons: {
-			"OK": function() {
-				var fileInput = document.querySelector('#txtFichier');
-				nomFichier = fileInput.files[0].name;
-				$("#txtNomFichier").val(nomFichier.replace(".json", ""));
-				var lecteur = new FileReader();
-				lecteur.onload = function(){
-					validOuvrir(jQuery.parseJSON(lecteur.result));
-				}
-				lecteur.readAsText(fileInput.files[0]);
-				$( this ).dialog("close" );
-			},
-			"Annuler": function(){
-				$( this ).dialog( "close" );
-			}
-		}
-    });
-
-	$("#ctnPopupSauveFichier" ).dialog({
-		modal: true,
-		autoOpen: false,
-		width: 500,
-		show: {
-			effect: "fade",
-			duration: 333
-		},
-		hide: {
-			effect: "fade",
-			duration: 333
-		},
-		buttons:{
-			"Annuler": function(){$(this).dialog("close");}
-		}
-	});
-
-	// popup de la video
-	$( "#ctnVideo" ).dialog({
- 		//dialogClass: "no-close",
-		modal: false,
-		autoOpen: false,
-		position: { my: "right top", at: "right top", of: window },
-		width: 450,
-		height: 380
-	});
-
-	$("#ctnPopupScorm" ).dialog({
-		modal: true,
-		autoOpen: false,
-		width: 500,
-		show: {
-			effect: "fade",
-			duration: 333
-		},
-		hide: {
-			effect: "fade",
-			duration: 333
-		},
-		buttons: {
-			"Fermer": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
-
-	$( "#ctnPopupPasDeSauv" ).dialog({
-		autoOpen: false,
-      height:240,
-	  width: 500,
-      modal: true,
-      buttons: {
-        "Oui (tant pis pour mes modifs)": function() {
-			if (ouvrirQuoi == "Nouveau" ) ouvrirNouveau();
-			if (ouvrirQuoi == "Fichier" ) $( "#ctnPopupOuvreFichier" ).dialog("open");
-        	$( this ).dialog( "close" );
+      $("#ctnPopupOuvreFichier").dialog({
+        modal: true,
+        autoOpen: false,
+        width: 500,
+        show: {
+          effect: "fade",
+          duration: 333
         },
-        "Annuler": function() {
-          $( this ).dialog( "close" );
+        hide: {
+          effect: "fade",
+          duration: 333
+        },
+        buttons: {
+          "OK": function() {
+            var fileInput = document.querySelector('#txtFichier');
+            nomFichier = fileInput.files[0].name;
+            $("#txtNomFichier").val(nomFichier.replace(".json", ""));
+            var lecteur = new FileReader();
+            lecteur.onload = function() {
+              validOuvrir(jQuery.parseJSON(lecteur.result));
+            }
+            lecteur.readAsText(fileInput.files[0]);
+            $(this).dialog("close");
+          },
+          "Annuler": function() {
+            $(this).dialog("close");
+          }
         }
+      });
+
+      $("#ctnPopupSauveFichier").dialog({
+        modal: true,
+        autoOpen: false,
+        width: 500,
+        show: {
+          effect: "fade",
+          duration: 333
+        },
+        hide: {
+          effect: "fade",
+          duration: 333
+        },
+        buttons: {
+          "Annuler": function() {
+            $(this).dialog("close");
+          }
+        }
+      });
+
+      // popup de la video
+      $("#ctnVideo").dialog({
+        //dialogClass: "no-close",
+        modal: false,
+        autoOpen: false,
+        position: {
+          my: "right top",
+          at: "right top",
+          of: window
+        },
+        width: 450,
+        height: 380
+      });
+
+      $("#ctnPopupScorm").dialog({
+        modal: true,
+        autoOpen: false,
+        width: 500,
+        show: {
+          effect: "fade",
+          duration: 333
+        },
+        hide: {
+          effect: "fade",
+          duration: 333
+        },
+        buttons: {
+          "Fermer": function() {
+            $(this).dialog("close");
+          }
+        }
+      });
+
+      $("#ctnPopupPasDeSauv").dialog({
+        autoOpen: false,
+        height: 240,
+        width: 500,
+        modal: true,
+        buttons: {
+          "Oui (tant pis pour mes modifs)": function() {
+            if (ouvrirQuoi == "Nouveau") ouvrirNouveau();
+            if (ouvrirQuoi == "Fichier") $("#ctnPopupOuvreFichier").dialog("open");
+            $(this).dialog("close");
+          },
+          "Annuler": function() {
+            $(this).dialog("close");
+          }
+        }
+      });
+
+      $("#ctnPopupAide").dialog({
+        autoOpen: false,
+        height: 300,
+        width: 500,
+      });
+
+      $('#ctnPopupSauveFichier').load('sauvegarde.html');
+
+      if (localStorage.getItem("lglg_sauv_auto")) {
+        var exoFromLS = jQuery.parseJSON(localStorage.getItem("lglg_sauv_auto"));
+        var temp = " (" + tempsPon2lisible(exoFromLS.tempsPon) + ")";
+        $("#txtTitreLS1").html(exoFromLS.titre);
+        $("#txtTitreLS2").html(temp);
+        $("#txtLS").show("fast");
       }
-    });
 
-	$("#ctnPopupAide").dialog({
-		autoOpen:false,
-		height:300,
-		width: 500,
-	});
+      // on charge fichier aide :
+      url = 'js/aide.json';
+      $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+        success: function(data) {
+          if (data) tblAide = data;
+        },
+        error: function() {
+          alert('Pas de lecture du fichier : ' + url, 'erreur');
+        }
+      });
 
-	$('#ctnPopupSauveFichier').load('sauvegarde.html');
+      //************************
+      //** attribution de siège
+      var url = '_vtt/sieges.json';
+      $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+        success: function(data) {
+          if (data) {
+            tblSieges = data.sort(function(a, b) {
+              var AA = parseInt(a.date);
+              var BB = parseInt(b.date);
+              if (AA > BB) {
+                return 1;
+              } else if (AA < BB) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+            siege = tblSieges[0].id;
+            var temp = new Date();
+            tblSieges[0].date = temp.getTime();
+            document.getElementById("txtSieges").value = JSON.stringify(tblSieges);
+            document.getElementById("form_sieges").submit();
+            document.getElementById("ecritId").value = siege;
+          }
 
-	if (localStorage.getItem("lglg_sauv_auto")){
-		var exoFromLS = jQuery.parseJSON(localStorage.getItem( "lglg_sauv_auto"));
-		var temp = " (" + tempsPon2lisible( exoFromLS.tempsPon ) + ")";
-		$("#txtTitreLS1").html(exoFromLS.titre);
-		$("#txtTitreLS2").html(temp);
-		$("#txtLS").show("fast");
-	}
+        },
+        error: function() {
+          alert('Pas de lecture du fichier : ' + url, 'erreur');
+        }
+      });
 
-	// on charge fichier aide :
-	url='js/aide.json';
-	$.ajax({
-		type: 'GET',
-		url: url,
-		dataType: 'json',
-		success: function(data) {
-			if (data) tblAide = data;
-		},
-		error: function() { alert('Pas de lecture du fichier : ' + url , 'erreur');}
-	});
+      //*************** Sauvegarde auto***
+      var tempoSauvegarde = setInterval(function() {
+        if (tblExo.titre) {
+          var maDate = new Date();
+          tblExo.tempsPon = Date.parse(maDate);
+          localStorage.setItem("lglg_sauv_auto", JSON.stringify(tblExo));
+          var temp = " (" + tempsPon2lisible(tblExo.tempsPon) + ")";
+          $("#txtTitreLS1").html(tblExo.titre);
+          $("#txtTitreLS2").html(temp);
+        }
+      }, sauvegardeAuto);
 
-	//************************
-	//** attribution de siège
-	var url='_vtt/sieges.json';
-	$.ajax({
-		type: 'GET',
-		url: url,
-		dataType: 'json',
-		success: function(data) {
-			if (data) {
-				tblSieges = data.sort(function(a,b){
-					var AA = parseInt(a.date);
-					var BB = parseInt(b.date);
-					if (AA > BB) {return 1;}
-					else if (AA < BB) {return -1;}
-					else {return 0;}
-				});
-				siege = tblSieges[0].id;
-				var temp = new Date();
-				tblSieges[0].date = temp.getTime();
-				document.getElementById("txtSieges").value = JSON.stringify(tblSieges);
-				document.getElementById("form_sieges").submit();
-				document.getElementById("ecritId").value = siege;
-			}
-
-		},
-		error: function() { alert('Pas de lecture du fichier : ' + url , 'erreur');}
-	});
-
-	//*************** Sauvegarde auto***
-	var tempoSauvegarde = setInterval(function(){
-		if (tblExo.titre) {
-			var maDate = new Date();
-			tblExo.tempsPon = Date.parse(maDate);
-			localStorage.setItem("lglg_sauv_auto" , JSON.stringify(tblExo));
-			var temp = " (" + tempsPon2lisible( tblExo.tempsPon ) + ")";
-			$("#txtTitreLS1").html(tblExo.titre);
-			$("#txtTitreLS2").html(temp);
-		}
-	},sauvegardeAuto);
+      $("#navA").click(function(e) {
+        var ongletFrom;
+        var navA = document.getElementById("navA");
+        var listeOnglets = navA.getElementsByTagName("div");
+        for (var i = 0; i < listeOnglets.length; i++) {
+          if ($(listeOnglets[i]).hasClass("active")) {
+            ongletFrom = listeOnglets[i];
+          }
+        }
+        $(ongletFrom).removeClass('active');
 
         //test pour enlever les nicedit
-        $("#navA").click(function(e){
-            var ongletFrom ;
-            var navA = document.getElementById("navA");
-            var listeOnglets = navA.getElementsByTagName("div");
-            for (var i = 0 ; i < listeOnglets.length ; i++){
-                if ($(listeOnglets[i]).hasClass("active")){
-                    ongletFrom = listeOnglets[i];
-                }
-            }
-            $(ongletFrom).removeClass('active');
-            if (ongletFrom.id === "nav1"){
-                editeur1.removeInstance("taConsigne0");
-            }
+        // if (ongletFrom.id === "nav1") {
+        //   editeur1.removeInstance("taConsigne0");
+        // }
 
-            $(e.target).addClass("active");
-            if (e.target.id === "nav0"){
-                $('#ctnPageFichier').show('slow');
-            } else if (e.target.id === "nav1"){
-                $('#ctnContenu').load('editParametres.html');
-            } else if (e.target.id === "nav2"){
-                $('#ctnContenu').load('editQuestions.html');
-            } else if (e.target.id === "nav3"){
-                $('#ctnContenu').load('editST.html');
-            } else if (e.target.id === "nav4"){
-                previsualisation();
-            }
-        });
-}); // fin $(function...
+        $(e.target).addClass("active");
+        if (e.target.id === "nav0") {
+          $('#ctnPageFichier').show('slow');
+        } else if (e.target.id === "nav1") {
+          $('#ctnContenu').load('editParametres.html');
+        } else if (e.target.id === "nav2") {
+          $('#ctnContenu').load('editQuestions.html');
+        } else if (e.target.id === "nav3") {
+          $('#ctnContenu').load('editST.html');
+        } else if (e.target.id === "nav4") {
+          previsualisation();
+        }
+      });
+    }); // fin $(function...
 
-function previsualisation(){
-	sessionStorage.lglg_data = JSON.stringify(tblExo);
-	$('#ctnContenu').load('previsualisation.html');
-};
+    function previsualisation() {
+      sessionStorage.lglg_data = JSON.stringify(tblExo);
+      $('#ctnContenu').load('previsualisation.html');
+    };
 
-function ouvrirNouveau(){
-	// tblExo = jQuery.parseJSON(',"stUrl":"", "interface":{"couleur1":"#000000"},"sousTitrage1":"", "videoType":"2"}');
-tblExo ={};
-tblExo.titre = "nom du fichier";
-tblExo.sousTitre = "le sous-titre ";
-tblExo.consigne = "<font size=\'4\'>Répondez aux questions</font>";
-tblExo.videoUrl = "https://youtu.be/TiObBlwTJrY";
-tblExo.videoType = "2";
-tblExo.btnOutil = {"format": 1,"liste": [{"etiquette":"","fonction":"--"},{"etiquette":"","fonction":"--"},{"etiquette":"","fonction":"--"},{"etiquette":"","fonction":"impression"},{"etiquette":"","fonction":"--"}]};
-tblExo.clavier = "";
-tblExo.interface = {"couleur1":"#000000" };
-tblExo.scenario = {"accesQ": "0","verrCorr": "0","qoAccesC": "3", "msgAE": "","scormScoreRaw": "rep" };
-tblExo.pages = [{"titre":"Page 1", "questions":[{"type":"qo","titreQ":"","txtQuestion":"", "txtCorrection":"", "extraitCorrection":{"debut":"0", "fin":"0", "affichA":"0"}, "extraitQuestion":{"debut":"0","fin":"0"}}]}];
-
-
-	tblExoSauv = JSON.stringify(tblExo);
-	$('#ctnContenu').load('editParametres.html');
-	$('div').removeClass('active');
-	$("#nav1").addClass('active');
-	$("nav").show("slow");
-	$("#nav1").addClass("active");
-	utilisateurPlus = false;
-	videoARecharger = true;
-}
-
-function ouvrir(type){
-	ouvrirQuoi = type; // pour avoir le type dans la popup ctnPopupPasDeSauv...
-	if (JSON.stringify(tblExo) != tblExoSauv){
-		$('#ctnPopupPasDeSauv').dialog('open');
-	}else{
-		if (type=="Nouveau") {
-			ouvrirNouveau();
-		}else if (type == "Fichier"){
-			$( "#ctnPopupOuvreFichier" ).dialog("open");
-		}
-	}
-	$('#ctnPageFichier').hide('slow');
-}
-
-function validOuvrir(txtJson){
-	tblExo = txtJson;
-	tblExoSauv = JSON.stringify(tblExo);
-	//**** sauvegarde dans LS
-	var temp = " (" + tempsPon2lisible( tblExo.tempsPon ) + ")";
-	$("#txtTitreLS1").html(tblExo.titre);
-	$("#txtTitreLS2").html(temp);
-
-	$('#ctnContenu').load('editParametres.html');
-	$('div').removeClass('active');
-	$("#nav1").addClass('active');
-
-	$("nav").show("slow");
-	$("#nav1").addClass("active");
-	utilisateurPlus = false;
-
-	document.getElementById("ecritST").value = tblExo.sousTitrage1;
-	actualiserST();
-
-}
-
-function rechargement(){
-	validOuvrir(jQuery.parseJSON(localStorage.getItem("lglg_sauv_auto")));
-	$('#ctnPageFichier').hide('slow');
-}
+    function ouvrirNouveau() {
+      // tblExo = jQuery.parseJSON(',"stUrl":"", "interface":{"couleur1":"#000000"},"sousTitrage1":"", "videoType":"2"}');
+      tblExo = {};
+      tblExo.titre = "nom du fichier";
+      tblExo.sousTitre = "le sous-titre ";
+      tblExo.consigne = "<font size=\'4\'>Répondez aux questions</font>";
+      tblExo.videoUrl = "https://youtu.be/TiObBlwTJrY";
+      tblExo.videoType = "2";
+      tblExo.btnOutil = {
+        "format": 1,
+        "liste": [{
+          "etiquette": "",
+          "fonction": "--"
+        }, {
+          "etiquette": "",
+          "fonction": "--"
+        }, {
+          "etiquette": "",
+          "fonction": "--"
+        }, {
+          "etiquette": "",
+          "fonction": "impression"
+        }, {
+          "etiquette": "",
+          "fonction": "--"
+        }]
+      };
+      tblExo.clavier = "";
+      tblExo.interface = {
+        "couleur1": "#000000"
+      };
+      tblExo.scenario = {
+        "accesQ": "0",
+        "verrCorr": "0",
+        "qoAccesC": "3",
+        "msgAE": "",
+        "scormScoreRaw": "rep"
+      };
+      tblExo.pages = [{
+        "titre": "Page 1",
+        "questions": [{
+          "type": "qo",
+          "titreQ": "",
+          "txtQuestion": "",
+          "txtCorrection": "",
+          "extraitCorrection": {
+            "debut": "0",
+            "fin": "0",
+            "masqueST": false
+          },
+          "extraitQuestion": {
+            "debut": "0",
+            "fin": "0"
+          }
+        }]
+      }];
 
 
-</script>
+      tblExoSauv = JSON.stringify(tblExo);
+      $('#ctnContenu').load('editParametres.html');
+      $('div').removeClass('active');
+      $("#nav1").addClass('active');
+      $("nav").show("slow");
+      $("#nav1").addClass("active");
+      utilisateurPlus = false;
+      videoARecharger = true;
+    }
+
+    function ouvrir(type) {
+      ouvrirQuoi = type; // pour avoir le type dans la popup ctnPopupPasDeSauv...
+      if (JSON.stringify(tblExo) != tblExoSauv) {
+        $('#ctnPopupPasDeSauv').dialog('open');
+      } else {
+        if (type == "Nouveau") {
+          ouvrirNouveau();
+        } else if (type == "Fichier") {
+          $("#ctnPopupOuvreFichier").dialog("open");
+        }
+      }
+      $('#ctnPageFichier').hide('slow');
+    }
+
+    function validOuvrir(txtJson) {
+      tblExo = txtJson;
+      tblExoSauv = JSON.stringify(tblExo);
+      //**** sauvegarde dans LS
+      var temp = " (" + tempsPon2lisible(tblExo.tempsPon) + ")";
+      $("#txtTitreLS1").html(tblExo.titre);
+      $("#txtTitreLS2").html(temp);
+
+      $('#ctnContenu').load('editParametres.html');
+      $('div').removeClass('active');
+      $("#nav1").addClass('active');
+
+      $("nav").show("slow");
+      $("#nav1").addClass("active");
+      utilisateurPlus = false;
+
+      document.getElementById("ecritST").value = tblExo.sousTitrage1;
+      actualiserST();
+
+    }
+
+    function rechargement() {
+      validOuvrir(jQuery.parseJSON(localStorage.getItem("lglg_sauv_auto")));
+      $('#ctnPageFichier').hide('slow');
+    }
+  </script>
 </body>
+
 </html>

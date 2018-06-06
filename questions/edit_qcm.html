@@ -1,126 +1,139 @@
-
 <h3>Question QCM: </h3>
-<textarea id="taTxtQuestionQcm"   ></textarea><!---->
+<textarea id="taTxtQuestionQcm"></textarea>
+<!---->
 
 <h4>Extrait vidéo "question" : </h4>
 <div> <span class="clicHeure">début : </span>
-    <input type="number" id="extQDebQcm" onChange="heureChange('Q');"/>
-    <span class="clicHeure">fin : </span>
-    <input type="number" id="extQFinQcm" onChange="heureChange('Q');"/>
-    <span id="btnLireExtraitQ" onClick="lireExtrait(document.getElementById('extQDebQcm').value, document.getElementById('extQFinQcm').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span> </div>
+  <input type="number" id="extQDebQcm" onChange="heureChange('Q');" />
+  <span class="clicHeure">fin : </span>
+  <input type="number" id="extQFinQcm" onChange="heureChange('Q');" />
+  <span id="btnLireExtraitQ" onClick="lireExtrait(document.getElementById('extQDebQcm').value, document.getElementById('extQFinQcm').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span>
+</div>
+
+<div class="">
+  <label for="cbScore">Question avec score : </label>
+  <input type="checkbox" id="cbScore">
+</div>
 
 <div id="ctnPropositions">
 
 
 </div>
 <div id="ctnPropsOutils">
-    <button onclick="ajoutProp('', false)">Ajouter une proposition</button>
+  <button onclick="ajoutProp('', false , 0)">Ajouter une proposition</button>
 </div>
 
 
-    <p style="border-bottom:solid 1px;width:100%;"></p>
+<p style="border-bottom:solid 1px;width:100%;"></p>
 
-    <h3>Correction :</h3>
-    <textarea id="taTxtCorrectionQcm"></textarea>
+<h3>Correction :</h3>
+<textarea id="taTxtCorrectionQcm"></textarea>
 
-    <div>
-        <span class="clicHeure">début : </span>
-        <input type="number" id="extCDebQcm" onChange="heureChange('C');"/>
-        <span class="clicHeure">fin : </span>
-        <input type="number" id="extCFinQcm" onChange="heureChange('C');"/>
-        <span id="btnLireExtraitC" onClick="lireExtrait(document.getElementById('extCDebQcm').value, document.getElementById('extCFinQcm').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span>
-    </div>
-
-
-    <script>
-
-        $(function () {
-            ///**** ajouter nicedit
-            if (!nicEditors.findEditor('taTxtCorrectionQcm'))
-                editeur4 = new nicEditor().panelInstance('taTxtCorrectionQcm');
-            if (!nicEditors.findEditor('taTxtQuestionQcm'))
-                editeur5 = new nicEditor().panelInstance('taTxtQuestionQcm');
-
-            nicEditors.findEditor('taTxtQuestionQcm').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
-
-            document.getElementById('extQDebQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut;
-            document.getElementById('extQFinQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin;
-            if (parseFloat(document.getElementById('extQDebQcm').value) > 0)
-                $("#btnLireExtraitQ").show("fast");
-            else
-                $("#btnLireExtraitQ").hide("fast");
-
-            nicEditors.findEditor('taTxtCorrectionQcm').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
-            document.getElementById('extCDebQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut;
-            document.getElementById('extCFinQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin;
-            if (parseFloat(document.getElementById('extCDebQcm').value) > 0)
-                $("#btnLireExtraitC").show("fast");
-            else
-                $("#btnLireExtraitC").hide("fast");
+<div>
+  <span class="clicHeure">début : </span>
+  <input type="number" id="extCDebQcm" onChange="heureChange('C');" />
+  <span class="clicHeure">fin : </span>
+  <input type="number" id="extCFinQcm" onChange="heureChange('C');" />
+  <span id="btnLireExtraitC" onClick="lireExtrait(document.getElementById('extCDebQcm').value, document.getElementById('extCFinQcm').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span>
+</div>
 
 
-            // affich les propositions
-            for (var i = 0; i < tblExo.pages[pageCourante].questions[questionCourante].propositions.length; i++) {
-                ajoutProp(tblExo.pages[pageCourante].questions[questionCourante].propositions[i].texte, tblExo.pages[pageCourante].questions[questionCourante].propositions[i].reponseCorrecte);
-            }
+<script>
+  $(function() {
+    ///**** ajouter nicedit
+    if (!nicEditors.findEditor('taTxtCorrectionQcm'))
+      editeur4 = new nicEditor().panelInstance('taTxtCorrectionQcm');
+    if (!nicEditors.findEditor('taTxtQuestionQcm'))
+      editeur5 = new nicEditor().panelInstance('taTxtQuestionQcm');
 
-        });
+    nicEditors.findEditor('taTxtQuestionQcm').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
 
-        function questionEnregistre() {
-            tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(nicEditors.findEditor('taTxtQuestionQcm').getContent());
-            tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut = document.getElementById('extQDebQcm').value;
-            tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin = document.getElementById('extQFinQcm').value;
-            tblExo.pages[pageCourante].questions[questionCourante].txtCorrection = questionFormat(nicEditors.findEditor('taTxtCorrectionQcm').getContent());
-            tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut = document.getElementById('extCDebQcm').value;
-            tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin = document.getElementById('extCFinQcm').value;
-            //**** boucle pour propositions
-            var ctnPropositions = document.getElementById("ctnPropositions");
-            var tblPropositions = ctnPropositions.getElementsByTagName("div");
+    document.getElementById('extQDebQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut;
+    document.getElementById('extQFinQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin;
+    if (parseFloat(document.getElementById('extQDebQcm').value) > 0)
+      $("#btnLireExtraitQ").show("fast");
+    else
+      $("#btnLireExtraitQ").hide("fast");
+    document.getElementById('cbScore').checked = tblExo.pages[pageCourante].questions[questionCourante].scoreActif;
 
-            tblExo.pages[pageCourante].questions[questionCourante].propositions.splice(0, tblExo.pages[pageCourante].questions[questionCourante].propositions.length);
-            for (var i = 0; i < tblPropositions.length; i++) {
+    nicEditors.findEditor('taTxtCorrectionQcm').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
+    document.getElementById('extCDebQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut;
+    document.getElementById('extCFinQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin;
+    if (parseFloat(document.getElementById('extCDebQcm').value) > 0)
+      $("#btnLireExtraitC").show("fast");
+    else
+      $("#btnLireExtraitC").hide("fast");
 
-                tblExo.pages[pageCourante].questions[questionCourante].propositions.splice(i, 0, {
-                    "texte": tblPropositions[i].getElementsByTagName("input")[0].value,
-                    "reponseCorrecte": tblPropositions[i].getElementsByTagName("input")[1].checked
-                });
-            }
-            affichTableauQuestions();
-            $("#popupModifQuestion").dialog("close");
-            $("#ctnVideo").dialog("close");
+      console.log("avant loop " + tblExo.pages[pageCourante].questions[questionCourante].propositions.length);
+    // affich les propositions
+    for (var i = 0; i < tblExo.pages[pageCourante].questions[questionCourante].propositions.length; i++) {
+      console.log("loop sur prop :" + i );
+      ajoutProp(tblExo.pages[pageCourante].questions[questionCourante].propositions[i].texte, tblExo.pages[pageCourante].questions[questionCourante].propositions[i].reponseCorrecte, tblExo.pages[pageCourante].questions[questionCourante].propositions[i].score);
+    }
 
-        }
+  });
 
-        function ajoutProp(texte, correction) {
-            var prop = document.createElement("div");
-            var propSuppr = document.createElement("img");
-            propSuppr.title = "Supprimer";
-            propSuppr.src = "img/delete.svg";
-            propSuppr.onclick = supprimerProp;
-            prop.appendChild(propSuppr);
-            var propTxt = document.createElement("input");
-            propTxt.type = "text";
-            propTxt.value = texte;
-            prop.appendChild(propTxt);
-            var labelCoche = document.createElement("label");
-            labelCoche.innerHTML = "Correct";
-            var propCoche = document.createElement("input");
-            propCoche.type = "checkbox";
-            propCoche.checked = correction;
-            labelCoche.appendChild(propCoche);
-            prop.appendChild(labelCoche);
-            document.getElementById("ctnPropositions").appendChild(prop);
+  function questionEnregistre() {
+    tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(nicEditors.findEditor('taTxtQuestionQcm').getContent());
+    tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut = document.getElementById('extQDebQcm').value;
+    tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin = document.getElementById('extQFinQcm').value;
+    tblExo.pages[pageCourante].questions[questionCourante].scoreActif = document.getElementById('cbScore').checked;
+    tblExo.pages[pageCourante].questions[questionCourante].txtCorrection = questionFormat(nicEditors.findEditor('taTxtCorrectionQcm').getContent());
+    tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut = document.getElementById('extCDebQcm').value;
+    tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin = document.getElementById('extCFinQcm').value;
+    //**** boucle pour propositions
+    var ctnPropositions = document.getElementById("ctnPropositions");
+    var tblPropositions = ctnPropositions.getElementsByTagName("div");
 
-        }
+    tblExo.pages[pageCourante].questions[questionCourante].propositions.splice(0, tblExo.pages[pageCourante].questions[questionCourante].propositions.length);
+    for (var i = 0; i < tblPropositions.length; i++) {
 
-        function supprimerProp(evt) {
-            var eltAvirer = evt.currentTarget.parentElement;
-            document.getElementById("ctnPropositions").removeChild(eltAvirer);
-        }
+      tblExo.pages[pageCourante].questions[questionCourante].propositions.splice(i, 0, {
+        "texte": tblPropositions[i].getElementsByTagName("input")[0].value,
+        "reponseCorrecte": tblPropositions[i].getElementsByTagName("input")[1].checked,
+        "score": tblPropositions[i].getElementsByTagName("input")[2].value
+      });
+    }
+    affichTableauQuestions();
+    $("#popupModifQuestion").dialog("close");
+    $("#ctnVideo").dialog("close");
 
- $(".clicHeure").click(function (e) {
-            var champNum = e.currentTarget.nextElementSibling; // e.currentTarget.parentElement.querySelector("input");
-            champNum.value = videoDonnePosition();
-            heureChange(champNum.id.substr(3, 1));
-        });
-    </script>
+  }
+
+  function ajoutProp(texte, correction, score) {
+    console.log("fnctn ajoutProp " + texte);
+    var prop = document.createElement("div");
+    var propSuppr = document.createElement("img");
+    propSuppr.title = "Supprimer";
+    propSuppr.src = "img/delete.svg";
+    propSuppr.onclick = supprimerProp;
+    prop.appendChild(propSuppr);
+    var propTxt = document.createElement("input");
+    propTxt.type = "text";
+    propTxt.value = texte;
+    prop.appendChild(propTxt);
+    var labelCoche = document.createElement("label");
+    labelCoche.innerHTML = "Correct";
+    var propCoche = document.createElement("input");
+    propCoche.type = "checkbox";
+    propCoche.checked = correction;
+    labelCoche.appendChild(propCoche);
+    prop.appendChild(labelCoche);
+      var inScore = document.createElement("input");
+      inScore.type = "number";
+      inScore.value = parseInt(score);
+      prop.appendChild(inScore);
+    document.getElementById("ctnPropositions").appendChild(prop);
+  }
+
+  function supprimerProp(evt) {
+    var eltAvirer = evt.currentTarget.parentElement;
+    document.getElementById("ctnPropositions").removeChild(eltAvirer);
+  }
+
+  $(".clicHeure").click(function(e) {
+    var champNum = e.currentTarget.nextElementSibling; // e.currentTarget.parentElement.querySelector("input");
+    champNum.value = videoDonnePosition();
+    heureChange(champNum.id.substr(3, 1));
+  });
+</script>

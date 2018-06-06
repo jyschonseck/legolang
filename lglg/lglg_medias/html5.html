@@ -1,99 +1,116 @@
-<video id="video" controls style="width:100%; margin:0;padding:0;border:0;" ></video>
+<video id="video" controls style="width:100%; margin:0;padding:0;border:0;"></video>
 <script>
-var video;
+  var video;
 
-$(function(){
-	if (tblExo.videoType === "0" || !tblExo.videoType ){ // si on 
-		$("#video").attr("src" , tblExo["videoUrl"] );
-	}else if (tblExo.videoType === "1"){
-		var temp = tblExo["videoUrl"].split("/");
-		var adresse = temp[0] + "//" + temp[2] + "/public.php?service=files&t=" +temp[temp.length - 1] + "&download";
-		$("#video").attr("src" , adresse );
-	}
-	
-	
-	 // gestion de la lecture obligatoire de la video
-	video = document.getElementById('video');
-	if (tblExo.scenario.accesQ === "0" || $("#nav_3").hasClass("actif")){//acces immédiat ou déja repondu, donc onglet 3 actif
-		maVideoActiveNav();
-	}else{
-		setTimeout(poseEcouteurFin(), 3000);
-		maVideoPasControle();
-	}
-});
+  $(function() {
+    if (tblExo.videoType === "0" || !tblExo.videoType) { // si on
+      $("#video").attr("src", tblExo["videoUrl"]);
+    } else if (tblExo.videoType === "1") {
+      var temp = tblExo["videoUrl"].split("/");
+      var adresse = temp[0] + "//" + temp[2] + "/public.php?service=files&t=" + temp[temp.length - 1] + "&download";
+      $("#video").attr("src", adresse);
+    }
 
-function maVideoPlay(){
-	video.play();
-}
-function maVideoPause(){
-	video.pause();
-}
-function maVideoSeek(pos){
-	video.currentTime = pos;
-}
-function maVideoCurrentTime(){
-	return video.currentTime;
-}
-function maVideoSousTitreActif(){
-	return 	video.textTracks.length == 0;
-}
 
-function maVideoPasControle(){
-	video.controls = false;
-	video.addEventListener("click", function(){
-		if (video.paused){
-			video.play();
-		}else{
-			video.pause();
-		}
-	});
-}
+    // gestion de la lecture obligatoire de la video
+    video = document.getElementById('video');
+    if (tblExo.scenario.accesQ === "0" || $("#nav_3").hasClass("actif")) { //acces immédiat ou déja repondu, donc onglet 3 actif
+      maVideoActiveNav();
+    } else {
+      setTimeout(poseEcouteurFin(), 3000);
+      maVideoPasControle();
+    }
+  });
 
-function poseEcouteurFin(){//pour déverouiller accès au questionnaire...
-	if (tblExo.scenario.accesQ === "1") {	
-		video.addEventListener("ended" , maVideoActiveNav);
-	}/*else{// si on veux un accès après x secondes // c'est pas encore en place dans la grille auteur :)
-		var timer= setInterval(function(){
-			if (video.currentTime > tblExo.scenario.accesQ ){
-				maVideoActiveNav();
-				clearInterval(timer);
-			}
-		}, 500);
-	}*/
-}
+  function maVideoPlay() {
+    video.play();
+  }
 
-function maVideoActiveNav(){
-	//$("#nav_2").addClass("actif");
-	video.controls = true;
-	video.removeEventListener("ended" , maVideoActiveNav);
-}
+  function maVideoPause() {
+    video.pause();
+  }
 
-function test(){
-}
+  function maVideoSeek(pos) {
+    video.currentTime = pos;
+  }
 
-function sousTitrage1(){
-		if (video.textTracks.length == 0){
-			$("#outil-sousTitrage1").addClass("choisi");
-			var ST = document.createElement("track");
-			var fichierST = "module/st.vtt";
-			if (modeAuteur) {
-				var antiCache = new Date();
-				fichierST = "_vtt/st_" + siege +".vtt?" + antiCache;
-			}
-			
-			ST.src =  fichierST ;
-			
-			ST.kind="subtitles"; 
-			//ST.id="pisteST1";
-			video.appendChild(ST);
-			var tempo = setTimeout(function(){
-				video.textTracks[0].mode = "showing";
-			},500);
-		}else{
-			var pourSuppr = document.getElementsByTagName("track")
-			video.removeChild(pourSuppr[0]);
-			$("#outil-sousTitrage1").removeClass("choisi");
-		}
-}
+  function maVideoCurrentTime() {
+    return video.currentTime;
+  }
 
+  function maVideoSousTitreActif() {
+    return video.textTracks.length === 0;
+  }
+
+  function maVideoPasControle() {
+    video.controls = false;
+    video.addEventListener("click", function() {
+      if (video.paused) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+  }
+
+  function poseEcouteurFin() { //pour déverouiller accès au questionnaire...
+    if (tblExo.scenario.accesQ === "1") {
+      video.addEventListener("ended", maVideoActiveNav);
+    }
+    /*else{// si on veux un accès après x secondes // c'est pas encore en place dans la grille auteur :)
+    		var timer= setInterval(function(){
+    			if (video.currentTime > tblExo.scenario.accesQ ){
+    				maVideoActiveNav();
+    				clearInterval(timer);
+    			}
+    		}, 500);
+    	}*/
+  }
+
+  function maVideoActiveNav() {
+    //$("#nav_2").addClass("actif");
+    video.controls = true;
+    video.removeEventListener("ended", maVideoActiveNav);
+  }
+
+  function test() {}
+
+  function sousTitrage1() {
+    console.log("on va st TOGGLE");
+    if (video.textTracks.length === 0) {
+      sousTitrage(true);
+    } else {
+      sousTitrage(false)
+    }
+  }
+
+  function sousTitrage(stOn) {
+    console.log('function sousTitrage(' + stOn + '), on a video.textTracks.length = ' + video.textTracks.length);
+    if (stOn) {
+      if (video.textTracks.length === 0) {
+        $("#outil-sousTitrage1").addClass("choisi");
+        var ST = document.createElement("track");
+        var fichierST = "module/st.vtt";
+        if (modeAuteur) {
+          var antiCache = new Date();
+          fichierST = "_vtt/st_" + siege + ".vtt?" + antiCache;
+        }
+
+        ST.src = fichierST;
+
+        ST.kind = "subtitles";
+        //ST.id="pisteST1";
+        video.appendChild(ST);
+        var tempo = setTimeout(function() {
+          video.textTracks[0].mode = "showing";
+        }, 500);
+      }
+    } else {
+      if (video.textTracks.length > 0) {
+      var pourSuppr = document.getElementsByTagName("track")
+      video.removeChild(pourSuppr[0]);
+      $("#outil-sousTitrage1").removeClass("choisi");
+    }
+    }
+  }
 </script>

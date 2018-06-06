@@ -14,16 +14,14 @@
 <h3>Correction :</h3>
 <textarea id="taTxtCorrectionQo"></textarea>
 
-<h4 onDblClick="$('#optFBvidInde').show('fast');">Extrait vidéo "correction" : </h4>
+<h4 >Extrait vidéo "correction" : </h4>
 <div> <span class="clicHeure">début : </span>
     <input type="number" id="extCDebQo" onChange="heureChange('C');"/>
     <span class="clicHeure">fin : </span>
     <input type="number" id="extCFinQo" onChange="heureChange('C');"/>
     <span id="btnLireExtraitC" onClick="lireExtrait(document.getElementById('extCDebQo').value, document.getElementById('extCFinQo').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span> </div>
-<div id="optFBvidInde"  style="display:none;"><span> l'extrait vidéo sera proposé après la frappe de
-        <input type="number" id="inputAffichA" style="width:2rem">
-        caractères (0 pour l'afficher seulement avec la correction)</span></div>
-
+<span id="optFBvidSt"> masquer la version sous-titrée de l'extrait :
+          <input type="checkbox" id="inputAffichSt" ></span>
 <script>
 
     $(function () {
@@ -46,17 +44,14 @@
 
         document.getElementById('extCDebQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut;
         document.getElementById('extCFinQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin;
-        if (parseFloat(document.getElementById('extCDebQo').value) > 0)
+        if (parseFloat(document.getElementById('extCDebQo').value) > 0){
             $("#btnLireExtraitC").show("fast");
-        else
+        }else{
             $("#btnLireExtraitC").hide("fast");
-        if (tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichA) {
-            document.getElementById('inputAffichA').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichA;
-        } else {
-            document.getElementById('inputAffichA').value = 0;
-        }
+          }
+          document.getElementById('inputAffichSt').checked = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichST;
 
-    });
+          });
 
  function questionEnregistre() {
 
@@ -66,7 +61,7 @@
         tblExo.pages[pageCourante].questions[questionCourante].txtCorrection = questionFormat(nicEditors.findEditor('taTxtCorrectionQo').getContent());
         tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut = document.getElementById('extCDebQo').value;
         tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin = document.getElementById('extCFinQo').value;
-        tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichA = document.getElementById('inputAffichA').value;
+        tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichST = document.getElementById('inputAffichSt').checked;
         affichTableauQuestions();
         $("#popupModifQuestion").dialog("close");
         $("#ctnVideo").dialog("close");

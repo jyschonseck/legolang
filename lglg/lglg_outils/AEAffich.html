@@ -1,6 +1,6 @@
-<div style="border-top:.25em solid #28b2aa;">
+
 	<p style="margin: 1em auto 0; font-size:large">Votre auto-évaluation &nbsp;:</p>
-	
+
 	<!--<progress id="maProgress" value="0" max="4" style="background-color:#b22;"></progress>-->
 	<div id="imgMoins" style="display:inline-block;opacity:0.4;"></div>
 	<div  style="display:inline-block">
@@ -8,21 +8,19 @@
 	</div>
 	<div id="imgPlus" style="display:inline-block;opacity:0.4;"></div>
 	<!--<meter id="maProgress" value="0" min="0" max="4"></meter>-->
-</div>
 <!--<span id="nbEtoiles"></span>-->
 <script>
 $(function(){
 	//eltBase = document.getElementById("maProgress");
-	$("#imgMoins").load("lglg/lglg_interface/images/minus_alt.svg");	
-	$("#imgPlus").load("lglg/lglg_interface/images/plus_alt.svg");	
+	$("#imgMoins").load("lglg/lglg_interface/images/minus_alt.svg");
+	$("#imgPlus").load("lglg/lglg_interface/images/plus_alt.svg");
 	$( "#maProgress").progressbar({
       value: 0,
 	  max : AEValeurMax
     });
-	
+
 	//$( "#maProgress" ).find( ".ui-progressbar-value" ).css({"background": '#28b2aa'});
-	
-	
+
 	majAE();
 });
 
