@@ -20,7 +20,6 @@ function creationQCM(i) {
   question.appendChild(txtQuestion);
   questionEnCours.appendChild(question);
 
-
   //propositions
   for (var j = 0; j < tblExo.pages[pCourante].questions[i].propositions.length; j++) {
     var propComplete = document.createElement("div");
@@ -95,8 +94,6 @@ function creationQCM(i) {
     creationAE(i);
   }
 }
-
-
 
 function QCMClckHdlr(e) {
   var q = e.currentTarget.id.split("_")[1];

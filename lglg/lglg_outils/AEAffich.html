@@ -32,7 +32,8 @@ function majAE(){
 			if 	(tblReponses[pageAE].AE[questionAE] > -1){
 				nbRep += 1;
 				somme += parseInt(tblReponses[pageAE].AE[questionAE]);
-				if ( $('#ctnAEAffich').css('display') == "none"){ $('#ctnAEAffich').show("slow");}
+				//if ( $('#ctnAEAffich').css('display') == "none"){ $('#ctnAEAffich').show("slow");}
+        $('#ctnAEAffich').removeClass("invisible");
 			}
 		}
 	}

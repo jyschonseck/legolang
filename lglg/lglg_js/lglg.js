@@ -12,6 +12,7 @@ var modeAuteur = false;
 var scorm = false; //valeur à true si on a du scorm : utilisé dans enregistrementReponses
 var affichClavier = false; // variable pour affichage du clavier
 // var affichST = false; // mettre à true lors de afficheExo si on affiche les ST pour extrait)
+var scoreMax = 0; // le score max qu'on peut atteindre !
 
 //**constante***********//
 // si je déclare const si je lance plusieur fois lglg j'ai une erreur 'déja déclaré'
@@ -111,6 +112,28 @@ function afficheExo() {
   //****autoEvaluation
   if (tblExo.scenario.msgAE) {
     $("#ctnAEAffich").load("lglg/lglg_outils/AEAffich.html");
+  }
+
+  //*****score total
+  console.log("voir si on affiche le SCORE");
+  var tScore = false;
+  scoreMax = 0;
+  for (var iPage = 0 ; iPage < tblExo.pages.length ; iPage++){
+    console.log("iPage = " + iPage);
+    for (var  iQ = 0 ; iQ < tblExo.pages[iPage].questions.length ; iQ++){
+        console.log("iQ = " + iQ);
+        if (tblExo.pages[iPage].questions[iQ].scoreActif){
+          tScore = true;
+          for (var iProp =0 ; iProp < tblExo.pages[iPage].questions[iQ].propositions.length ; iProp++){
+            var tScore = parseInt(tblExo.pages[iPage].questions[iQ].propositions[iProp].score);
+            if (tScore > 0) {scoreMax += tScore;}
+          }
+        }
+    }
+  }
+  if (tScore){
+    $("#ctnScore").load("lglg/lglg_outils/scoreAffich.html");
+    $("#ctnScore").removeClass("invisible");
   }
 
   //*** col droite
@@ -314,8 +337,6 @@ function enregistreRep() {
 
 function validation() {
   "use strict";
-  // dans scenario on pourrait bloquer le retour à "questionnaire ici ...
-
   //***
   tblReponses[pCourante].valid = true;
   $(".feedback").show("fast");
@@ -438,8 +459,10 @@ function tblReponsesReset() {
     tblReponses[pageId].valid = false;
     tblReponses[pageId].reps = [];
     tblReponses[pageId].AE = [];
+    tblReponses[pageId].score = [];
     for (var questionId = 0; questionId < tblExo.pages[pageId].questions.length; questionId++) {
       tblReponses[pageId].AE[questionId] = -1;
+        tblReponses[pageId].score[questionId] = 0;
       if (tblExo.pages[pageId].questions[questionId].type === "qo") {
         tblReponses[pageId].reps[questionId] = "";
       } else if (tblExo.pages[pageId].questions[questionId].type === "qtrous") {
@@ -465,7 +488,6 @@ function nettoieChaine(entree) { //pour nettoyer nom des fichier à enregistrer 
 //****** QCM :
 
 
-
 function QCMCorr() {
   "use strict";
   //boucle sur la page pour trouver les QCM
@@ -484,14 +506,18 @@ function QCMCorr() {
           qCorr = false;
         }
         //****score
-        if (coche.checked){
+        if (coche.checked && tblExo.pages[pCourante].questions[i].scoreActif){
           var t = parseInt(tblExo.pages[pCourante].questions[i].propositions[j].score);
           document.getElementById("score_" + i + "_" + j).innerHTML = t;
           document.getElementById("score_" + i + "_" + j).style = "display:block";
           qScore += t;
         }
       }
-      document.getElementById("qScore_"+i).innerHTML = qScore;
+      if (tblExo.pages[pCourante].questions[i].scoreActif){
+        document.getElementById("qScore_"+i).innerHTML = qScore;
+        tblReponses[pCourante].score[i] = qScore;
+        majScore();
+      }
 
     } //***fin type === QCM
   }

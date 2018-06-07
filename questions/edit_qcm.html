@@ -12,7 +12,7 @@
 
 <div class="">
   <label for="cbScore">Question avec score : </label>
-  <input type="checkbox" id="cbScore">
+  <input type="checkbox" id="cbScore" onchange="changeScorable(event);">
 </div>
 
 <div id="ctnPropositions">
@@ -64,10 +64,9 @@
     else
       $("#btnLireExtraitC").hide("fast");
 
-      console.log("avant loop " + tblExo.pages[pageCourante].questions[questionCourante].propositions.length);
+    console.log("avant loop " + tblExo.pages[pageCourante].questions[questionCourante].propositions.length);
     // affich les propositions
     for (var i = 0; i < tblExo.pages[pageCourante].questions[questionCourante].propositions.length; i++) {
-      console.log("loop sur prop :" + i );
       ajoutProp(tblExo.pages[pageCourante].questions[questionCourante].propositions[i].texte, tblExo.pages[pageCourante].questions[questionCourante].propositions[i].reponseCorrecte, tblExo.pages[pageCourante].questions[questionCourante].propositions[i].score);
     }
 
@@ -119,10 +118,13 @@
     propCoche.checked = correction;
     labelCoche.appendChild(propCoche);
     prop.appendChild(labelCoche);
-      var inScore = document.createElement("input");
-      inScore.type = "number";
-      inScore.value = parseInt(score);
-      prop.appendChild(inScore);
+    var inScore = document.createElement("input");
+    inScore.type = "number";
+    inScore.value = parseInt(score);
+    if (!document.getElementById("cbScore").checked) {
+      inScore.className = "invisible";
+    }
+    prop.appendChild(inScore);
     document.getElementById("ctnPropositions").appendChild(prop);
   }
 
@@ -130,6 +132,16 @@
     var eltAvirer = evt.currentTarget.parentElement;
     document.getElementById("ctnPropositions").removeChild(eltAvirer);
   }
+
+  function changeScorable(e) {
+    if (e.currentTarget.checked) {
+      $("#ctnPropositions input[type='number']").removeClass('invisible');
+    } else {
+      $("#ctnPropositions input[type='number']").addClass('invisible');
+    }
+  }
+
+
 
   $(".clicHeure").click(function(e) {
     var champNum = e.currentTarget.nextElementSibling; // e.currentTarget.parentElement.querySelector("input");
