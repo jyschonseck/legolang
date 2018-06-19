@@ -133,7 +133,7 @@ function afficheExo() {
   }
   if (tScore){
     $("#ctnScore").load("lglg/lglg_outils/scoreAffich.html");
-    $("#ctnScore").removeClass("invisible");
+    // $("#ctnScore").removeClass("invisible");
   }
 
   //*** col droite
@@ -511,6 +511,7 @@ function QCMCorr() {
           document.getElementById("score_" + i + "_" + j).innerHTML = t;
           document.getElementById("score_" + i + "_" + j).style = "display:block";
           qScore += t;
+              $("#ctnScore").removeClass("invisible"); //todo tester ou pas ?
         }
       }
       if (tblExo.pages[pCourante].questions[i].scoreActif){

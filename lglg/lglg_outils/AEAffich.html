@@ -1,14 +1,13 @@
 
-	<p style="margin: 1em auto 0; font-size:large">Votre auto-évaluation &nbsp;:</p>
+	<p style="margin:0;font-size:large">Votre auto-évaluation&nbsp;:</p>
 
-	<!--<progress id="maProgress" value="0" max="4" style="background-color:#b22;"></progress>-->
-	<div id="imgMoins" style="display:inline-block;opacity:0.4;"></div>
-	<div  style="display:inline-block">
-		<div id="maProgress" style="display:inline-block; width:10em;height:1em;" ></div>
-	</div>
-	<div id="imgPlus" style="display:inline-block;opacity:0.4;"></div>
-	<!--<meter id="maProgress" value="0" min="0" max="4"></meter>-->
-<!--<span id="nbEtoiles"></span>-->
+<div class="ctnFlexH">
+
+	<div id="imgMoins" style="opacity:0.4;"></div>
+		<div id="maProgress" style="flex:auto; margin:0.2rem; height:1em;" ></div>
+	<div id="imgPlus" style="opacity:0.4;"></div>
+</div>
+
 <script>
 $(function(){
 	//eltBase = document.getElementById("maProgress");

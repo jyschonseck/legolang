@@ -85,7 +85,7 @@ h2 {
   display: -ms-flex;
   display: -o-flex;
   display: flex;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 
 #ctnOutils a {
@@ -388,8 +388,17 @@ textarea:focus {
 }
 
 /*************************
-****   AE  ***
+****   AE  & score***
 **************************/
+
+.ctnResult{
+  border: solid 0.1rem lightgrey;
+  padding: 0 0.5rem;
+  flex:auto;
+  text-align: center;
+}
+
+
 
 .progressBar {
   display: inline-block;
@@ -429,25 +438,6 @@ textarea:focus {
   border-top:.25em solid #28b2aa;
 }
 
-**************************************************************
-*  CORRECTIF POUR vidéo - le download encouragé par Chrome 55  *
-*  patch rapide pour pallier au pb  *
-***************************************************************/
-/*
-video::-internal-media-controls-download-button {
-  display: none;
-}
-
-video::-webkit-media-controls {
-  overflow: hidden !important
-}
-
-video::-webkit-media-controls-enclosure {
-  width: calc(100% + 32px);
-  margin-left: auto;
-} */
-
-/**************************************************************
 
 /***************************/
 
