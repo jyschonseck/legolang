@@ -1,5 +1,4 @@
-<div id="ctnEditParam" class="pageContenuPetit" onMouseOut="valideModif(event);">
-  <!--  " JY : MouseOut pour sauver les modifs des nicedits & autres ...  (C a l'arrache  mais ça marche aussi pour le focusOut !-->
+<div id="ctnEditParam" class="pageContenuPetit">
 
   <h2>Paramètres Généraux</h2>
   <div class="boite1">
@@ -25,59 +24,62 @@
     </div>
   </div>
 
+  <!-- *** boite consigne -->
+  <h2><img src="img/help.svg" id="aide_consigne" class="aide" alt="aide">Consigne initiale</h2>
+  <div class="boite1">
+    <textarea id="taConsigne0" style="height:180px;" class="richEdit"></textarea>
+  </div>
 
+  <!-- ***** boite boutons outils -->
   <h2><img src="img/help.svg" id="aide_btnOutils" class="aide" alt="aide">Boutons outils</h2>
   <div class="boite1">
-
     <h3><img src="img/help.svg" id="aide_btnOutilsEtiq" class="aide" alt="aide">Format bouton</h3>
-    <form name="frmEtiq">
+    <form name="frmEtiq" onClick="tblExo.btnOutil.format = this.btnOutilEtiq.value;">
       <input type="radio" id="cbfrmEtiq0" name="btnOutilEtiq" value="0">Texte + icone
       <input type="radio" id="cbfrmEtiq1" name="btnOutilEtiq" value="1">Icone</form>
 
     <h3>Bouton 1 : <!--<img src="img/help.svg" id="aide_btnOutilsEtiq" class="aide" alt="aide">-->étiquette / <img src="img/help.svg" id="aide_btnOutilFnctn" class="aide" alt="aide">fonction</h3>
-    <input type="text" id="txtBtn1Etiq" /> / <select id="select1Fnctn"></select>
+    <input type="text" id="txtBtn1Etiq" onchange="tblExo.btnOutil.liste[0].etiquette = this.value;"/> /
+    <select id="select1Fnctn" onchange="tblExo.btnOutil.liste[0].fonction = this[this.selectedIndex].text"></select>
 
     <h3>Bouton 2 : étiquette / fonction</h3>
-    <input type="text" id="txtBtn2Etiq" /> / <select id="select2Fnctn"></select>
+    <input type="text" id="txtBtn2Etiq" onchange="tblExo.btnOutil.liste[1].etiquette = this.value;"/> /
+    <select id="select2Fnctn" onchange="tblExo.btnOutil.liste[1].fonction = this[this.selectedIndex].text"></select>
 
     <h3>Bouton 3 : étiquette / fonction</h3>
-    <input type="text" id="txtBtn3Etiq" /> / <select id="select3Fnctn"></select>
+    <input type="text" id="txtBtn3Etiq" onchange="tblExo.btnOutil.liste[2].etiquette = this.value;"/> /
+    <select id="select3Fnctn" onchange="tblExo.btnOutil.liste[2].fonction = this[this.selectedIndex].text"></select>
 
     <h3>Bouton 4 : étiquette / fonction</h3>
-    <input type="text" id="txtBtn4Etiq" /> / <select id="select4Fnctn"></select>
+    <input type="text" id="txtBtn4Etiq" onchange="tblExo.btnOutil.liste[3].etiquette = this.value;"/> /
+    <select id="select4Fnctn" onchange="tblExo.btnOutil.liste[3].fonction = this[this.selectedIndex].text"></select>
   </div>
-
-
 
   <h2><img src="img/help.svg" id="aide_listClavier" class="aide" alt="aide">Caractères accentués</h2>
   <div class="boite1">
-    <input type="text" id="txtClavier" style="width:60%;margin:0.3rem 0;" />
-    <select id="selectClavier" onChange="document.getElementById('txtClavier').value = tblClaviers[this.selectedIndex].car"></select>
+    <input type="text" id="txtClavier" style="width:60%;margin:0.3rem 0;" onchange="tblExo.clavier = this.value" />
+    <select id="selectClavier" onChange="document.getElementById('txtClavier').value = tblClaviers[this.selectedIndex].car;" ></select>
   </div>
-
-
-  <h2><img src="img/help.svg" id="aide_consigne" class="aide" alt="aide">Consigne initiale</h2>
-  <div class="boite1"><textarea id="taConsigne0" style="height:180px"></textarea></div>
 
   <h2>Scénario</h2>
   <div class="boite1">
-    <h3><img src="img/help.svg" id="aide_scenAccesQ" class="aide" alt="aide"> Accès au questionnaire</h3>
-    <form name="accesQuestionnaire" id="accesQuestionnaire">
+    <h3><img src="img/help.svg" id="aide_scenAccesQ" class="aide" alt="aide">Accès au questionnaire</h3>
+    <form name="accesQuestionnaire" id="accesQuestionnaire" onchange="tblExo.scenario.accesQ = accesQ.value;">
       <input type="radio" name="accesQ" id="btnAccesQ0" value="0">Accès immédiat
-      <input type="radio" name="accesQ" id="btnAccesQ1" value="-1" />Accès à la fin de la vidéo
+      <input type="radio" name="accesQ" id="btnAccesQ1" value="1" />Accès à la fin de la vidéo
     </form>
 
     <h3><img src="img/help.svg" id="aide_verrouCorr" class="aide" alt="aide">Retour à l'édition après correction</h3>
-    <form name="verrCorr" id="verrCorr">
+    <form name="verrCorrf" id="verrCorrf" onchange="tblExo.scenario.verrCorr = verrCorr.value;">
       <input type="radio" name="verrCorr" id="btnVerrCorrQ0" value="0">retour à l'édition autorisé
       <input type="radio" name="verrCorr" id="btnVerrCorrQ1" value="1" />retour à l'édition interdit
     </form>
 
     <h3><img src="img/help.svg" id="aide_nbCarCorrection" class="aide" alt="aide">Nombre de caractères pour correction</h3>
-    <input type="text" id="saisieQoAccesC" style="width:4rem;" />
+    <input type="text" id="saisieQoAccesC" style="width:4rem;" onchange="tblExo.scenario.qoAccesC = this.value"/>
 
     <h3><img src="img/help.svg" id="aide_msgAE" class="aide" alt="aide">Question pour l'auto-évaluation</h3>
-    <input type="text" id="saisieMsgAE" style="width:40rem;" />
+    <input type="text" id="saisieMsgAE" style="width:40rem;" onchange="tblExo.scenario.msgAE = this.value"/>
 
     <h3><img src="img/help.svg" id="aide_scormScore" class="aide" alt="aide">Score à remonter vers Moodle</h3>
     <select id="selectScormNote" onChange="tblExo.scenario.scormScoreRaw = this.value;">
@@ -89,22 +91,21 @@
   <h2>Interface</h2>
   <div class="boite1">
     <h3><img src="img/help.svg" id="aide_guiCouleur" class="aide" alt="aide">Couleur </h3>
-    <input type="color" id="inputCouleur1">
+    <input type="color" id="inputCouleur1" onchange="tblExo.interface.couleur1 = this.value">
 
 
-      <h3><img src="img/help.svg" id="aide_affichLogo" class="aide" alt="aide">Affichage d'un logo additionel</h3>
-      <input type="checkbox" id="btnAffichLogo" style="" onchange="masqueLogoCoord();" />
-          <div id="ctnLogoCoord" style="margin:-1.5rem 1rem 0 4rem;">
+    <h3><img src="img/help.svg" id="aide_affichLogo" class="aide" alt="aide">Affichage d'un logo additionel</h3>
+    <input type="checkbox" id="btnAffichLogo" style="" onchange="masqueLogoCoord();tblExo.interface.logoaffich=this.checked" />
+    <div id="ctnLogoCoord" style="margin:-1.5rem 1rem 0 4rem;">
       <span>URL du logo :</span>
-      <input type="text" id="tiUrlLogo" style="width:100%;" />
+      <input type="text" id="tiUrlLogo" style="width:100%;" onchange="tblExo.interface.logourl = this.value"/>
       <span>Title du logo :</span>
-      <input type="text" id="tiTitleLogo" style="width:100%;" />
+      <input type="text" id="tiTitleLogo" style="width:100%;" onchange="tblExo.interface.logotitle = this.value" />
       <span>Lien pour clic :</span>
-      <input type="text" id="tiLienLogo" style="width:100%;" />
+      <input type="text" id="tiLienLogo" style="width:100%;" onchange="tblExo.interface.logolien = this.value" />
     </div>
 
   </div>
-  <!--<button onClick="valideModif() " >Valider les modifications</button>-->
 
 </div>
 
@@ -112,7 +113,7 @@
   var tblFnctn = new Array("--", "sousTitrage1", "impression", "doc", "clavier")
 
   $(function() {
-
+    console.log("affich editParametres");
     $(".aide").on("click", function() {
       affichAide(this);
     });
@@ -180,32 +181,39 @@
 
 
     // La consigne
-    if (!nicEditors.findEditor('taConsigne0')) editeur1 = new nicEditor().panelInstance('taConsigne0');
-    nicEditors.findEditor('taConsigne0').setContent(tblExo["consigne"]);
+    console.log("init 1 = " + tinymce.editors.length);
+    if (tinymce.editors.length > 0) {
+      tinymce.remove('#taConsigne0');
+    }
+    console.log("init 2 = " + tinymce.editors.length);
+    tinymce.EditorManager.init({
+      selector: '#taConsigne0',
+      plugins: ' advlist lists table code image',
+      toolbar: ' undo redo | styleselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | table image code ',
+      menu: true,
+       auto_focus: 'taConsigne0',
+      branding: false,
+      // setup: function(editor) {
+      //   editor.on('init', function(e) {
+      //     console.log('Editor was initialized sur ' + e.target.id);
+      //   });
+      // },
+      init_instance_callback: function(editor) {
+        editor.on('change', function(e) {
+          tblExo["consigne"] = eDblQ(tinymce.get('taConsigne0').getContent());
+        });
+
+      }
+    }).then(function() {
+      tinymce.get("taConsigne0").setContent(tblExo.consigne);
+    // document.getElementsByTagName("html")[0].focus();
+    // document.getElementById("txtTitreParam").focus();
+    });
 
     //***** scenario
-    if (tblExo.scenario) { // encore nécessaire ?
-      if (tblExo.scenario.accesQ === "1") {
-        document.getElementById("btnAccesQ1").checked = true;
-      } else {
-        document.getElementById("btnAccesQ0").checked = true;
-      }
-    } else {
-      var objScenario = {
-        "accesQ": "0",
-        "verrCorr": "0",
-        "qoAccesC": "",
-        "msgAE": "",
-        "scormScoreRaw": "rep"
-      };
-      tblExo.scenario = objScenario;
-    }
-    // verrCorr
-    if (tblExo.scenario.verrCorr === "1") {
-      document.getElementById("btnVerrCorrQ1").checked = true;
-    } else {
-      document.getElementById("btnVerrCorrQ0").checked = true;
-    }
+    document.forms.accesQuestionnaire.accesQ.value = tblExo.scenario.accesQ;
+document.forms.verrCorrf.verrCorr.value = tblExo.scenario.verrCorr;
+
     if (tblExo.scenario.qoAccesC) document.getElementById("saisieQoAccesC").value = tblExo.scenario.qoAccesC;
     if (tblExo.scenario.msgAE) document.getElementById("saisieMsgAE").value = tblExo.scenario.msgAE;
     if (tblExo.scenario.scormScoreRaw) document.getElementById("selectScormNote").value = tblExo.scenario.scormScoreRaw;
@@ -214,8 +222,8 @@
     if (tblExo.interface.couleur1) {
       document.getElementById("inputCouleur1").value = tblExo.interface.couleur1;
     }
-      document.getElementById("btnAffichLogo").checked = tblExo.interface.logoaffich;
-      if (tblExo.interface.logourl) {
+    document.getElementById("btnAffichLogo").checked = tblExo.interface.logoaffich;
+    if (tblExo.interface.logourl) {
       document.getElementById("tiUrlLogo").value = tblExo.interface.logourl;
       document.getElementById("tiTitleLogo").value = tblExo.interface.logotitle;
       document.getElementById("tiLienLogo").value = tblExo.interface.logolien;
@@ -229,50 +237,7 @@
 
 
 
-  function valideModif(e) {
-    // sauv des modifs pas sur des onChange (cas des nicEdit...)
-    tblExo["consigne"] = eDblQ(nicEditors.findEditor('taConsigne0').getContent());
 
-    //tblExo.btnOutil.format = document.frmEtiq.btnOutilEtiq.value;//marche pas sur FF31
-    if (document.getElementById("cbfrmEtiq1").checked) {
-      tblExo.btnOutil.format = 1;
-    } else {
-      tblExo.btnOutil.format = 0;
-    }
-
-    for (var i = 0; i < 4; i++) {
-      tblExo.btnOutil.liste[i].etiquette = document.getElementById("txtBtn" + (i + 1) + "Etiq").value;
-      var selectEnCours = document.getElementById("select" + (i + 1) + "Fnctn");
-      tblExo.btnOutil.liste[i].fonction = selectEnCours.options[selectEnCours.selectedIndex].text;
-    }
-
-    tblExo.clavier = document.getElementById("txtClavier").value;
-
-    //***scenario
-    if (document.getElementById("btnAccesQ0").checked) tblExo.scenario.accesQ = "0";
-    else tblExo.scenario.accesQ = "1";
-    if (document.getElementById("btnVerrCorrQ0").checked) tblExo.scenario.verrCorr = "0";
-    else tblExo.scenario.verrCorr = "1";
-    tblExo.scenario.qoAccesC = document.getElementById("saisieQoAccesC").value;
-    tblExo.scenario.msgAE = document.getElementById("saisieMsgAE").value;
-
-    if (tblExo.interface) { // à cause de fichier json pas complet
-    } else {
-      // var interface = new Object({
-      //   "couleur1": document.getElementById("inputCouleur1").value,
-      //   "logoaffich": document.getElementById("btnAffichLogo").checked,
-      //   "logourl": document.getElementById("tiUrlLogo").value,
-      //   "logolien": document.getElementById("tiLienLogo").value
-      // });
-      var interface = {};
-      tblExo.interface = interface;
-    }
-    tblExo.interface.couleur1 = document.getElementById("inputCouleur1").value;
-    tblExo.interface.logoaffich = document.getElementById("btnAffichLogo").checked;
-    tblExo.interface.logourl = document.getElementById("tiUrlLogo").value;
-    tblExo.interface.logotitle = document.getElementById("tiTitleLogo").value;
-    tblExo.interface.logolien = document.getElementById("tiLienLogo").value;
-  }
 
   function interfaceUtilisateurPlus() {
     document.getElementById("taVideoUrl").disabled = !utilisateurPlus;
@@ -289,11 +254,10 @@
     }
   }
 
-  function masqueLogoCoord(){
-    console.log("masqueLogoCoord " + document.getElementById("btnAffichLogo").checked);
-    if (document.getElementById("btnAffichLogo").checked){
+  function masqueLogoCoord() {
+    if (document.getElementById("btnAffichLogo").checked) {
       $("#ctnLogoCoord").show("fast");
-    }else{
+    } else {
       $("#ctnLogoCoord").hide("fast");
     }
   }

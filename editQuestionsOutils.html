@@ -38,7 +38,7 @@
     tblExo.pages[pageOrdre].questions.splice(questionNum, 0, {
       "type": questionType,
       "titreQ": "",
-      "txtQuestion": "Nouvelle question ( " + questionType + " ) (" + (questionNum + 1) + " / " + (pageOrdre + 1) + ")",
+      "txtQuestion": "Nouvelle question",// ( " + questionType + " ) (" + (questionNum + 1) + " / " + (pageOrdre + 1) + ")",
       "extraitQuestion": {
         "debut": "0",
         "fin": "0"
@@ -60,6 +60,10 @@
         "reponseCorrecte": true,
         "score": 1
       }];
+      tblExo.pages[pageOrdre].questions[questionNum].scoreActif = true;
+    }
+    if (questionType === "qtrous") {
+      tblExo.pages[pageOrdre].questions[questionNum].trous = {};
       tblExo.pages[pageOrdre].questions[questionNum].scoreActif = true;
     }
 

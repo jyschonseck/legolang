@@ -7,7 +7,6 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
   <link rel="stylesheet" href="css/lglgA.css" type="text/css" media="screen">
-  <!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">-->
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 
 
@@ -15,9 +14,9 @@
 
 <body>
   <div id="ctnBanniere" onClick="$('#ctnPageFichier').show('slow');">
-    <span style="position:absolute;left:1rem;">Université de Lille 3 - DUNE </span>
+    <span style="position:absolute;left:1rem;">Université de Lille SHS - DIp </span>
     <span style="font-size:larger;position:absolute;width:100%;text-align:center;">LeGoLanG</span>
-    <span style="position:absolute;right:1rem;font-size:smaller;">Version : 18 mai 2018</span>
+    <span style="position:absolute;right:1rem;font-size:smaller;">Version : <span id="dateVersion"></span></span>
   </div>
 
   <main>
@@ -73,26 +72,25 @@
     <input type="hidden" name="ST" id="ecritST" value="" />
   </form>
 
-  <!--<script src="js/jquery-2.1.4.min.js" type="text/javascript" ></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>-->
-  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src="js/jquery-2.1.4.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script src="js/tinymce/tinymce.min.js"></script>
 
-  <!--<script type="text/javascript" src="js/jquery-ui.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>-->
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
-  <script src="js/nicEdit.js" type="text/javascript"></script>
   <script src="js/lglgA.js" type="text/javascript"></script>
   <script src="js/popupblocktest.js" type="text/javascript"></script>
   <script>
     var ouvrirQuoi = "";
-    console.log("Avant $");
     $(function() {
+
+      // ****affichage version
+      $("#dateVersion").html(document.lastModified);
+
       /****test popup******/
-      // if (!resultatTest){
-      // 	$("#ctnContenu").load("html/messagePopup.html");
-      // }
+      if (!resultatTest) {
+        $("#ctnContenu").load("html/messagePopup.html");
+      }
       //***********************
+
 
       $("#ctnPopupOuvreFichier").dialog({
         modal: true,
@@ -362,7 +360,6 @@
         }]
       }];
 
-
       tblExoSauv = JSON.stringify(tblExo);
       $('#ctnContenu').load('editParametres.html');
       $('div').removeClass('active');
@@ -405,7 +402,6 @@
 
       document.getElementById("ecritST").value = tblExo.sousTitrage1;
       actualiserST();
-
     }
 
     function rechargement() {

@@ -1,4 +1,5 @@
-
+/* Import fontastic */
+@import 'fontastic/styles.css';
 /***************************
 *** disposition          ***
 ***************************/
@@ -201,9 +202,7 @@ nav div.active {
 /*************************
 ** page parametre ********
 *************************/
-.nicEdit-main {
-        background-color: #fff !important;
-}
+
 
 #ctnEditParam{
 }
@@ -371,6 +370,50 @@ td div input{
 #ctnPropsOutils{
     margin: 0.3rem;
 }
+
+/************************
+**** edition question / Q à trous ***
+******************************/
+.ctnEltNiv1 {
+  border: solid 1px;
+  padding: 0.2rem;
+  margin-top: 0.2rem;
+}
+
+.ctnEltNiv2 {
+  border: dotted 1px;
+  padding: 0.2rem;
+  margin-top: 0.2rem;
+}
+
+
+.divCorr {
+  display: flex;
+}
+
+.divCorr input[type="text"] {
+  width: 100%;
+  margin: 0.2rem;
+  text-align: left;
+  font-size: 0.8rem;
+}
+
+.divCorr input[type="number"] {
+  width: 4rem;
+  margin: 0.2rem;
+  font-size: 0.8rem;
+}
+
+.divCorr input[type="checkbox"] {
+  height: 1rem;
+  margin: 0.4rem 0;
+}
+
+.btnEltSuppr {
+  width: 2rem;
+  margin-left: auto;
+}
+
 
 /*************************
 ** page prevue ********

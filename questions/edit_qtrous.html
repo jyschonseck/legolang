@@ -1,10 +1,12 @@
-<div id="txtExplicQtrous">
-  <p>Question à trou : Il n'y a qu'un feedback indirect comme pour une question ouverte. Pour insérer un trou dans la question remplacer le mot par la chaine :SHORTANSWER: dans le texte de la question.</p>
+<h3>Question trou: </h3>
+<textarea id="taTxtQuestion" class=""></textarea>
+<!-- </div> -->
+<div id="ctnEditQuestionBas">
+  <h3>trous</h3>
+  <div id="ctnTrous">
+    trous
+  </div>
 </div>
-
-<h3>Question : </h3>
-<textarea id="taTxtQuestionQo"></textarea>
-<!---->
 
 <h4>Extrait vidéo "question" : </h4>
 <div> <span class="clicHeure">début : </span>
@@ -16,69 +18,359 @@
 <p style="border-bottom:solid 1px;width:100%;"></p>
 
 <h3>Correction :</h3>
-<textarea id="taTxtCorrectionQo"></textarea>
+<textarea id="taTxtCorrection" class="richEdit"></textarea>
 
-<h4 onDblClick="$('#optFBvidInde').show('fast');">Extrait vidéo "correction" : </h4>
+<h4>Extrait vidéo "correction" : </h4>
 <div> <span class="clicHeure">début : </span>
   <input type="number" id="extCDebQo" onChange="heureChange('C');" />
   <span class="clicHeure">fin : </span>
   <input type="number" id="extCFinQo" onChange="heureChange('C');" />
-  <span id="btnLireExtraitC" onClick="lireExtrait(document.getElementById('extCDebQo').value, document.getElementById('extCFinQo').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span> </div>
-<div id="optFBvidInde" style="display:none;"><span> l'extrait vidéo sera proposé après la frappe de
-        <input type="number" id="inputAffichA" style="width:2rem">
-        caractères (0 pour l'afficher seulement avec la correction)</span></div>
+  <span id="btnLireExtraitC" onClick="lireExtrait(document.getElementById('extCDebQo').value, document.getElementById('extCFinQo').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span>
+</div>
+<p id="optFBvidSt"> masquer la version sous-titrée de l'extrait :
+  <input type="checkbox" id="inputAffichSt" /></p>
 
-<script>
+
+    <div id="ctnPopupGen"> </div>
+<script type="text/javascript">
   $(function() {
+    ///**** editeur question avec les trous
+    tinymce.init({
+      selector: '#taTxtQuestion',
+      plugins: ' advlist lists table code image noneditable',
+      toolbar: " undo redo | bold italic underline | alignleft aligncenter alignright |  table image code | trou feedback ",
+      branding: false,
+      menubar: false,
+      // content_css: "css/editeur.nested.css",
+      noneditable_regexp: [/\*[^*]*\*/g, /\$[^$]*\$/g, /~[^~]*~/g],
+      setup: function(editeur) {
+        editeur.addButton('trou', {
+          // image: 'css/mesImg/icon-tat.gif',
+          text: "trou",
+          tooltip: "Créer un trou",
+          onClick: function() {
+            creationTrou();
+          }
+        });
+        editeur.addButton('feedback', {
+          text: "feedback",
+          tooltip: "Insérer un feedback",
+          onClick: function() {
+            console.log("clic feedback voir cote function choixTrou() ");
+            choixObj();
+          }
+        });
 
-    ///**** ajouter nicedit
-    if (!nicEditors.findEditor('taTxtCorrectionQo'))
-      editeur2 = new nicEditor().panelInstance('taTxtCorrectionQo');
-    if (!nicEditors.findEditor('taTxtQuestionQo'))
-      editeur3 = new nicEditor().panelInstance('taTxtQuestionQo');
+      }
+    });
 
-    //edition de qo et qtrous pareilles pour le moment !!!
-    //document.getElementById('txtTitreQo').value = tblExo.pages[pageCourante].questions[questionCourante].titreQ;
+    //**** popup générique
+        $("#ctnPopupGen").dialog({
+          modal: true,
+          autoOpen: false,
+          width: 640,
+          position: {
+            my: "center center",
+            at: "center center",
+            of: "#ctnEditeur"
+          },
+          show: {
+            effect: "fade",
+            duration: 333
+          },
+          hide: {
+            effect: "fade",
+            duration: 333
+          }
+        });
 
-    nicEditors.findEditor('taTxtQuestionQo').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
+    //***** affich trous
+    affichTrous();
 
+    //****** editeur correction
+    tinymce.init({
+      selector: '#taTxtCorrection',
+      plugins: ' advlist lists table code image',
+      toolbar: ' undo redo | styleselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | table image code ',
+      menubar: false,
+      branding: false
+    }).then(function() {
+      console.log("prommesse...");
+      tinymce.get("taTxtQuestion").setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
+      tinymce.get("taTxtCorrection").setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
+    });
+
+    //***** les extrait vidéo
     document.getElementById('extQDebQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut;
     document.getElementById('extQFinQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin;
     if (parseFloat(document.getElementById('extQDebQo').value) > 0)
       $("#btnLireExtraitQ").show("fast");
     else
       $("#btnLireExtraitQ").hide("fast");
-    nicEditors.findEditor('taTxtCorrectionQo').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
+    // nicEditors.findEditor('taTxtCorrection').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
 
     document.getElementById('extCDebQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut;
     document.getElementById('extCFinQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin;
-    if (parseFloat(document.getElementById('extCDebQo').value) > 0){
+    if (parseFloat(document.getElementById('extCDebQo').value) > 0) {
       $("#btnLireExtraitC").show("fast");
-    }else{
+    } else {
       $("#btnLireExtraitC").hide("fast");
     }
-  document.getElementById('inputAffichSt').checked = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichST;
+    document.getElementById('inputAffichSt').checked = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichST;
 
+
+    $(".clicHeure").click(function(e) {
+      var champNum = e.currentTarget.nextElementSibling; // e.currentTarget.parentElement.querySelector("input");
+      champNum.value = videoDonnePosition();
+      heureChange(champNum.id.substr(3, 1));
+    });
   });
 
   function questionEnregistre() {
-
-    tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(nicEditors.findEditor('taTxtQuestionQo').getContent());
+    //TODO : à ajuster (pour le moement c = QO)
+    console.log("ENREGISTREMENT");
+    tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(tinymce.get('taTxtQuestion').getContent());
     tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut = document.getElementById('extQDebQo').value;
     tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin = document.getElementById('extQFinQo').value;
-    tblExo.pages[pageCourante].questions[questionCourante].txtCorrection = questionFormat(nicEditors.findEditor('taTxtCorrectionQo').getContent());
+    tblExo.pages[pageCourante].questions[questionCourante].txtCorrection = questionFormat(tinymce.get('taTxtCorrection').getContent());
     tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut = document.getElementById('extCDebQo').value;
     tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin = document.getElementById('extCFinQo').value;
     tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichST = document.getElementById('inputAffichSt').checked;
+    sauvTrous();
     affichTableauQuestions();
     $("#popupModifQuestion").dialog("close");
     $("#ctnVideo").dialog("close");
-
   }
 
-  $(".clicHeure").click(function(e) {
-    var champNum = e.currentTarget.nextElementSibling;
-    champNum.value = videoDonnePosition();
-    heureChange(champNum.id.substr(3, 1));
-  });
+  function creationTrou() {
+    var editeur = tinymce.get("taTxtQuestion");
+    var avSpace = "",
+      apSpace = "";
+    if (tblExo.pages[pageCourante].questions[questionCourante].trousOrder) {
+      tblExo.pages[pageCourante].questions[questionCourante].trousOrder += 1;
+      var idTrou = "TROU-" + tblExo.pages[pageCourante].questions[questionCourante].trousOrder;
+    } else {
+      var idTrou = "TROU-1";
+      tblExo.pages[pageCourante].questions[questionCourante].trousOrder = 1;
+    }
+    // var newTrou = $.parseHTML(editeur.selection.getContent()[0].textContent);
+    var newTrou = $('<textarea/>').html(editeur.selection.getContent()).text();
+    if (newTrou.length > 1) {
+      var erSpace = /^\s/g;
+      if (erSpace.test(newTrou)) {
+        avSpace = " ";
+      }
+      newTrou = newTrou.replace(erSpace, "");
+      erSpace = /\s$/;
+      if (erSpace.test(newTrou)) {
+        apSpace = " ";
+      }
+      newTrou = newTrou.replace(erSpace, "");
+      editeur.insertContent(avSpace + "*" + idTrou + "*" + apSpace);
+      tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = tinymce.get('taTxtQuestion').getContent(); //mettre à jour liste
+      tblExo.pages[pageCourante].questions[questionCourante].trous[idTrou] = [{
+        "saisie": newTrou,
+        "score": "1",
+        "correct": true,
+        "fb": ""
+      }];
+      console.log("donc mon trou = " + JSON.stringify(tblExo.pages[pageCourante].questions[questionCourante]));
+      affichTrous();
+    } else {
+      alert("Sélectionnez un ou des mots (au moins 2 lettres)");
+    }
+  }
+
+  function affichTrous() {
+    console.log("affichTrou");
+    document.getElementById("ctnTrous").innerHTML = "";
+    for (var a in tblExo.pages[pageCourante].questions[questionCourante].trous) {
+      var divTrou = document.createElement("div");
+      divTrou.className = "ctnEltNiv1";
+      var ligneId = document.createElement("div");
+      ligneId.className = "flexH"
+      var txt1 = document.createElement("span");
+      txt1.style = "font-weight:bold;"
+      txt1.innerHTML = 'Id du trou&nbsp;:&nbsp;';
+      ligneId.appendChild(txt1);
+      var idTrou = document.createElement("span");
+      idTrou.id = "trouId_" + a;
+      idTrou.innerHTML = a;
+      //idTrou.onchange = changeIdTrou;
+      ligneId.appendChild(idTrou);
+
+      var btnSupprT = document.createElement("button");
+      btnSupprT.innerHTML = "<span class='icon-trash-o iconTop'/>";
+      btnSupprT.title = "Supprimer ce trou";
+      btnSupprT.className = "btnEltSuppr";
+      btnSupprT.id = "btnSupprT_" + a;
+      btnSupprT.onclick = supprCorrT;
+      ligneId.appendChild(btnSupprT);
+      divTrou.appendChild(ligneId);
+      // var txt2 = document.createElement("p");
+      // txt2.innerHTML = 'Pour placer le trou dans le texte : copiez ce texte <span id="txtIdCopie1_' + a + '">*<span id="txtIdCop1_' + a + '">' + a + '</span>*</span> <button id="btnCop_*_' + a + '" onClick="toClipB(event)" class="icon-files-o iconTop"  title="Copier le code à coller dans le texte de la question pour l\'emplacement du trou"></button> et collez-le dans le texte. Faites de même pour l\'emplacement des feedbacks : <span id="txtIdCopie2_' + a + '">$<span id="txtIdCop2_' + a + '">' + a + '</span>$</span> <button id="btnCop_*_' + a + '" onClick="toClipB(event)" class="icon-files-o iconTop" title="Copier le code à coller dans le texte de la question pour l\'emplacement du feedback"></button>.';
+      // txt2.style = "font-size:0.8rem;font-style:italic;"
+      // divTrou.appendChild(txt2);
+      var divEntete = document.createElement("div");
+      divEntete.style = "display:flex;margin-top:0.8rem;"
+      var txt3 = document.createElement("span");
+      txt3.style = "flex : 1 1 auto;padding-left:1rem;"
+      txt3.innerHTML = 'réponse';
+      divEntete.appendChild(txt3);
+      var txt4 = document.createElement("span");
+      txt4.style = "flex : 1 1 auto;padding-left:1rem;"
+      txt4.innerHTML = 'feedback';
+      divEntete.appendChild(txt4);
+      var txt5 = document.createElement("span");
+      txt5.style = "flex : 0 0 initial;width:4rem;padding-left:0.5rem;"
+      txt5.innerHTML = 'score';
+      divEntete.appendChild(txt5);
+      var txt6 = document.createElement("span");
+      txt6.style = "flex : 0 0 initial;width:5rem;padding-left:0rem;"
+      txt6.innerHTML = 'correct';
+      divEntete.appendChild(txt6);
+
+      divTrou.appendChild(divEntete);
+      // affichage des propositions
+      for (var iCorr = 0; iCorr < tblExo.pages[pageCourante].questions[questionCourante].trous[a].length; iCorr++) {
+        var divCorr = document.createElement("div");
+        divCorr.className = "divCorr";
+        var saisie = document.createElement("input");
+        saisie.id = "saisie_" + a + "_" + iCorr;
+        saisie.type = "text";
+        saisie.value = tblExo.pages[pageCourante].questions[questionCourante].trous[a][iCorr].saisie;
+        divCorr.appendChild(saisie);
+        var fb = document.createElement("input");
+        fb.id = "fb_" + a + "_" + iCorr;
+        fb.type = "text";
+        fb.value = tblExo.pages[pageCourante].questions[questionCourante].trous[a][iCorr].fb;
+        divCorr.appendChild(fb);
+        var score = document.createElement("input");
+        score.id = "score_" + a + "_" + iCorr;
+        score.type = "number";
+        score.value = tblExo.pages[pageCourante].questions[questionCourante].trous[a][iCorr].score;
+        divCorr.appendChild(score);
+        var cbCorrect = document.createElement("input");
+        cbCorrect.id = "correct_" + a + "_" + iCorr;
+        cbCorrect.type = "checkbox";
+        cbCorrect.checked = tblExo.pages[pageCourante].questions[questionCourante].trous[a][iCorr].correct;
+        divCorr.appendChild(cbCorrect);
+        var btnSuppr = document.createElement("button");
+        btnSuppr.innerHTML = "<span class='icon-trash-o iconTop'/>";
+        btnSuppr.title = "Supprimer cette proposition";
+        btnSuppr.className = "btnEltSuppr"
+        btnSuppr.id = "btnSupprCorr_" + a + "_" + iCorr;
+        btnSuppr.onclick = supprCorr;
+        divCorr.appendChild(btnSuppr);
+        if (iCorr === 0) {
+          cbCorrect.disabled = true;
+          btnSuppr.disabled = true;
+          //  document.getElementById("btnSupprCorr_" + a + "_" + iCorr).disabled = true;
+          cbCorrect.checked = true; // pour compatibilité avec exo produit avant mise en place de cbCorrect
+        }
+        divTrou.appendChild(divCorr);
+      }
+      var btnAjoutCorr = document.createElement("button");
+      btnAjoutCorr.id = "btnAjoutCorr_" + a
+      btnAjoutCorr.innerHTML = "<span class='icon-plus-circle iconTop'/>Ajout proposition";
+      btnAjoutCorr.onclick = ajoutCorr;
+      divTrou.appendChild(btnAjoutCorr);
+      document.getElementById("ctnTrous").appendChild(divTrou);
+    }
+  }
+
+  function ajoutCorr(e) {
+    sauvTrous();
+    var a = e.currentTarget.id.split("_")[1];
+    console.log("ajout Corr" + tblExo.pages[pageCourante].questions[questionCourante].trous[a].length);
+    if (tblExo.pages[pageCourante].questions[questionCourante].trous[a].length === 0) {
+      var newCorr = {
+        "saisie": "Réponse correcte",
+        "score": 1,
+        "correct": true,
+        "fb": ""
+      };
+    } else {
+      var newCorr = {
+        "saisie": "",
+        "score": 0,
+        "correct": false,
+        "fb": ""
+      };
+    }
+    tblExo.pages[pageCourante].questions[questionCourante].trous[a].push(newCorr);
+    affichTrous();
+  }
+
+  function supprCorrT(e) {
+    sauvTrous();
+    var trou = e.currentTarget.id.split("_")[1];
+    console.log("SUPPR trou = " + JSON.stringify(tblExo.pages[pageCourante].questions[questionCourante].trous[trou]));
+    console.log("SUPPR depart = " + JSON.stringify(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion));
+    //TODO remettre le [0] dans texte
+    tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = tblExo.pages[pageCourante].questions[questionCourante].txtQuestion.replace("*" + trou + "*", tblExo.pages[pageCourante].questions[questionCourante].trous[trou][0].saisie);
+    console.log("SUPPR reste = " + JSON.stringify(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion));
+    tinymce.get("taTxtQuestion").setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
+    delete tblExo.pages[pageCourante].questions[questionCourante].trous[trou];
+    affichTrous();
+  }
+
+  function supprCorr(e) {
+    sauvTrous();
+    console.log("fonction suppCorr : " + e.currentTarget.id);
+    var a = e.currentTarget.id.split("_")[1];
+    var i = parseInt(e.currentTarget.id.split("_")[2]);
+    //console.log("indexQ = " + indexQ + ", a = " + a + ", i = " + i);
+    tblExo.pages[pageCourante].questions[questionCourante].trous[a].splice(i, 1);
+    affichTrous();
+  }
+
+  function sauvTrous() {
+    //boucle sur trou :
+    for (var iTrou in tblExo.pages[pageCourante].questions[questionCourante].trous) {
+      console.log("TROU = " + iTrou);
+      for (var iProp = 0; iProp < tblExo.pages[pageCourante].questions[questionCourante].trous[iTrou].length; iProp++) {
+        console.log("PROP  = " + iProp + "--" + $("#saisie_" + iTrou + "_" + iProp).val());
+        tblExo.pages[pageCourante].questions[questionCourante].trous[iTrou][iProp].saisie = $("#saisie_" + iTrou + "_" + iProp).val();
+        tblExo.pages[pageCourante].questions[questionCourante].trous[iTrou][iProp].fb = $("#fb_" + iTrou + "_" + iProp).val();
+        tblExo.pages[pageCourante].questions[questionCourante].trous[iTrou][iProp].score = $("#score_" + iTrou + "_" + iProp).val();
+        tblExo.pages[pageCourante].questions[questionCourante].trous[iTrou][iProp].correct = document.getElementById("correct_" + iTrou + "_" + iProp).checked;
+      }
+    }
+    console.log("FIN de sauvTrous : " + JSON.stringify(tblExo.pages[pageCourante].questions[questionCourante]));
+  }
+
+  // appelée depuis tinymce pour inserer bouton son ou espace feedback
+  function choixObj() {
+    console.log("fonction choixObj" + "trou");
+    var maBalise = "$";
+
+    //**** prépare le select
+    var monSelect = document.createElement("select");
+    monSelect.id = "slctPourInser";
+    for (var i in tblExo.pages[pageCourante].questions[questionCourante].trous) {
+      var opt = document.createElement("option");
+      opt.value = i;
+      opt.innerHTML = i;
+      monSelect.appendChild(opt);
+    }
+    //***
+    var ctnPopup = document.getElementById("ctnPopupGen");
+    ctnPopup.innerHTML = "";
+    ctnPopup.appendChild(monSelect);
+    //***
+    var btnOK = document.createElement("button");
+    btnOK.innerHTML = "OK";
+    btnOK.onclick = function() {
+      var editeur = tinymce.get("taTxtQuestion");
+      var sel = document.getElementById("slctPourInser")
+      var choix = sel.options[sel.selectedIndex].innerHTML
+      editeur.insertContent(maBalise + choix + maBalise);
+      // editeur.execCommand('mceInsertContent' , false , "<span class=\"trou\">" + choix + "</span>");
+      $("#ctnPopupGen").dialog("close");
+    };
+    ctnPopup.appendChild(btnOK);
+
+    $("#ctnPopupGen").dialog("open");
+  }
 </script>

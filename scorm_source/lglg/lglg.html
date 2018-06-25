@@ -21,9 +21,13 @@
       </div>
       <div id="ctnMedia"></div>
       <div id="ctnOutils"></div>
-      <div id="ctnAEAffich" style="display:none"></div>
+      <div class="ctnInfosResult">
+
+        <div id="ctnAEAffich" class="invisible ctnResult"></div>
+        <div id="ctnScore" class="invisible ctnResult"></div>
+      </div>
       <div id="ctnLogo">
-        <a id="lienLogoP" href="http://klip.univ-lille.fr/fiche/75-legolang-nbsp-une-application-pour-les-langues" target="_blank" title="Cet exercice à été réalisé avec LeGoLanG ">
+        <a id="lienLogoP" href="http://klip.univ-lille.fr/fiche/75-legolang-nbsp-une-application-pour-les-langues" target="_blank" title="Cet exercice à été réalisé avec LeGoLanG">
           <img id="logoP" src="lglg/lglg_interface/logo/UL-NOIR-WEB-h120.png" class="logo"/>
         </a>
         <a id="lienLogo" href="https://www.univ-lille.fr/" target="_blank">
@@ -73,6 +77,11 @@
       //   $("#txtTitre").css("display", "block");
       //   $("#breadcrumbs").css("display", "block");
       // }
+
+      //rajout pour empêcher clic droit (et enregistrement de la vidéo facile sauf si on est sur cavul-test...
+      if (document.URL.indexOf("cavul-test") < 0) {
+        document.oncontextmenu = new Function("return false");
+      }
 
       if (sessionStorage.getItem("lglg_data") == null) { //test présence donnée du mode auteur
         chargeFichierData();
@@ -171,7 +180,7 @@
         //$("#nav_3").addClass("actif");
         maVideoActiveNav();
       } else {
-        alert("Version de legolang du 16 mai 2018", "Version de legolang");
+        alert("Version de legolang du \n" + document.lastModified, "Version de legolang");
       }
     }
   </script>

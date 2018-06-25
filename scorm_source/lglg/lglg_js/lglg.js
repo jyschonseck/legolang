@@ -11,7 +11,8 @@ var lancement = true;
 var modeAuteur = false;
 var scorm = false; //valeur à true si on a du scorm : utilisé dans enregistrementReponses
 var affichClavier = false; // variable pour affichage du clavier
-var affichST = false; // mettre à true lors de affichExo si on affiche les ST pour extrait)
+// var affichST = false; // mettre à true lors de afficheExo si on affiche les ST pour extrait)
+var scoreMax = 0; // le score max qu'on peut atteindre !
 
 //**constante***********//
 // si je déclare const si je lance plusieur fois lglg j'ai une erreur 'déja déclaré'
@@ -33,7 +34,6 @@ function afficheExo() {
     useCustomColor(tblExo.interface.couleur1);
   }
 
-  console.log("tblExo.interface.logoaffich = " + tblExo.interface.logoaffich);
   if (tblExo.interface.logoaffich) {
     $("#logo").css("display", "block");
     console.log("affiche " + tblExo.interface.logourl);
@@ -103,14 +103,37 @@ function afficheExo() {
         window[this.id.substring(6)]();
       });
     }
-    if (tblExo.btnOutil.liste[i].fonction === "sousTitrage1") {
-      affichST = true;
-    }
+    //  ***jys : enlevé car affich feedbact avec ST même si pas outil
+    // if (tblExo.btnOutil.liste[i].fonction === "sousTitrage1") {
+    //   affichST = true;
+    // }
   }
 
   //****autoEvaluation
   if (tblExo.scenario.msgAE) {
     $("#ctnAEAffich").load("lglg/lglg_outils/AEAffich.html");
+  }
+
+  //*****score total
+  console.log("voir si on affiche le SCORE");
+  var tScore = false;
+  scoreMax = 0;
+  for (var iPage = 0 ; iPage < tblExo.pages.length ; iPage++){
+    console.log("iPage = " + iPage);
+    for (var  iQ = 0 ; iQ < tblExo.pages[iPage].questions.length ; iQ++){
+        console.log("iQ = " + iQ);
+        if (tblExo.pages[iPage].questions[iQ].scoreActif){
+          tScore = true;
+          for (var iProp =0 ; iProp < tblExo.pages[iPage].questions[iQ].propositions.length ; iProp++){
+            var tScore = parseInt(tblExo.pages[iPage].questions[iQ].propositions[iProp].score);
+            if (tScore > 0) {scoreMax += tScore;}
+          }
+        }
+    }
+  }
+  if (tScore){
+    $("#ctnScore").load("lglg/lglg_outils/scoreAffich.html");
+    // $("#ctnScore").removeClass("invisible");
   }
 
   //*** col droite
@@ -314,8 +337,6 @@ function enregistreRep() {
 
 function validation() {
   "use strict";
-  // dans scenario on pourrait bloquer le retour à "questionnaire ici ...
-
   //***
   tblReponses[pCourante].valid = true;
   $(".feedback").show("fast");
@@ -353,19 +374,30 @@ function lireExtraitVid(e) {
   var fin = tblExo.pages[pCourante].questions[params[2]][extrait].fin;
 
   if ((params[3] === "vo") != (maVideoSousTitreActif())) {
-    sousTitrage1();
+    sousTitrage(true);
+    // mettre écouteur en once sur clic pour virer ST
+    var temp = setTimeout(function() {
+      window.addEventListener("click", function() {
+        sousTitrage(false);
+        maVideoPause();
+      }, {
+        capture: true,
+        once: true
+      });
+    }, 2);
   }
 
   maVideoSeek(deb);
   maVideoPlay();
+
   var timer = setInterval(function() {
     if (maVideoCurrentTime() > fin) {
       maVideoPause();
       clearInterval(timer);
+      sousTitrage(false);
     }
   }, 100);
 }
-
 
 
 ///******changer le svg de couleur*******/
@@ -413,7 +445,7 @@ function redimCtnQuestions() {
     var temp2 = $("#ctnNavigation").height();
     var temp3 = temp + temp2 + 10;
     var temp4 = window.innerHeight - temp3;
-    console.log("TOP de navig = " + temp + "\nnavig hauteur = " + temp2 + "\nsomme des perte " + temp3 + "\nhauteur max = " + temp4);
+  //  console.log("TOP de navig = " + temp + "\nnavig hauteur = " + temp2 + "\nsomme des perte " + temp3 + "\nhauteur max = " + temp4);
     $("#ctnPageQ").css("max-height", temp4);
   }
 }
@@ -427,8 +459,10 @@ function tblReponsesReset() {
     tblReponses[pageId].valid = false;
     tblReponses[pageId].reps = [];
     tblReponses[pageId].AE = [];
+    tblReponses[pageId].score = [];
     for (var questionId = 0; questionId < tblExo.pages[pageId].questions.length; questionId++) {
       tblReponses[pageId].AE[questionId] = -1;
+        tblReponses[pageId].score[questionId] = 0;
       if (tblExo.pages[pageId].questions[questionId].type === "qo") {
         tblReponses[pageId].reps[questionId] = "";
       } else if (tblExo.pages[pageId].questions[questionId].type === "qtrous") {
@@ -454,7 +488,6 @@ function nettoieChaine(entree) { //pour nettoyer nom des fichier à enregistrer 
 //****** QCM :
 
 
-
 function QCMCorr() {
   "use strict";
   //boucle sur la page pour trouver les QCM
@@ -462,6 +495,7 @@ function QCMCorr() {
     if (tblExo.pages[pCourante].questions[i].type === "qcm") {
       //verrrouile les coches
       var qCorr = true;
+      var qScore = 0;
       for (var j = 0; j < tblExo.pages[pCourante].questions[i].propositions.length; j++) {
         //****coche
         var coche = document.getElementById("cb_" + i + "_" + j);
@@ -471,18 +505,22 @@ function QCMCorr() {
           coche.className = "QCMCocheFaux";
           qCorr = false;
         }
-        // coche.disabled = true;
-        // *** texte
-        //		    if (tblExo.pages[pCourante].questions[i].propositions[j].reponseCorrecte){
-        //			document.getElementById("txt_"+i+"_"+j).className += "QCMTxtBon";
-        //		    }
+        //****score
+        if (coche.checked && tblExo.pages[pCourante].questions[i].scoreActif){
+          var t = parseInt(tblExo.pages[pCourante].questions[i].propositions[j].score);
+          document.getElementById("score_" + i + "_" + j).innerHTML = t;
+          document.getElementById("score_" + i + "_" + j).style = "display:block";
+          qScore += t;
+              $("#ctnScore").removeClass("invisible"); //todo tester ou pas ?
+        }
       }
-      if (qCorr) {
-        document.getElementById("ctnQuestion_" + i).className += " QCMQBon";
-      } else {
-        document.getElementById("ctnQuestion_" + i).className += " QCMQFaux";
+      if (tblExo.pages[pCourante].questions[i].scoreActif){
+        document.getElementById("qScore_"+i).innerHTML = qScore;
+        tblReponses[pCourante].score[i] = qScore;
+        majScore();
       }
-    }
+
+    } //***fin type === QCM
   }
 
   $("input[type='checkbox']").attr('disabled', 'disabled');
