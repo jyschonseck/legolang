@@ -58,14 +58,14 @@
   <h2><img src="img/help.svg" id="aide_listClavier" class="aide" alt="aide">Caractères accentués</h2>
   <div class="boite1">
     <input type="text" id="txtClavier" style="width:60%;margin:0.3rem 0;" onchange="tblExo.clavier = this.value" />
-    <select id="selectClavier" onChange="document.getElementById('txtClavier').value = tblClaviers[this.selectedIndex].car;" ></select>
+    <select id="selectClavier" onChange="document.getElementById('txtClavier').value = tblClaviers[this.selectedIndex].car;tblExo.clavier = tblClaviers[this.selectedIndex].car;" ></select>
   </div>
 
   <h2>Scénario</h2>
   <div class="boite1">
     <h3><img src="img/help.svg" id="aide_scenAccesQ" class="aide" alt="aide">Accès au questionnaire</h3>
     <form name="accesQuestionnaire" id="accesQuestionnaire" onchange="tblExo.scenario.accesQ = accesQ.value;">
-      <input type="radio" name="accesQ" id="btnAccesQ0" value="0">Accès immédiat
+      <input type="radio" name="accesQ" id="btnAccesQ0" value="0" />Accès immédiat
       <input type="radio" name="accesQ" id="btnAccesQ1" value="1" />Accès à la fin de la vidéo
     </form>
 

@@ -14,7 +14,9 @@
 
     // gestion de la lecture obligatoire de la video
     video = document.getElementById('video');
-    if (tblExo.scenario.accesQ === "0" || $("#nav_3").hasClass("actif")) { //acces immédiat ou déja repondu, donc onglet 3 actif
+    console.log("test scenario " + tblExo.scenario.accesQ  + typeof tblExo.scenario.accesQ );
+    if (parseInt(tblExo.scenario.accesQ) === 0 || $("#nav_3").hasClass("actif")) { //acces immédiat ou déja repondu, donc onglet 3 actif
+      console.log("donc on active la nav");
       maVideoActiveNav();
     } else {
       setTimeout(poseEcouteurFin(), 3000);

@@ -15,6 +15,10 @@ body{
 	background-color:#ddd;
 }
 
+p{
+  margin:0;
+}
+
 main{
 }
 
@@ -292,6 +296,8 @@ td div input{
 	cursor:pointer;
 	width:100%;
 	text-align:left;
+  max-height: 66px;
+  overflow: hidden;
 }
 
 .eqQuestionOutils{

@@ -13,7 +13,13 @@
   <input type="number" id="extQDebQo" onChange="heureChange('Q');" />
   <span class="clicHeure">fin : </span>
   <input type="number" id="extQFinQo" onChange="heureChange('Q');" />
-  <span id="btnLireExtraitQ" onClick="lireExtrait(document.getElementById('extQDebQo').value, document.getElementById('extQFinQo').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span> </div>
+  <span id="btnLireExtraitQ" onClick="lireExtrait(document.getElementById('extQDebQo').value, document.getElementById('extQFinQo').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span>
+</div>
+
+<div class="">
+  <label for="cbScore">Question avec score : </label>
+  <input type="checkbox" id="cbScore" onchange="changeScorableQtrou(event);">
+</div>
 
 <p style="border-bottom:solid 1px;width:100%;"></p>
 
@@ -38,7 +44,7 @@
     tinymce.init({
       selector: '#taTxtQuestion',
       plugins: ' advlist lists table code image noneditable',
-      toolbar: " undo redo | bold italic underline | alignleft aligncenter alignright |  table image code | trou feedback ",
+      toolbar: " undo redo | bold italic underline | alignleft aligncenter alignright | table image code | trou feedback ",
       branding: false,
       menubar: false,
       // content_css: "css/editeur.nested.css",
@@ -69,11 +75,11 @@
           modal: true,
           autoOpen: false,
           width: 640,
-          position: {
-            my: "center center",
-            at: "center center",
-            of: "#ctnEditeur"
-          },
+          // position: {
+          //   my: "center center",
+          //   at: "center center",
+          //   of: "window"
+          // },
           show: {
             effect: "fade",
             duration: 333
@@ -107,8 +113,8 @@
       $("#btnLireExtraitQ").show("fast");
     else
       $("#btnLireExtraitQ").hide("fast");
-    // nicEditors.findEditor('taTxtCorrection').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
 
+      document.getElementById('cbScore').checked = tblExo.pages[pageCourante].questions[questionCourante].scoreActif;
     document.getElementById('extCDebQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut;
     document.getElementById('extCFinQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin;
     if (parseFloat(document.getElementById('extCDebQo').value) > 0) {
@@ -127,11 +133,11 @@
   });
 
   function questionEnregistre() {
-    //TODO : à ajuster (pour le moement c = QO)
     console.log("ENREGISTREMENT");
     tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(tinymce.get('taTxtQuestion').getContent());
     tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut = document.getElementById('extQDebQo').value;
     tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin = document.getElementById('extQFinQo').value;
+    tblExo.pages[pageCourante].questions[questionCourante].scoreActif = document.getElementById('cbScore').checked;
     tblExo.pages[pageCourante].questions[questionCourante].txtCorrection = questionFormat(tinymce.get('taTxtCorrection').getContent());
     tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut = document.getElementById('extCDebQo').value;
     tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin = document.getElementById('extCFinQo').value;
@@ -148,9 +154,9 @@
       apSpace = "";
     if (tblExo.pages[pageCourante].questions[questionCourante].trousOrder) {
       tblExo.pages[pageCourante].questions[questionCourante].trousOrder += 1;
-      var idTrou = "TROU-" + tblExo.pages[pageCourante].questions[questionCourante].trousOrder;
+      var idTrou = "TROU" + tblExo.pages[pageCourante].questions[questionCourante].trousOrder;
     } else {
-      var idTrou = "TROU-1";
+      var idTrou = "TROU1";
       tblExo.pages[pageCourante].questions[questionCourante].trousOrder = 1;
     }
     // var newTrou = $.parseHTML(editeur.selection.getContent()[0].textContent);
@@ -249,6 +255,9 @@
         score.id = "score_" + a + "_" + iCorr;
         score.type = "number";
         score.value = tblExo.pages[pageCourante].questions[questionCourante].trous[a][iCorr].score;
+        if (!document.getElementById("cbScore").checked) {
+          score.className = "invisible";
+        }
         divCorr.appendChild(score);
         var cbCorrect = document.createElement("input");
         cbCorrect.id = "correct_" + a + "_" + iCorr;
@@ -340,7 +349,7 @@
     console.log("FIN de sauvTrous : " + JSON.stringify(tblExo.pages[pageCourante].questions[questionCourante]));
   }
 
-  // appelée depuis tinymce pour inserer bouton son ou espace feedback
+  // appelée depuis tinymce pour inserer  espace feedback
   function choixObj() {
     console.log("fonction choixObj" + "trou");
     var maBalise = "$";
@@ -349,11 +358,13 @@
     var monSelect = document.createElement("select");
     monSelect.id = "slctPourInser";
     for (var i in tblExo.pages[pageCourante].questions[questionCourante].trous) {
+
       var opt = document.createElement("option");
       opt.value = i;
       opt.innerHTML = i;
       monSelect.appendChild(opt);
     }
+    console.log("2");
     //***
     var ctnPopup = document.getElementById("ctnPopupGen");
     ctnPopup.innerHTML = "";
@@ -370,7 +381,16 @@
       $("#ctnPopupGen").dialog("close");
     };
     ctnPopup.appendChild(btnOK);
-
+console.log("3");
     $("#ctnPopupGen").dialog("open");
   }
+
+
+    function changeScorableQtrou(e) {
+      if (e.currentTarget.checked) {
+        $(".divCorr input[type='number']").removeClass('invisible');
+      } else {
+        $(".divCorr input[type='number']").addClass('invisible');
+      }
+    }
 </script>

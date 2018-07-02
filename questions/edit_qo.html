@@ -25,13 +25,7 @@
 <script>
 
     $(function () {
-         ///**** ajouter nicedit
-        // if (!nicEditors.findEditor('taTxtCorrectionQo'))
-        //     editeur2 = new nicEditor().panelInstance('taTxtCorrectionQo');
-        // if (!nicEditors.findEditor('taTxtQuestionQo'))
-        //     editeur3 = new nicEditor().panelInstance('taTxtQuestionQo');
 
-        //nicEditors.findEditor('taTxtQuestionQo').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
         tinymce.init({
           selector: '.richEdit',
           plugins: ' advlist lists table code image',
@@ -51,7 +45,6 @@
             $("#btnLireExtraitQ").show("fast");
         else
             $("#btnLireExtraitQ").hide("fast");
-        // nicEditors.findEditor('taTxtCorrectionQo').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
 
         document.getElementById('extCDebQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut;
         document.getElementById('extCFinQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin;

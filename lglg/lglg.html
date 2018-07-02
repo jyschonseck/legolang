@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LeGoLanG</title>
   <link rel="stylesheet" href="lglg/styles.css" type="text/css" media="screen">
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
@@ -39,11 +40,9 @@
     <section id="questionnaire">
       <div id="ctnOnglets" onClick="ongletsClickHdlr(event);">
         <div id="nav_1" class="actif choisi">vidéo</div>
-        <!--
-      -->
+
         <div id="nav_2">questions</div>
-        <!--
-      -->
+
         <div id="nav_3">correction</div>
       </div>
       <div id="ctnDroit">
@@ -71,7 +70,7 @@
   <script src="lglg/lglg_questions/qcm.js"></script>
   <script>
     $(function() {
-
+      console.log("lglg.html onloaded");
       //*** pour affichage des titres : je l'ai désactivé pour les paquest scorm : on faisait redondance avec le titre obigatoire de moodle. Mais je l'avais gardé un temps pour actufle...
       // if (affichTitre) {
       //   $("#txtTitre").css("display", "block");
@@ -79,17 +78,25 @@
       // }
 
       //rajout pour empêcher clic droit (et enregistrement de la vidéo facile sauf si on est sur cavul-test...
-      if (document.URL.indexOf("cavul-test") < 0) {
+      if (document.URL.indexOf("~jys") < 0) {
         document.oncontextmenu = new Function("return false");
       }
 
       if (sessionStorage.getItem("lglg_data") == null) { //test présence donnée du mode auteur
+        console.log("on charge le fichier exo.json");
         chargeFichierData();
       } else {
         tblExo = jQuery.parseJSON(sessionStorage.lglg_data);
+        console.log("on a du session storage ..; on est en auteur");
         modeAuteur = true;
+        //** initialisation du tableau reponse :;
+        tblReponsesInit();
+        tblQuestionsInit();
         afficheExo();
       }
+
+
+
 
       //******** resize de la partie question (pas réussi à gérer en css ...
       //si on redimensionne la fenetre
@@ -101,15 +108,21 @@
     function chargeFichierData() {
       var url = 'module/data.json';
       // si on vient de lglg_auteur :
-      if (sessionStorage.getItem("lglg_lien") != null) url = sessionStorage.getItem("lglg_lien");
-
+      //  if (sessionStorage.getItem("lglg_lien") != null) url = sessionStorage.getItem("lglg_lien");
+      console.log("url avant le $.ajax = " + url);
       $.ajax({
         type: 'GET',
         url: url,
         dataType: 'json',
         success: function(data) {
-          if (data) tblExo = data;
-          afficheExo();
+          if (data) {
+            tblExo = data;
+            //** initialisation du tableau reponse :;
+            tblReponsesInit();
+
+            tblQuestionsInit();
+            afficheExo();
+          }
         },
         error: function() {
           alert('Pas de lecture du fichier : ' + url, 'erreur');
@@ -133,9 +146,7 @@
           });
         } else if (onglet === "2") {
           if ($('#ctnOutils').hasClass("outilsInactif")) {
-            $('#ctnOutils').show(200, function() {
-              //svgChangeColor(); // quand on hide les svg il se remette en noir au show, donc on colorise ici !
-            });
+            $('#ctnOutils').show(200);
             var tempo = setTimeout(function() {
               $("#ctnOutils").removeClass("outilsInactif");
             }, 200);

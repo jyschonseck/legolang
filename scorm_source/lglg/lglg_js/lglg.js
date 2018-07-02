@@ -2,7 +2,8 @@
 //**********************//
 //**variable globales***//
 var tblExo = {}; // le tableau contenant TOUTES les données de l'exo (ouverture directe du fichier .json)
-var tblReponses = []; //le tableau contenant les réponses (a charger depuis scorm et/ou LS ?)
+var tblReponses = []; //le tableau contenant les réponses (a charger depuis scorm et/ou LS ?) pour l emoment je n'utilise pas tblQuestions.reponses (c'est trop chiant)
+var tblQuestions = []; //le tableau d'objet question... appelé à remplacer tblExo
 var posRedim = 50; // ratio en pourcentage entre colonne gauche et droite
 var qCourante = 0; //
 var pCourante = 0; // page de question à afficher
@@ -13,6 +14,8 @@ var scorm = false; //valeur à true si on a du scorm : utilisé dans enregistrem
 var affichClavier = false; // variable pour affichage du clavier
 // var affichST = false; // mettre à true lors de afficheExo si on affiche les ST pour extrait)
 var scoreMax = 0; // le score max qu'on peut atteindre !
+var scoreAffich = false; // affichage du score (dépend des scoreActifs de chaque question "scorable")
+var tScore = 0; // totalScore
 
 //**constante***********//
 // si je déclare const si je lance plusieur fois lglg j'ai une erreur 'déja déclaré'
@@ -47,27 +50,6 @@ function afficheExo() {
       document.getElementById("logo").src = tblExo.interface.logourl;
       document.getElementById("logo").title = tblExo.interface.logotitle;
       document.getElementById("lienLogo").href = tblExo.interface.logolien;
-    }
-  }
-
-  //*******************
-  //** initialisation du tableau reponse :;
-  tblReponsesReset();
-
-  /* si on a lglgScorm dans sessionStorage on le charge et on l'efface...
-  Sinon on regarde si on a du moduleId dans localStorage*/
-  if (sessionStorage.scorm) {
-    scorm = true; // pour enregistrement
-    sessionStorage.removeItem("scorm");
-    //on charge suspend_data dans tblReponse:
-    if (SCOGetValue("cmi.suspend_data")) {
-      tblReponses = jQuery.parseJSON(SCOGetValue("cmi.suspend_data"));
-    }
-  } else {
-    // console.log("tblExo.moduleId = " + tblExo.moduleId + ", " + localStorage.getItem(tblExo.moduleId));
-    if (tblExo.moduleId && localStorage.getItem(tblExo.moduleId)) {
-      tblReponses = jQuery.parseJSON(localStorage.getItem(tblExo.moduleId));
-      // console.log("on a des réponses en localStorage : \n" + JSON.stringify(tblReponses));
     }
   }
 
@@ -115,23 +97,30 @@ function afficheExo() {
   }
 
   //*****score total
-  console.log("voir si on affiche le SCORE");
-  var tScore = false;
   scoreMax = 0;
-  for (var iPage = 0 ; iPage < tblExo.pages.length ; iPage++){
+  for (var iPage = 0; iPage < tblExo.pages.length; iPage++) {
     console.log("iPage = " + iPage);
-    for (var  iQ = 0 ; iQ < tblExo.pages[iPage].questions.length ; iQ++){
-        console.log("iQ = " + iQ);
-        if (tblExo.pages[iPage].questions[iQ].scoreActif){
-          tScore = true;
-          for (var iProp =0 ; iProp < tblExo.pages[iPage].questions[iQ].propositions.length ; iProp++){
+    for (var iQ = 0; iQ < tblExo.pages[iPage].questions.length; iQ++) {
+      console.log("iQ = " + iQ);
+      if (tblExo.pages[iPage].questions[iQ].scoreActif) {
+        var tScore = 0;
+        scoreAffich = true;
+        if (tblExo.pages[iPage].questions[iQ].type === "qcm") {
+          for (var iProp = 0; iProp < tblExo.pages[iPage].questions[iQ].propositions.length; iProp++) {
             var tScore = parseInt(tblExo.pages[iPage].questions[iQ].propositions[iProp].score);
-            if (tScore > 0) {scoreMax += tScore;}
+            if (tScore > 0) {
+              scoreMax += tScore;
+            }
           }
+        } else if (tblExo.pages[iPage].questions[iQ].type === "qtrous") {
+          // TODO: calculer le score (attention une seule valeur par trou !)
         }
+      }
     }
   }
-  if (tScore){
+
+  console.log("calcul du score max");
+  if (scoreAffich) {
     $("#ctnScore").load("lglg/lglg_outils/scoreAffich.html");
     // $("#ctnScore").removeClass("invisible");
   }
@@ -206,15 +195,10 @@ function affichPage() {
     nouvQuestion.className = "ctnQuestion";
     nouvQuestion.id = "ctnQuestion_" + i;
     ctnQ.appendChild(nouvQuestion);
-    //
-    if (tblExo.pages[pCourante].questions[i].type === "qo") {
-      creationQO(i);
-    } else if (tblExo.pages[pCourante].questions[i].type === "qtrous") {
-      creationQTROUS(i);
-    } else if (tblExo.pages[pCourante].questions[i].type === "qcm") {
-      creationQCM(i);
-    }
+    tblQuestions[pCourante][i].affich(i); //
   }
+
+
   ///***** gestion des onglets
   if (tblReponses[pCourante].valid && tblExo.scenario.verrCorr === "1") { //Déja validé ET verrouille -> on passe à 3
     $("#nav_3").addClass("actif");
@@ -230,8 +214,7 @@ function affichPage() {
       verifAccesCorr(); // voir si on active l'onglet 3 à correction
     }
   }
-  verifAccesCorr
-    ();
+  verifAccesCorr();
 }
 
 function verifAccesCorr() {
@@ -264,6 +247,7 @@ function enregistreRep() {
   //-getFocus et mouseOut des textarea pour qo et qtrous
   //-des tourner de pages
   // c'etait trop gourmand de le faire suite au verifAccessCorr qui declenche sur le onchange
+  console.log("enregistreRep");
 
   /******* calcul score.raw******/
   var pourScoreRaw = 0;
@@ -335,15 +319,12 @@ function enregistreRep() {
   }
 }
 
-function validation() {
+function validation() { // valide la page
   "use strict";
-  //***
   tblReponses[pCourante].valid = true;
-  $(".feedback").show("fast");
-  //spécifique QO.
-  $(".QOReponse").attr('disabled', 'disabled');
-  // pour QCM
-  QCMCorr();
+  for (var i = 0; i < tblQuestions[pCourante].length; i++) {
+    tblQuestions[pCourante][i].corr(i);
+  }
 }
 
 function edition() {
@@ -445,15 +426,15 @@ function redimCtnQuestions() {
     var temp2 = $("#ctnNavigation").height();
     var temp3 = temp + temp2 + 10;
     var temp4 = window.innerHeight - temp3;
-  //  console.log("TOP de navig = " + temp + "\nnavig hauteur = " + temp2 + "\nsomme des perte " + temp3 + "\nhauteur max = " + temp4);
+    //  console.log("TOP de navig = " + temp + "\nnavig hauteur = " + temp2 + "\nsomme des perte " + temp3 + "\nhauteur max = " + temp4);
     $("#ctnPageQ").css("max-height", temp4);
   }
 }
 
 //*****************************
-function tblReponsesReset() {
+function tblReponsesInit() {
   'use strict';
-  console.log("tblReponsesReset" + tblExo.pages.length);
+  console.log("tblReponsesinit " + tblExo.pages.length);
   for (var pageId = 0; pageId < tblExo.pages.length; pageId++) {
     tblReponses[pageId] = {};
     tblReponses[pageId].valid = false;
@@ -462,7 +443,7 @@ function tblReponsesReset() {
     tblReponses[pageId].score = [];
     for (var questionId = 0; questionId < tblExo.pages[pageId].questions.length; questionId++) {
       tblReponses[pageId].AE[questionId] = -1;
-        tblReponses[pageId].score[questionId] = 0;
+      tblReponses[pageId].score[questionId] = 0;
       if (tblExo.pages[pageId].questions[questionId].type === "qo") {
         tblReponses[pageId].reps[questionId] = "";
       } else if (tblExo.pages[pageId].questions[questionId].type === "qtrous") {
@@ -475,6 +456,46 @@ function tblReponsesReset() {
       }
     }
   }
+    /* si on a lglgScorm dans sessionStorage on le charge et on l'efface...
+    Sinon on regarde si on a du moduleId dans localStorage*/
+    if (sessionStorage.scorm) {
+      scorm = true; // pour enregistrement
+      sessionStorage.removeItem("scorm");
+      //on charge suspend_data dans tblReponse:
+      if (SCOGetValue("cmi.suspend_data")) {
+        tblReponses = jQuery.parseJSON(SCOGetValue("cmi.suspend_data"));
+      }
+    } else {
+      // console.log("tblExo.moduleId = " + tblExo.moduleId + ", " + localStorage.getItem(tblExo.moduleId));
+      if (tblExo.moduleId && localStorage.getItem(tblExo.moduleId)) {
+        tblReponses = jQuery.parseJSON(localStorage.getItem(tblExo.moduleId));
+        // console.log("on a des réponses en localStorage : \n" + JSON.stringify(tblReponses));
+      }
+    }
+}
+
+function tblQuestionsInit(){
+  // ****mettre les questions de tblExo dans tblQuestions en format objet :
+  for (var p = 0 ; p< tblExo.pages.length ; p++){
+    // console.log("PAGE " + p);
+    tblQuestions[p] = [];
+    for (var q = 0 ; q < tblExo.pages[p].questions.length ; q++){
+      // console.log("QUESTION " + q);
+      if (tblExo.pages[p].questions[q].type === "qo"){
+        tblQuestions[p].push( Object.create(proto_qo));
+      } else if (tblExo.pages[p].questions[q].type === "qcm"){
+        tblQuestions[p][q] = Object.create(proto_qcm);
+      }else if (tblExo.pages[p].questions[q].type === "qtrous"){
+        tblQuestions[p][q] = Object.create(proto_qtrous);
+      }
+
+      tblQuestions[p][q].donnees = tblExo.pages[p].questions[q];
+//******* pour les reponses AE et score je reste pour le moment sur la varible tableau globale
+      // tblQuestions[p][q].reponses = tblReponses[p].reps[q];
+      // tblQuestions[p][q].ae = tblReponses[p].AE[q];
+      // tblQuestions[p][q].score_ = tblReponses[p].score[q];
+    }
+  }
 }
 
 function nettoieChaine(entree) { //pour nettoyer nom des fichier à enregistrer (scorm surtout)
@@ -483,46 +504,4 @@ function nettoieChaine(entree) { //pour nettoyer nom des fichier à enregistrer 
   var sortie;
   sortie = entree.replace(regExp1, "");
   return sortie.substr(0, 15);
-}
-
-//****** QCM :
-
-
-function QCMCorr() {
-  "use strict";
-  //boucle sur la page pour trouver les QCM
-  for (var i = 0; i < tblExo.pages[pCourante].questions.length; i++) {
-    if (tblExo.pages[pCourante].questions[i].type === "qcm") {
-      //verrrouile les coches
-      var qCorr = true;
-      var qScore = 0;
-      for (var j = 0; j < tblExo.pages[pCourante].questions[i].propositions.length; j++) {
-        //****coche
-        var coche = document.getElementById("cb_" + i + "_" + j);
-        if (coche.checked === tblExo.pages[pCourante].questions[i].propositions[j].reponseCorrecte) {
-          coche.className = "QCMCocheBon";
-        } else {
-          coche.className = "QCMCocheFaux";
-          qCorr = false;
-        }
-        //****score
-        if (coche.checked && tblExo.pages[pCourante].questions[i].scoreActif){
-          var t = parseInt(tblExo.pages[pCourante].questions[i].propositions[j].score);
-          document.getElementById("score_" + i + "_" + j).innerHTML = t;
-          document.getElementById("score_" + i + "_" + j).style = "display:block";
-          qScore += t;
-              $("#ctnScore").removeClass("invisible"); //todo tester ou pas ?
-        }
-      }
-      if (tblExo.pages[pCourante].questions[i].scoreActif){
-        document.getElementById("qScore_"+i).innerHTML = qScore;
-        tblReponses[pCourante].score[i] = qScore;
-        majScore();
-      }
-
-    } //***fin type === QCM
-  }
-
-  $("input[type='checkbox']").attr('disabled', 'disabled');
-  $("input[type='checkbox']").addClass("QCMCocheInactif");
 }

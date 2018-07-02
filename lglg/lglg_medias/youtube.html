@@ -9,9 +9,9 @@
 	  height: 0;
 	  overflow:hidden;
 	  max-width: 100%;
-	   } 
+	   }
 #ctnYoutube iframe {
-	position: absolute; 
+	position: absolute;
 	top: 0; left: 0; width: 100%; height: 100%;
 	 }
 </style>
@@ -19,7 +19,7 @@
 <div id="ctnYoutube">
 	<div id="lecteur"></div>
 </div>
-			
+
 
 <div id="placeAPI"></div><!-- emplacement du script de l'API you tube-->
 
@@ -32,13 +32,13 @@ $(function(){
 	 /***********************
 	 **code source : https://developers.google.com/youtube/iframe_api_reference?hl=fr#Loading_a_Video_Player**
 	 ************************/
-	 if (tblExo.scenario.accesQ === "0" || $("#nav_3").hasClass("actif")){//acces immédiat ou déja repondu, donc onglet 2 actif
+   if (parseInt(tblExo.scenario.accesQ) === 0 || $("#nav_3").hasClass("actif")) { //acces immédiat ou déja repondu, donc onglet 3 actif
 		videoBarInitial = 1;
 		$("#nav_2").addClass("actif");
 	 }
-	 
+
 	if (window['YT']){
-		//on a déjà l'api donc on cree maVideo: ") 
+		//on a déjà l'api donc on cree maVideo: ")
 		creationMaVideo(videoBarInitial);
 	}else{
 		var tag = document.createElement('script');
@@ -46,15 +46,15 @@ $(function(){
 	 	var placeAPI = document.getElementById('placeAPI');
 		placeAPI.parentNode.insertBefore(tag, placeAPI);
 	}
-	
-	
-	 
+
+
+
 });
 
 	function onYouTubeIframeAPIReady() {
 		creationMaVideo(videoBarInitial);
 	}
-	
+
 function creationMaVideo(maVideoControl){
 	//VIDER la DIV #lecteur
 	var div = document.getElementById('ctnYoutube');
@@ -68,12 +68,12 @@ function creationMaVideo(maVideoControl){
 		height: '390',
 		width: '100%',
 		videoId: videoYTId(),
-		playerVars: { 
-			'autohide' : 0, 
+		playerVars: {
+			'autohide' : 0,
 			'autoplay': 0,
 			'controls': maVideoControl,
 			'fs':0, //fullScreen
-			'rel':0, // vidéo "related" à la fin 
+			'rel':0, // vidéo "related" à la fin
 			'info' : 0 ,
 			'modestbranding' : 1,//, //1 = plus de logo youtube
 			'enablejsapi' : 1,
@@ -89,10 +89,10 @@ function creationMaVideo(maVideoControl){
 }
 function onPlayerReadyHdlr(){
 	video.setOption("captions", "track", {"languageCode": "es"});
-	//video.setOption("captions", "track", {"fontSize": 8}); 
+	//video.setOption("captions", "track", {"fontSize": 8});
 	video.playVideo();
 	//video.pauseVideo();
-	var toto = setTimeout(function(){ 
+	var toto = setTimeout(function(){
 		video.unloadModule('captions');
 		video.pauseVideo();
 		video.seekTo( "0" , true);
@@ -132,7 +132,7 @@ function poseEcouteurFin(){//pour déverouiller accès au questionnaire...
 function maVideoActiveNav(){
 	$("#nav_2").addClass("actif");
 	creationMaVideo(1);
-	
+
 }
 
 function sousTitrage1(){
@@ -150,7 +150,7 @@ function sousTitrage1(){
 function videoYTId(){
 	if (tblExo["videoUrl"].indexOf("watch") > -1){
 		var temp = tblExo["videoUrl"].split("=");
-	}else{	
+	}else{
 		var temp = tblExo["videoUrl"].split("/");
 	}
 	return temp[temp.length - 1];

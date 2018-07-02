@@ -71,11 +71,16 @@ function tempsPon2lisible(entree){
 	return lisible;
 }
 
-function eDblQ(entree){ // pour virer les doubleQuote qui plante le paquet scorm...
+function eDblQ(entree){
+  console.log("eDblQ entree " + entree);
 	"use strict";
-	var regExp = /"/g;
+	var regExp = /"/g; // pour virer les doubleQuote qui plante le paquet scorm...
 	var sortie = entree.replace(regExp , "'");
-	return sortie;
+    console.log("eDblQ  etap 1 sortie " + sortie);
+  	 regExp = /\n/g; // pour virer les retour à la ligne généré par tinyMCE...
+  	var sortie2 = sortie.replace(regExp , "");
+      console.log("eDblQ  etap 1 sortie " + sortie2);
+	return sortie2;
 }
 
 function actualiserST(){

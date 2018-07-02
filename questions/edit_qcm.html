@@ -1,5 +1,5 @@
 <h3>Question QCM: </h3>
-<textarea id="taTxtQuestionQcm"></textarea>
+<textarea id="taTxtQuestionQcm"  class="richEdit" ></textarea>
 <!---->
 
 <h4>Extrait vidéo "question" : </h4>
@@ -12,11 +12,10 @@
 
 <div class="">
   <label for="cbScore">Question avec score : </label>
-  <input type="checkbox" id="cbScore" onchange="changeScorable(event);">
+  <input type="checkbox" id="cbScore" onchange="changeScorableQcm(event);">
 </div>
 
 <div id="ctnPropositions">
-
 
 </div>
 <div id="ctnPropsOutils">
@@ -27,7 +26,7 @@
 <p style="border-bottom:solid 1px;width:100%;"></p>
 
 <h3>Correction :</h3>
-<textarea id="taTxtCorrectionQcm"></textarea>
+<textarea id="taTxtCorrectionQcm"   class="richEdit" ></textarea>
 
 <div>
   <span class="clicHeure">début : </span>
@@ -40,23 +39,28 @@
 
 <script>
   $(function() {
-    ///**** ajouter nicedit
-    if (!nicEditors.findEditor('taTxtCorrectionQcm'))
-      editeur4 = new nicEditor().panelInstance('taTxtCorrectionQcm');
-    if (!nicEditors.findEditor('taTxtQuestionQcm'))
-      editeur5 = new nicEditor().panelInstance('taTxtQuestionQcm');
 
-    nicEditors.findEditor('taTxtQuestionQcm').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
+    tinymce.init({
+      selector: '.richEdit',
+      plugins: ' advlist lists table code image',
+      toolbar: ' undo redo | styleselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | table image code ',
+      menu: true,
+      branding: false
+    }).then(function() {
+      console.log("prommesse...");
+      tinymce.get("taTxtQuestionQcm").setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
+      tinymce.get("taTxtCorrectionQcm").setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
+    });
+
 
     document.getElementById('extQDebQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut;
     document.getElementById('extQFinQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin;
-    if (parseFloat(document.getElementById('extQDebQcm').value) > 0)
+    if (parseFloat(document.getElementById('extQDebQcm').value) > 0){
       $("#btnLireExtraitQ").show("fast");
-    else
-      $("#btnLireExtraitQ").hide("fast");
+    }else{
+      $("#btnLireExtraitQ").hide("fast");}
     document.getElementById('cbScore').checked = tblExo.pages[pageCourante].questions[questionCourante].scoreActif;
 
-    nicEditors.findEditor('taTxtCorrectionQcm').setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
     document.getElementById('extCDebQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut;
     document.getElementById('extCFinQcm').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin;
     if (parseFloat(document.getElementById('extCDebQcm').value) > 0)
@@ -73,11 +77,11 @@
   });
 
   function questionEnregistre() {
-    tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(nicEditors.findEditor('taTxtQuestionQcm').getContent());
+    tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(tinymce.get('taTxtQuestionQcm').getContent());
     tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut = document.getElementById('extQDebQcm').value;
     tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin = document.getElementById('extQFinQcm').value;
     tblExo.pages[pageCourante].questions[questionCourante].scoreActif = document.getElementById('cbScore').checked;
-    tblExo.pages[pageCourante].questions[questionCourante].txtCorrection = questionFormat(nicEditors.findEditor('taTxtCorrectionQcm').getContent());
+    tblExo.pages[pageCourante].questions[questionCourante].txtCorrection = questionFormat(tinymce.get('taTxtCorrectionQcm').getContent());
     tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut = document.getElementById('extCDebQcm').value;
     tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin = document.getElementById('extCFinQcm').value;
     //**** boucle pour propositions
@@ -133,7 +137,7 @@
     document.getElementById("ctnPropositions").removeChild(eltAvirer);
   }
 
-  function changeScorable(e) {
+  function changeScorableQcm(e) {
     if (e.currentTarget.checked) {
       $("#ctnPropositions input[type='number']").removeClass('invisible');
     } else {
