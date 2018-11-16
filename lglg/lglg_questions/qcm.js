@@ -1,4 +1,3 @@
-// lecture de : https://developer.mozilla.org/fr/docs/Web/JavaScript/Guide/Utiliser_les_objets
 
 
 var proto_qcm = {
@@ -7,8 +6,6 @@ var proto_qcm = {
   // ae:null,
   // score:0,
   affich: function(i) {
-    // console.log("affich question " + this.donnees.txtQuestion + " - " + i);
-
     "use strict";
     var questionEnCours = document.getElementById("ctnQuestion_" + i);
 
@@ -104,7 +101,6 @@ var proto_qcm = {
     }
   },
   corr: function(i) {
-    // console.log("corr de qcm, page " + pCourante + " - " + i);
     $("#ctnQuestion_" + i + " .feedback").show("fast");
 
     var qCorr = true;
@@ -112,7 +108,6 @@ var proto_qcm = {
     $("#ctnQuestion_" + i + " input[type='checkbox']").addClass("QCMCocheInactif");
     for (var j = 0; j < this.donnees.propositions.length; j++) {
       //****coche
-      // console.log("on est dans pCourante " + pCourante + " - exo : " + i + " - prop " + j);
       var coche = document.getElementById("cb_" + i + "_" + j);
       coche.disabled = true;
       if (coche.checked === this.donnees.propositions[j].reponseCorrecte) {
@@ -131,7 +126,6 @@ var proto_qcm = {
       }
     }
     if (this.donnees.scoreActif) {
-      // console.log("score actif à " + pCourante + " - " + i);
       document.getElementById("qScore_" + i).innerHTML = qScore;
       tblReponses[pCourante].score[i] = qScore;
       majScore();
@@ -182,7 +176,6 @@ function QCMsCorr() {
         }
       }
       if (tblExo.pages[pCourante].questions[i].scoreActif) {
-        console.log("score actif à " + pCourante + " - " + i);
         document.getElementById("qScore_" + i).innerHTML = qScore;
         tblReponses[pCourante].score[i] = qScore;
         majScore();

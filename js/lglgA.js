@@ -103,6 +103,7 @@ function chargerVideo(){
 			//$("#video").attr("src",tblExo["videoUrl"]);
 			var temp = tblExo.videoUrl.split("/");
 			var adresse = temp[0] + "//" + temp[2] + "/public.php?service=files&t=" +temp[temp.length - 1] + "&download";
+      console.log("video OWNCMOUL " + adresse);
 			$("#video").attr("src" , adresse );
 		});
 	}else if (tblExo.videoType === "2"){

@@ -32,15 +32,12 @@ var tempsDebut = new Date();
 
 function afficheExo() {
   'use strict';
-  console.log("afficheExo");
   if (tblExo.interface.couleur1) {
     useCustomColor(tblExo.interface.couleur1);
   }
 
   if (tblExo.interface.logoaffich) {
     $("#logo").css("display", "block");
-    console.log("affiche " + tblExo.interface.logourl);
-    console.log("affiche " + tblExo.interface.logourl.length);
     if (tblExo.interface.logourl.length < 1) {
 
       document.getElementById("logo").src = "lglg/lglg_interface/logo/UL-NOIR-WEB-h120.png";
@@ -99,9 +96,7 @@ function afficheExo() {
   //*****score total
   scoreMax = 0;
   for (var iPage = 0; iPage < tblExo.pages.length; iPage++) {
-    console.log("iPage = " + iPage);
     for (var iQ = 0; iQ < tblExo.pages[iPage].questions.length; iQ++) {
-      console.log("iQ = " + iQ);
       if (tblExo.pages[iPage].questions[iQ].scoreActif) {
         var tScore = 0;
         scoreAffich = true;
@@ -119,7 +114,6 @@ function afficheExo() {
     }
   }
 
-  console.log("calcul du score max");
   if (scoreAffich) {
     $("#ctnScore").load("lglg/lglg_outils/scoreAffich.html");
     // $("#ctnScore").removeClass("invisible");
@@ -247,7 +241,6 @@ function enregistreRep() {
   //-getFocus et mouseOut des textarea pour qo et qtrous
   //-des tourner de pages
   // c'etait trop gourmand de le faire suite au verifAccessCorr qui declenche sur le onchange
-  console.log("enregistreRep");
 
   /******* calcul score.raw******/
   var pourScoreRaw = 0;
@@ -337,6 +330,8 @@ function edition() {
   $("input[type='checkbox']").removeClass("QCMCocheInactif");
   $("input[type='checkbox']").removeClass("QCMCocheBon");
   $("input[type='checkbox']").removeClass("QCMCocheFaux");
+  // QTrous :
+  qTrousEdition();
   //****
   $("#nav_2").addClass("actif");
 }
@@ -417,16 +412,13 @@ function svgChangeColor() {
 
 function redimCtnQuestions() {
   'use strict';
-  // console.log("function redimCtnQuestions()");
   ///*******le redimensionnement en hauteur : objet : faire le scroll sur la partie question seulement ...
 
-  if (document.getElementById("ctnQuestions")) { // éviter erreur quand on redim sur onglets!="previsualisation" dans l'auteur
-    // console.log("on a bien un ctnQuestions " + window.innerWidth + " / " +
+  if (document.getElementById("ctnQuestions")) { // éviter erreur quand on redim sur onglets!="previsualisation" dans l'
     var temp = parseInt($("#ctnQuestions").offset().top);
     var temp2 = $("#ctnNavigation").height();
     var temp3 = temp + temp2 + 10;
     var temp4 = window.innerHeight - temp3;
-    //  console.log("TOP de navig = " + temp + "\nnavig hauteur = " + temp2 + "\nsomme des perte " + temp3 + "\nhauteur max = " + temp4);
     $("#ctnPageQ").css("max-height", temp4);
   }
 }
@@ -434,7 +426,6 @@ function redimCtnQuestions() {
 //*****************************
 function tblReponsesInit() {
   'use strict';
-  console.log("tblReponsesinit " + tblExo.pages.length);
   for (var pageId = 0; pageId < tblExo.pages.length; pageId++) {
     tblReponses[pageId] = {};
     tblReponses[pageId].valid = false;
@@ -448,14 +439,16 @@ function tblReponsesInit() {
         tblReponses[pageId].reps[questionId] = "";
       } else if (tblExo.pages[pageId].questions[questionId].type === "qtrous") {
         tblReponses[pageId].reps[questionId] = [];
-        for (var i = 0; i < tblExo.pages[pageId].questions[questionId].txtQuestion.split(":SHORTANSWER:").length - 1; i++) {
-          tblReponses[pageId].reps[questionId][i] = "";
+        //for (var i = 0; i < tblExo.pages[pageId].questions[questionId].txtQuestion.split(":SHORTANSWER:").length - 1; i++) {
+        for (var i in tblExo.pages[pageId].questions[questionId].trous){
+          tblReponses[pageId].reps[questionId][i] = "*-*";
         }
       } else if (tblExo.pages[pageId].questions[questionId].type === "qcm") {
         tblReponses[pageId].reps[questionId] = "";
       }
     }
   }
+
     /* si on a lglgScorm dans sessionStorage on le charge et on l'efface...
     Sinon on regarde si on a du moduleId dans localStorage*/
     if (sessionStorage.scorm) {
@@ -466,10 +459,8 @@ function tblReponsesInit() {
         tblReponses = jQuery.parseJSON(SCOGetValue("cmi.suspend_data"));
       }
     } else {
-      // console.log("tblExo.moduleId = " + tblExo.moduleId + ", " + localStorage.getItem(tblExo.moduleId));
       if (tblExo.moduleId && localStorage.getItem(tblExo.moduleId)) {
         tblReponses = jQuery.parseJSON(localStorage.getItem(tblExo.moduleId));
-        // console.log("on a des réponses en localStorage : \n" + JSON.stringify(tblReponses));
       }
     }
 }
@@ -477,10 +468,8 @@ function tblReponsesInit() {
 function tblQuestionsInit(){
   // ****mettre les questions de tblExo dans tblQuestions en format objet :
   for (var p = 0 ; p< tblExo.pages.length ; p++){
-    // console.log("PAGE " + p);
     tblQuestions[p] = [];
     for (var q = 0 ; q < tblExo.pages[p].questions.length ; q++){
-      // console.log("QUESTION " + q);
       if (tblExo.pages[p].questions[q].type === "qo"){
         tblQuestions[p].push( Object.create(proto_qo));
       } else if (tblExo.pages[p].questions[q].type === "qcm"){

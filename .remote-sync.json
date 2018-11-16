@@ -1,0 +1,20 @@
+{
+  "logger": {
+    "title": "Remote Sync"
+  },
+  "transport": "ftp",
+  "uploadOnSave": true,
+  "useAtomicWrites": false,
+  "deleteLocal": false,
+  "hostname": "127.0.0.1",
+  "ignore": [
+    ".remote-sync.json",
+    ".ftpconfig",
+    ".git/**"
+  ],
+  "watch": [],
+  "port": "21",
+  "target": "/~jys/legolang/",
+  "username": "jys",
+  "password": "mimone"
+}

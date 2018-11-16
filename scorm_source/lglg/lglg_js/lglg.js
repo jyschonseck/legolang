@@ -1,21 +1,498 @@
-var tblExo={},tblReponses=[],tblQuestions=[],posRedim=50,qCourante=0,pCourante=0,champSaisie={},lancement=!0,modeAuteur=!1,scorm=!1,affichClavier=!1,scoreMax=0,scoreAffich=!1,tScore=0,IF_VALID="Valider",AEValeurMax=2,tempsDebut=new Date;
-function afficheExo(){console.log("afficheExo");tblExo["interface"].couleur1&&useCustomColor(tblExo["interface"].couleur1);tblExo["interface"].logoaffich&&($("#logo").css("display","block"),console.log("affiche "+tblExo["interface"].logourl),console.log("affiche "+tblExo["interface"].logourl.length),1>tblExo["interface"].logourl.length?(document.getElementById("logo").src="lglg/lglg_interface/logo/UL-NOIR-WEB-h120.png",document.getElementById("logo").title="Dip - Universit\u00e9 de Lille",document.getElementById("lienLogo").href=
-"http://klip.univ-lille.fr/"):(document.getElementById("logo").src=tblExo["interface"].logourl,document.getElementById("logo").title=tblExo["interface"].logotitle,document.getElementById("lienLogo").href=tblExo["interface"].logolien));$("#txtTitre").html(tblExo.titre);$("#txtSousTitre").html(tblExo.sousTitre);"0"!==tblExo.videoType&&tblExo.videoType?"1"===tblExo.videoType?$("#ctnMedia").load("lglg/lglg_medias/html5.html"):"2"===tblExo.videoType&&$("#ctnMedia").load("lglg/lglg_medias/youtube.html"):
-$("#ctnMedia").load("lglg/lglg_medias/html5.html");for(var a=document.querySelector("#ctnOutils"),b=0;4>b;b++)if("--"!==tblExo.btnOutil.liste[b].fonction){var c='<a href="#" id="outil-'+tblExo.btnOutil.liste[b].fonction+'" title="'+tblExo.btnOutil.liste[b].etiquette+'"><img src="lglg/lglg_interface/images/outils/'+tblExo.btnOutil.liste[b].fonction+'.svg" alt="'+tblExo.btnOutil.liste[b].etiquette+'">';1!=tblExo.btnOutil.format&&(c+="<span>"+tblExo.btnOutil.liste[b].etiquette+"</span>");c+="</a>";$(c).appendTo(a);
-$("#outil-"+tblExo.btnOutil.liste[b].fonction).click(function(a){a.preventDefault();window[this.id.substring(6)]()})}tblExo.scenario.msgAE&&$("#ctnAEAffich").load("lglg/lglg_outils/AEAffich.html");for(a=scoreMax=0;a<tblExo.pages.length;a++)for(console.log("iPage = "+a),b=0;b<tblExo.pages[a].questions.length;b++)if(console.log("iQ = "+b),tblExo.pages[a].questions[b].scoreActif&&(c=0,scoreAffich=!0,"qcm"===tblExo.pages[a].questions[b].type))for(var d=0;d<tblExo.pages[a].questions[b].propositions.length;d++)c=
-parseInt(tblExo.pages[a].questions[b].propositions[d].score),0<c&&(scoreMax+=c);console.log("calcul du score max");scoreAffich&&$("#ctnScore").load("lglg/lglg_outils/scoreAffich.html");1<tblExo.pages.length&&$("#ctnNavigation").load("lglg/lglg_interface/navigQ.html");tblExo.consigne&&$("#ctnConsigne").html(tblExo.consigne);$("#ctnOutils").addClass("outilsInactif");$("#ctnOutils").hide();affichPage()}
-function shadeColor(a,b){var c=parseInt(a.slice(1),16),d=0>b?0:255,e=0>b?-1*b:b,f=c>>16,g=c>>8&255,c=c&255;return"#"+(16777216+65536*(Math.round((d-f)*e)+f)+256*(Math.round((d-g)*e)+g)+(Math.round((d-c)*e)+c)).toString(16).slice(1)}
-function useCustomColor(a){var b;b="#txtTitre, { color: "+a+" !important;} \n"+("#ctnTitres, #ctnOnglets, textarea:focus, .ctnQuestion { border-color: "+a+" !important;} \n")+("#ctnOnglets > div.actif { background:"+shadeColor(a,.5)+" !important; border-color: "+shadeColor(a,.5)+" !important;}\n");b=b+("#ctnOnglets > div.choisi { background: "+a+" !important; border-color: "+a+" !important;}\n")+(".navigActif:hover .st0 { fill: "+a+" !important;}");$('<style type="text/css"></style>').html(b).appendTo("head")}
-function affichPage(){for(;ctnPageQ.firstChild;)ctnPageQ.removeChild(ctnPageQ.firstChild);champSaisie={};var a=document.createElement("div");a.className="txtTitrePage";a.innerHTML=tblExo.pages[pCourante].titre;ctnPageQ.appendChild(a);a=document.createElement("div");a.id="ctnQuestions";ctnPageQ.appendChild(a);for(var b=0;b<tblExo.pages[pCourante].questions.length;b++){var c=document.createElement("div");c.className="ctnQuestion";c.id="ctnQuestion_"+b;a.appendChild(c);tblQuestions[pCourante][b].affich(b)}tblReponses[pCourante].valid&&
-"1"===tblExo.scenario.verrCorr?($("#nav_3").addClass("actif"),$("#nav_2").removeClass("actif"),$("#nav_2").removeClass("choisi"),validation()):($("#nav_2").addClass("actif"),$("#nav_1").hasClass("choisi")||(ongletsAffich(2),edition(),verifAccesCorr()));verifAccesCorr()}
-function verifAccesCorr(){for(var a=!0,b=0;b<tblExo.pages[pCourante].questions.length;b++)if("qo"==tblExo.pages[pCourante].questions[b].type)tblReponses[pCourante].reps[b].length<tblExo.scenario.qoAccesC&&(a=!1);else if("qtrous"==tblExo.pages[pCourante].questions[b].type)for(var c=0;c<tblReponses[pCourante].reps[b].length;c++)tblReponses[pCourante].reps[b][c].length<tblExo.scenario.qoAccesC&&(a=!1);a?$("#nav_3").addClass("actif"):$("#nav_3").removeClass("actif")}
-function enregistreRep(){console.log("enregistreRep");var a;a=0;if("ae"===tblExo.scenario.scormScoreRaw){for(var b=0,c=0;c<tblReponses.length;c++)for(var d=0;d<tblReponses[c].AE.length;d++)-1<tblReponses[c].AE[d]&&(b+=tblReponses[c].AE[d]),a+=1;a=parseInt(b/a*50)}else{for(c=b=0;c<tblReponses.length;c++)for(d=0;d<tblReponses[c].reps.length;d++)"qo"===tblExo.pages[c].questions[d].type&&(tblReponses[c].reps[d].length>tblExo.scenario.qoAccesC&&b++,a+=1);a=parseInt(b/a*100)}if(scorm)for(SCOSetValue("cmi.suspend_data",
-JSON.stringify(tblReponses)),SCOCommit(),SCOSetValue("cmi.core.score.raw",a),SCOCommit(),b=a=0;b<tblReponses.length;b++)for(c=0;c<tblReponses[b].reps.length;c++)SCOSetValue("cmi.interactions."+a+".id","Page-"+(b+1)+"_q-"+(c+1)),SCOSetValue("cmi.interactions."+a+".student_response",tblReponses[b].reps[c]),a++;else null!=tblExo.moduleId&&localStorage.setItem(tblExo.moduleId,JSON.stringify(tblReponses))}
-function validation(){tblReponses[pCourante].valid=!0;for(var a=0;a<tblQuestions[pCourante].length;a++)tblQuestions[pCourante][a].corr(a)}function edition(){$(".feedback").hide("slow");$(".QOReponse").attr("disabled",!1);$("input[type='checkbox']").attr("disabled",!1);$("input[type='checkbox']").removeClass("QCMCocheInactif");$("input[type='checkbox']").removeClass("QCMCocheBon");$("input[type='checkbox']").removeClass("QCMCocheFaux");$("#nav_2").addClass("actif")}
-function lireExtraitVid(a){a=a.currentTarget.id.split("_");var b;b="c"===a[1]?"extraitCorrection":"extraitQuestion";var c=tblExo.pages[pCourante].questions[a[2]][b].debut,d=tblExo.pages[pCourante].questions[a[2]][b].fin;"vo"===a[3]!=maVideoSousTitreActif()&&(sousTitrage(!0),setTimeout(function(){window.addEventListener("click",function(){sousTitrage(!1);maVideoPause()},{capture:!0,once:!0})},2));maVideoSeek(c);maVideoPlay();var e=setInterval(function(){maVideoCurrentTime()>d&&(maVideoPause(),clearInterval(e),
-sousTitrage(!1))},100)}function getSubDocument(a){if(a.contentDocument)return a.contentDocument}function svgChangeColor(){if(tblExo["interface"])for(var a=document.querySelectorAll(".svgInterface"),b=0;b<a.length;b++){var c=getSubDocument(a[b]);if(c)for(var c=c.getElementsByClassName("eltColor1"),d=0;d<c.length;d++)c[d].setAttribute("fill",tblExo["interface"].couleur1)}}
-function redimCtnQuestions(){if(document.getElementById("ctnQuestions")){var a=parseInt($("#ctnQuestions").offset().top),b=$("#ctnNavigation").height(),a=window.innerHeight-(a+b+10);$("#ctnPageQ").css("max-height",a)}}
-function tblReponsesInit(){console.log("tblReponsesinit "+tblExo.pages.length);for(var a=0;a<tblExo.pages.length;a++){tblReponses[a]={};tblReponses[a].valid=!1;tblReponses[a].reps=[];tblReponses[a].AE=[];tblReponses[a].score=[];for(var b=0;b<tblExo.pages[a].questions.length;b++)if(tblReponses[a].AE[b]=-1,tblReponses[a].score[b]=0,"qo"===tblExo.pages[a].questions[b].type)tblReponses[a].reps[b]="";else if("qtrous"===tblExo.pages[a].questions[b].type){tblReponses[a].reps[b]=[];for(var c=0;c<tblExo.pages[a].questions[b].txtQuestion.split(":SHORTANSWER:").length-
-1;c++)tblReponses[a].reps[b][c]=""}else"qcm"===tblExo.pages[a].questions[b].type&&(tblReponses[a].reps[b]="")}sessionStorage.scorm?(scorm=!0,sessionStorage.removeItem("scorm"),SCOGetValue("cmi.suspend_data")&&(tblReponses=jQuery.parseJSON(SCOGetValue("cmi.suspend_data")))):tblExo.moduleId&&localStorage.getItem(tblExo.moduleId)&&(tblReponses=jQuery.parseJSON(localStorage.getItem(tblExo.moduleId)))}
-function tblQuestionsInit(){for(var a=0;a<tblExo.pages.length;a++){tblQuestions[a]=[];for(var b=0;b<tblExo.pages[a].questions.length;b++)"qo"===tblExo.pages[a].questions[b].type?tblQuestions[a].push(Object.create(proto_qo)):"qcm"===tblExo.pages[a].questions[b].type?tblQuestions[a][b]=Object.create(proto_qcm):"qtrous"===tblExo.pages[a].questions[b].type&&(tblQuestions[a][b]=Object.create(proto_qtrous)),tblQuestions[a][b].donnees=tblExo.pages[a].questions[b]}}
-function nettoieChaine(a){return a.replace(/\W/g,"").substr(0,15)};
+// JavaScript Document
+//**********************//
+//**variable globales***//
+var tblExo = {}; // le tableau contenant TOUTES les données de l'exo (ouverture directe du fichier .json)
+var tblReponses = []; //le tableau contenant les réponses (a charger depuis scorm et/ou LS ?) pour l emoment je n'utilise pas tblQuestions.reponses (c'est trop chiant)
+var tblQuestions = []; //le tableau d'objet question... appelé à remplacer tblExo
+var posRedim = 50; // ratio en pourcentage entre colonne gauche et droite
+var qCourante = 0; //
+var pCourante = 0; // page de question à afficher
+var champSaisie = {}; // le champ de saisie utilisé par fonction clavier
+var lancement = true;
+var modeAuteur = false;
+var scorm = false; //valeur à true si on a du scorm : utilisé dans enregistrementReponses
+var affichClavier = false; // variable pour affichage du clavier
+// var affichST = false; // mettre à true lors de afficheExo si on affiche les ST pour extrait)
+var scoreMax = 0; // le score max qu'on peut atteindre !
+var scoreAffich = false; // affichage du score (dépend des scoreActifs de chaque question "scorable")
+var tScore = 0; // totalScore
+
+//**constante***********//
+// si je déclare const si je lance plusieur fois lglg j'ai une erreur 'déja déclaré'
+var IF_VALID = "Valider";
+var AEValeurMax = 2; // Valeur max  pour l'AE (le 0 =pas repondu)
+
+
+//***** pour debug ******//
+var tempsDebut = new Date();
+
+//**********************//
+//** fonctions**********//
+
+
+function afficheExo() {
+  'use strict';
+  if (tblExo.interface.couleur1) {
+    useCustomColor(tblExo.interface.couleur1);
+  }
+
+  if (tblExo.interface.logoaffich) {
+    $("#logo").css("display", "block");
+    if (tblExo.interface.logourl.length < 1) {
+
+      document.getElementById("logo").src = "lglg/lglg_interface/logo/UL-NOIR-WEB-h120.png";
+      document.getElementById("logo").title = "Dip - Université de Lille";
+      document.getElementById("lienLogo").href = "http://klip.univ-lille.fr/";
+    } else {
+      document.getElementById("logo").src = tblExo.interface.logourl;
+      document.getElementById("logo").title = tblExo.interface.logotitle;
+      document.getElementById("lienLogo").href = tblExo.interface.logolien;
+    }
+  }
+
+  //****element de base
+  $("#txtTitre").html(tblExo.titre);
+  $("#txtSousTitre").html(tblExo.sousTitre);
+
+  //*** media
+  if (tblExo.videoType === "0" || !tblExo.videoType) { // si on
+    $("#ctnMedia").load("lglg/lglg_medias/html5.html");
+  } else if (tblExo.videoType === "1") { //
+    $("#ctnMedia").load("lglg/lglg_medias/html5.html");
+  } else if (tblExo.videoType === "2") {
+    $("#ctnMedia").load("lglg/lglg_medias/youtube.html");
+  }
+
+  //*** outils
+  var ctnOutils = document.querySelector("#ctnOutils");
+  for (var i = 0; i < 4; i++) {
+    // si on a une fonction pour l'outil
+    if (tblExo.btnOutil.liste[i].fonction !== "--") {
+      // code HTML du bouton
+      var btCode = '<a href="#" id="outil-' + tblExo.btnOutil.liste[i].fonction + '" title="' + tblExo.btnOutil.liste[i].etiquette + '"><img src="lglg/lglg_interface/images/outils/' + tblExo.btnOutil.liste[i].fonction + '.svg" alt="' + tblExo.btnOutil.liste[i].etiquette + '">'; //" width="100" height="100"
+      if (tblExo.btnOutil.format != 1) { //on ajoute le titre sous le bouton
+        btCode += '<span>' + tblExo.btnOutil.liste[i].etiquette + '</span>';
+      }
+      btCode += '</a>';
+      // ajoute le bouton au conteneur d'outils
+      $(btCode).appendTo(ctnOutils);
+      // fonction du bouton au clic
+      $('#outil-' + tblExo.btnOutil.liste[i].fonction).click(function(e) {
+        e.preventDefault();
+        window[this.id.substring(6)]();
+      });
+    }
+    //  ***jys : enlevé car affich feedbact avec ST même si pas outil
+    // if (tblExo.btnOutil.liste[i].fonction === "sousTitrage1") {
+    //   affichST = true;
+    // }
+  }
+
+  //****autoEvaluation
+  if (tblExo.scenario.msgAE) {
+    $("#ctnAEAffich").load("lglg/lglg_outils/AEAffich.html");
+  }
+
+  //*****score total
+  scoreMax = 0;
+  for (var iPage = 0; iPage < tblExo.pages.length; iPage++) {
+    for (var iQ = 0; iQ < tblExo.pages[iPage].questions.length; iQ++) {
+      if (tblExo.pages[iPage].questions[iQ].scoreActif) {
+        var tScore = 0;
+        scoreAffich = true;
+        if (tblExo.pages[iPage].questions[iQ].type === "qcm") {
+          for (var iProp = 0; iProp < tblExo.pages[iPage].questions[iQ].propositions.length; iProp++) {
+            var tScore = parseInt(tblExo.pages[iPage].questions[iQ].propositions[iProp].score);
+            if (tScore > 0) {
+              scoreMax += tScore;
+            }
+          }
+        } else if (tblExo.pages[iPage].questions[iQ].type === "qtrous") {
+          // TODO: calculer le score (attention une seule valeur par trou !)
+        }
+      }
+    }
+  }
+
+  if (scoreAffich) {
+    $("#ctnScore").load("lglg/lglg_outils/scoreAffich.html");
+    // $("#ctnScore").removeClass("invisible");
+  }
+
+  //*** col droite
+  if (tblExo.pages.length > 1) {
+    $("#ctnNavigation").load("lglg/lglg_interface/navigQ.html");
+  }
+
+  //*** onglets
+
+  //*** popupConsigne
+  if (tblExo.consigne) {
+    $("#ctnConsigne").html(tblExo.consigne);
+  }
+
+  $("#ctnOutils").addClass("outilsInactif"); //class pour etre invisible quand on change les couleur du svg (sinon ça clignote ...
+  $("#ctnOutils").hide(); // on hide en plus de la transparence pour l'organisation de la page...
+
+  //**** affichage de la page de question courante ;
+  affichPage();
+}
+
+function shadeColor(color, percent) {
+  'use strict';
+  var f = parseInt(color.slice(1), 16),
+    t = percent < 0 ? 0 : 255,
+    p = percent < 0 ? percent * -1 : percent,
+    //R = f >> 16,
+    R = f >> 16,
+    G = f >> 8 & 0x00FF,
+    B = f & 0x0000FF;
+  return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
+}
+
+// fonction qui crée une CSS customisée avec la couleur du back office
+function useCustomColor(pColor) {
+  'use strict';
+  var newStyle = "#txtTitre, { color: " + pColor + " !important;} \n"; //.txtCorrection
+  newStyle += "#ctnTitres, #ctnOnglets, textarea:focus, .ctnQuestion { border-color: " + pColor + " !important;} \n";
+  newStyle += "#ctnOnglets > div.actif { background:" + shadeColor(pColor, 0.5) + " !important; border-color: " + shadeColor(pColor, 0.5) + " !important;}\n";
+  newStyle += "#ctnOnglets > div.choisi { background: " + pColor + " !important; border-color: " + pColor + " !important;}\n";
+  newStyle += ".navigActif:hover .st0 { fill: " + pColor + " !important;}";
+  $('<style type="text/css"></style>')
+    .html(newStyle)
+    .appendTo("head");
+}
+
+
+function affichPage() {
+  'use strict';
+  /****vidage ctnQuestions****/
+  while (ctnPageQ.firstChild) {
+    ctnPageQ.removeChild(ctnPageQ.firstChild);
+  }
+  champSaisie = {}; //réinitialiser le dernier champ de qo cliqué
+
+  //**ajput Titre page**/
+  var titre = document.createElement("div");
+  titre.className = "txtTitrePage";
+  titre.innerHTML = tblExo.pages[pCourante].titre;
+  ctnPageQ.appendChild(titre);
+  //$("#txtTitrePage").html(tblExo.pages[ pCourante].titre);
+
+  var ctnQ = document.createElement("div");
+  ctnQ.id = "ctnQuestions";
+
+  ctnPageQ.appendChild(ctnQ);
+
+  for (var i = 0; i < tblExo.pages[pCourante].questions.length; i++) {
+    var nouvQuestion = document.createElement("div");
+    nouvQuestion.className = "ctnQuestion";
+    nouvQuestion.id = "ctnQuestion_" + i;
+    ctnQ.appendChild(nouvQuestion);
+    tblQuestions[pCourante][i].affich(i); //
+  }
+
+
+  ///***** gestion des onglets
+  if (tblReponses[pCourante].valid && tblExo.scenario.verrCorr === "1") { //Déja validé ET verrouille -> on passe à 3
+    $("#nav_3").addClass("actif");
+    //$("#nav_3").addClass("choisi");
+    $("#nav_2").removeClass("actif");
+    $("#nav_2").removeClass("choisi");
+    validation(); //pour afficher les fb correctement
+  } else {
+    $("#nav_2").addClass("actif"); // donc
+    if (!$("#nav_1").hasClass("choisi")) {
+      ongletsAffich(2); //on revient sur onglet2 (cas ou  on a pas encore validé
+      edition(); // on déverouille le champ et on masque corre
+      verifAccesCorr(); // voir si on active l'onglet 3 à correction
+    }
+  }
+  verifAccesCorr();
+}
+
+function verifAccesCorr() {
+  "use strict";
+  var accesCor = true;
+  var debug_tblReponses = tblReponses;
+  for (var i = 0; i < tblExo.pages[pCourante].questions.length; i++) {
+    if (tblExo.pages[pCourante].questions[i].type == "qo") {
+      if (tblReponses[pCourante]["reps"][i].length < tblExo.scenario.qoAccesC) accesCor = false;
+    } else if (tblExo.pages[pCourante].questions[i].type == "qtrous") {
+      //for (var elt in tblReponses[pCourante].reps[i]){ //in tblReponses[pCourante][i]){
+      for (var j = 0; j < tblReponses[pCourante].reps[i].length; j++) {
+        if (tblReponses[pCourante].reps[i][j].length < tblExo.scenario.qoAccesC) {
+          accesCor = false;
+        }
+      }
+    }
+  }
+  if (accesCor) {
+    $("#nav_3").addClass("actif");
+  } else {
+    $("#nav_3").removeClass("actif");
+  }
+  //enregistreRep(); // pas forcement ici (lent avec calcul de car ...)
+}
+
+function enregistreRep() {
+  "use strict";
+  //on enregistre sur
+  //-getFocus et mouseOut des textarea pour qo et qtrous
+  //-des tourner de pages
+  // c'etait trop gourmand de le faire suite au verifAccessCorr qui declenche sur le onchange
+
+  /******* calcul score.raw******/
+  var pourScoreRaw = 0;
+  var nbQ = 0;
+  /******** option 1  calcul du nb de caractères saisis pour score.raw (plafonné à 100 cars par réponse)**/
+  /*var nbCar = 0;
+  for (var indP = 0 ; indP < tblReponses.length ; indP++){
+  	for (var indQ = 0 ; indQ < tblReponses[indP].reps.length ; indQ++){
+  		if (tblExo.pages[indP].questions[indQ].type === "qo"){
+  			var nbCarRep = tblReponses[indP].reps[indQ].length;
+  			if (nbCarRep > 100) { nbCarRep = 100;}
+  			nbCar += nbCarRep;
+  			nbQ +=1 ;
+  		}
+  	}
+  }
+  pourScoreRaw = parseInt(nbCar / nbQ);
+  */
+
+  if (tblExo.scenario.scormScoreRaw === "ae") {
+    //*** moyenne des AE
+    var sommeAE = 0;
+    for (var indP = 0; indP < tblReponses.length; indP++) {
+      for (var indQ = 0; indQ < tblReponses[indP].AE.length; indQ++) {
+        if (tblReponses[indP].AE[indQ] > -1) {
+          sommeAE += tblReponses[indP].AE[indQ];
+        }
+        nbQ += 1;
+      }
+    }
+    pourScoreRaw = parseInt((sommeAE / nbQ) * 50);
+  } else {
+    /******* option 2 calcul du % de reponses saisies ****/
+    var nbRepSaisies = 0;
+    for (var indP2 = 0; indP2 < tblReponses.length; indP2++) {
+      for (var indQ2 = 0; indQ2 < tblReponses[indP2].reps.length; indQ2++) {
+        if (tblExo.pages[indP2].questions[indQ2].type === "qo") {
+          if (tblReponses[indP2].reps[indQ2].length > tblExo.scenario.qoAccesC) {
+            nbRepSaisies++;
+          }
+          nbQ += 1;
+        }
+      }
+    }
+    pourScoreRaw = parseInt((nbRepSaisies / nbQ) * 100);
+  }
+  //enregistrer reponses dans suspend_data (si scorm) ou localStorage
+  if (scorm) {
+    SCOSetValue("cmi.suspend_data", JSON.stringify(tblReponses));
+    SCOCommit();
+    SCOSetValue("cmi.core.score.raw", pourScoreRaw);
+    SCOCommit();
+    //**** enregistre dans les cmi.interaction pour avoir tableau des reponses
+    var compteur = 0;
+    for (var i = 0; i < tblReponses.length; i++) {
+      for (var j = 0; j < tblReponses[i].reps.length; j++) {
+        var pourId = "Page-" + (i + 1) + "_q-" + (j + 1);
+        SCOSetValue("cmi.interactions." + compteur + ".id", pourId);
+        SCOSetValue("cmi.interactions." + compteur + ".student_response", tblReponses[i].reps[j]);
+        compteur++;
+      }
+    }
+
+    //**************
+  } else {
+    if (tblExo.moduleId != null) {
+      localStorage.setItem(tblExo.moduleId, JSON.stringify(tblReponses));
+    }
+  }
+}
+
+function validation() { // valide la page
+  "use strict";
+  tblReponses[pCourante].valid = true;
+  for (var i = 0; i < tblQuestions[pCourante].length; i++) {
+    tblQuestions[pCourante][i].corr(i);
+  }
+}
+
+function edition() {
+  "use strict";
+  $(".feedback").hide("slow");
+  // QO :
+  $(".QOReponse").attr('disabled', false);
+  // QCM :
+  $("input[type='checkbox']").attr('disabled', false);
+  $("input[type='checkbox']").removeClass("QCMCocheInactif");
+  $("input[type='checkbox']").removeClass("QCMCocheBon");
+  $("input[type='checkbox']").removeClass("QCMCocheFaux");
+  // QTrous :
+  qTrousEdition();
+  //****
+  $("#nav_2").addClass("actif");
+}
+
+function lireExtraitVid(e) {
+  'use strict';
+  //sur le createElement/onclick on ne sait pas mettre de paramètre so j'utilise l'id pour passer si correction/question, ST ,
+  var params = e.currentTarget.id.split("_");
+  var extrait;
+  if (params[1] === "c") {
+    extrait = "extraitCorrection";
+  } else {
+    extrait = "extraitQuestion";
+  }
+  var deb = tblExo.pages[pCourante].questions[params[2]][extrait].debut;
+  var fin = tblExo.pages[pCourante].questions[params[2]][extrait].fin;
+
+  if ((params[3] === "vo") != (maVideoSousTitreActif())) {
+    sousTitrage(true);
+    // mettre écouteur en once sur clic pour virer ST
+    var temp = setTimeout(function() {
+      window.addEventListener("click", function() {
+        sousTitrage(false);
+        maVideoPause();
+      }, {
+        capture: true,
+        once: true
+      });
+    }, 2);
+  }
+
+  maVideoSeek(deb);
+  maVideoPlay();
+
+  var timer = setInterval(function() {
+    if (maVideoCurrentTime() > fin) {
+      maVideoPause();
+      clearInterval(timer);
+      sousTitrage(false);
+    }
+  }, 100);
+}
+
+
+///******changer le svg de couleur*******/
+//(source : http://xn--dahlstrm-t4a.net/svg/html/get-embedded-svg-document-script.html )
+function getSubDocument(embedding_element) {
+  "use strict";
+  if (embedding_element.contentDocument) {
+    return embedding_element.contentDocument;
+  } else {
+    var subdoc = null;
+  }
+}
+
+function svgChangeColor() {
+  'use strict';
+  //changement de couleur :
+  if (tblExo.interface) {
+    var elms = document.querySelectorAll(".svgInterface");
+    var boutonApeindre = elms.length;
+    var subdocTrouve = 0;
+    for (var i = 0; i < elms.length; i++) {
+      var subdoc = getSubDocument(elms[i]);
+      if (subdoc) {
+        var subElt = subdoc.getElementsByClassName("eltColor1");
+        if (subElt.length > 0) {
+          subdocTrouve += 1;
+        }
+        for (var j = 0; j < subElt.length; j++) {
+          subElt[j].setAttribute("fill", tblExo.interface.couleur1);
+        }
+      }
+    }
+  }
+}
+///*****************************/
+
+function redimCtnQuestions() {
+  'use strict';
+  ///*******le redimensionnement en hauteur : objet : faire le scroll sur la partie question seulement ...
+
+  if (document.getElementById("ctnQuestions")) { // éviter erreur quand on redim sur onglets!="previsualisation" dans l'
+    var temp = parseInt($("#ctnQuestions").offset().top);
+    var temp2 = $("#ctnNavigation").height();
+    var temp3 = temp + temp2 + 10;
+    var temp4 = window.innerHeight - temp3;
+    $("#ctnPageQ").css("max-height", temp4);
+  }
+}
+
+//*****************************
+function tblReponsesInit() {
+  'use strict';
+  for (var pageId = 0; pageId < tblExo.pages.length; pageId++) {
+    tblReponses[pageId] = {};
+    tblReponses[pageId].valid = false;
+    tblReponses[pageId].reps = [];
+    tblReponses[pageId].AE = [];
+    tblReponses[pageId].score = [];
+    for (var questionId = 0; questionId < tblExo.pages[pageId].questions.length; questionId++) {
+      tblReponses[pageId].AE[questionId] = -1;
+      tblReponses[pageId].score[questionId] = 0;
+      if (tblExo.pages[pageId].questions[questionId].type === "qo") {
+        tblReponses[pageId].reps[questionId] = "";
+      } else if (tblExo.pages[pageId].questions[questionId].type === "qtrous") {
+        tblReponses[pageId].reps[questionId] = [];
+        //for (var i = 0; i < tblExo.pages[pageId].questions[questionId].txtQuestion.split(":SHORTANSWER:").length - 1; i++) {
+        for (var i in tblExo.pages[pageId].questions[questionId].trous){
+          console.log("reponsesInit " + i);
+          tblReponses[pageId].reps[questionId][i] = "*-*";
+        }
+      } else if (tblExo.pages[pageId].questions[questionId].type === "qcm") {
+        tblReponses[pageId].reps[questionId] = "";
+      }
+    }
+  }
+console.log("tblReponsesInit depar");
+
+    /* si on a lglgScorm dans sessionStorage on le charge et on l'efface...
+    Sinon on regarde si on a du moduleId dans localStorage*/
+    if (sessionStorage.scorm) {
+      scorm = true; // pour enregistrement
+      sessionStorage.removeItem("scorm");
+      //on charge suspend_data dans tblReponse:
+      if (SCOGetValue("cmi.suspend_data")) {
+        tblReponses = jQuery.parseJSON(SCOGetValue("cmi.suspend_data"));
+      }
+    } else {
+      if (tblExo.moduleId && localStorage.getItem(tblExo.moduleId)) {
+        tblReponses = jQuery.parseJSON(localStorage.getItem(tblExo.moduleId));
+      }
+    }
+}
+
+function tblQuestionsInit(){
+  // ****mettre les questions de tblExo dans tblQuestions en format objet :
+  for (var p = 0 ; p< tblExo.pages.length ; p++){
+    tblQuestions[p] = [];
+    for (var q = 0 ; q < tblExo.pages[p].questions.length ; q++){
+      if (tblExo.pages[p].questions[q].type === "qo"){
+        tblQuestions[p].push( Object.create(proto_qo));
+      } else if (tblExo.pages[p].questions[q].type === "qcm"){
+        tblQuestions[p][q] = Object.create(proto_qcm);
+      }else if (tblExo.pages[p].questions[q].type === "qtrous"){
+        tblQuestions[p][q] = Object.create(proto_qtrous);
+      }
+
+      tblQuestions[p][q].donnees = tblExo.pages[p].questions[q];
+//******* pour les reponses AE et score je reste pour le moment sur la varible tableau globale
+      // tblQuestions[p][q].reponses = tblReponses[p].reps[q];
+      // tblQuestions[p][q].ae = tblReponses[p].AE[q];
+      // tblQuestions[p][q].score_ = tblReponses[p].score[q];
+    }
+  }
+}
+
+function nettoieChaine(entree) { //pour nettoyer nom des fichier à enregistrer (scorm surtout)
+  "use strict";
+  var regExp1 = /\W/g;
+  var sortie;
+  sortie = entree.replace(regExp1, "");
+  return sortie.substr(0, 15);
+}

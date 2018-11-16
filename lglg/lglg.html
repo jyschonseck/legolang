@@ -29,10 +29,10 @@
       </div>
       <div id="ctnLogo">
         <a id="lienLogoP" href="http://klip.univ-lille.fr/fiche/75-legolang-nbsp-une-application-pour-les-langues" target="_blank" title="Cet exercice à été réalisé avec LeGoLanG">
-          <img id="logoP" src="lglg/lglg_interface/logo/UL-NOIR-WEB-h120.png" class="logo"/>
+          <img id="logoP" src="lglg/lglg_interface/logo/UL-NOIR-WEB-h120.png" class="logo" />
         </a>
         <a id="lienLogo" href="https://www.univ-lille.fr/" target="_blank">
-          <img id="logo" src="lglg/lglg_interface/logo/UL-NOIR-WEB-h120.png" style="display:none;" class="logo"/>
+          <img id="logo" src="lglg/lglg_interface/logo/UL-NOIR-WEB-h120.png" style="display:none;" class="logo" />
         </a>
       </div>
     </section>
@@ -70,31 +70,34 @@
   <script src="lglg/lglg_questions/qcm.js"></script>
   <script>
     $(function() {
-      console.log("lglg.html onloaded");
-      //*** pour affichage des titres : je l'ai désactivé pour les paquest scorm : on faisait redondance avec le titre obigatoire de moodle. Mais je l'avais gardé un temps pour actufle...
+      //*** pour affichage des titres : je l'ai désactivé pour les paquest scorm : on faisait redondance avec le titre obligatoire de moodle. Mais je l'avais gardé un temps pour actufle...
       // if (affichTitre) {
       //   $("#txtTitre").css("display", "block");
       //   $("#breadcrumbs").css("display", "block");
       // }
 
-      //rajout pour empêcher clic droit (et enregistrement de la vidéo facile sauf si on est sur cavul-test...
+      //rajout pour empêcher clic droit (et enregistrement de la vidéo facile sauf si on est sur un de mes repertoire de test
       if (document.URL.indexOf("~jys") < 0) {
         document.oncontextmenu = new Function("return false");
       }
 
-      if (sessionStorage.getItem("lglg_data") == null) { //test présence donnée du mode auteur
-        console.log("on charge le fichier exo.json");
-        chargeFichierData();
+      if (sessionStorage.getItem("lglg_data") == null) { //test présence donnée en sessionStorage
+        if (location.hash.length > 0) { //on a une adresse dans le hash
+          chargeFichierData(location.hash.substring(1));
+        } else {
+          chargeFichierData('module/data.json');
+        }
       } else {
         tblExo = jQuery.parseJSON(sessionStorage.lglg_data);
-        console.log("on a du session storage ..; on est en auteur");
-        modeAuteur = true;
         //** initialisation du tableau reponse :;
         tblReponsesInit();
         tblQuestionsInit();
         afficheExo();
       }
 
+      if (sessionStorage.auteur === "true"){
+      modeAuteur = true;
+    }
 
 
 
@@ -102,14 +105,12 @@
       //si on redimensionne la fenetre
       window.addEventListener("resize", redimCtnQuestions);
 
-
     });
 
-    function chargeFichierData() {
-      var url = 'module/data.json';
+    function chargeFichierData(url) {
+      //var url = 'module/data.json';
       // si on vient de lglg_auteur :
       //  if (sessionStorage.getItem("lglg_lien") != null) url = sessionStorage.getItem("lglg_lien");
-      console.log("url avant le $.ajax = " + url);
       $.ajax({
         type: 'GET',
         url: url,

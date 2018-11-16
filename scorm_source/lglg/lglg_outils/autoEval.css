@@ -1,1 +1,52 @@
-.autoEval{border:solid 1px black;width:150px;font-size:9px;margin:0 3px 0 auto;padding:3px}.etoile{display:inline-block;width:15px;height:15px;background-repeat:no-repeat;cursor:pointer}.etoile_0{background-image:url(lglg_interface/images/etoile_0.png)}.etoile_1{background-image:url(lglg_interface/images/etoile_1.png)}
+/* CSS Document */
+
+.autoEval{
+	/*cursor:pointer;*/	
+	border: solid 1px black;
+	width:150px;
+	font-size:9px;
+	margin: 0 3px 0 auto;
+	padding:3px;
+}
+
+
+/*****version "curseur / range " *****/
+/*.alignGauche{
+	text-align:left;
+}
+
+.alignDroite{
+	text-align:right;
+}*/
+
+
+/****version "radio" *****/ 
+/*.classAE_1{
+	background-color:#D30003;
+	
+}
+
+.classAE_2{
+	background-color:#FFC038;
+}
+
+.classAE_3{
+	background-color:#1BB736;
+}*/
+
+/******version "etoile"****/
+.etoile{
+	display:inline-block;
+	width:15px;
+	height:15px;
+	background-repeat:no-repeat;
+	cursor:pointer;
+}
+
+.etoile_0{
+	background-image:url(lglg_interface/images/etoile_0.png);
+}
+
+.etoile_1{
+	background-image:url(lglg_interface/images/etoile_1.png);
+}

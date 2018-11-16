@@ -1,5 +1,4 @@
-// lecture de : https://developer.mozilla.org/fr/docs/Web/JavaScript/Guide/Utiliser_les_objets
-// appeler ça dans affichPage
+
 
 var proto_qtrous = {
   donnees: {},
@@ -7,7 +6,7 @@ var proto_qtrous = {
   // ae: null,
   // score: 0,
   affich: function(i) {
-    // console.log("affich question " + this.donnees.txtQuestion + " - " + i);
+    "use strict";
     var questionEnCours = document.querySelector("#ctnQuestion_" + i);
 
     var question = document.createElement("p"); //question
@@ -19,6 +18,7 @@ var proto_qtrous = {
       btnExtrait.onclick = lireExtraitVid;
       question.appendChild(btnExtrait);
     }
+    questionEnCours.appendChild(question);
 
     //****texte à trous :
     var txtQuestion = document.createElement("div");
@@ -26,12 +26,12 @@ var proto_qtrous = {
     var texteQuestion = this.donnees.txtQuestion.split("*");
     //  on boucle : les impaires sont les trous !
     var texte = "";
-    for (var i = 0; i < texteQuestion.length; i++) {
-      if ((i % 2) === 0) {
-        texte += texteQuestion[i];
+    for (var j = 0; j < texteQuestion.length; j++) {
+      if ((j % 2) === 0) {
+        texte += texteQuestion[j];
       } else {
-        texte += "<input type='text' id='tiTrou_" + texteQuestion[i] + "' onchange='enregistreRep();'>";
-        texte += "<span id='txtCorr_" + texteQuestion[i] + "' class='txtCorr'></span>";
+        texte += "<input type='text' id='tiTrou_" + texteQuestion[j] + "' onchange='tblReponses["+pCourante +"].reps["+i+"]."+texteQuestion[j] +"=this.value;'>";
+        texte += "<span id='txtTrouRep_" + texteQuestion[j] + "' class='txtTrouRep feedback'></span>";
       }
     }
     //** puis les feedback
@@ -80,43 +80,48 @@ var proto_qtrous = {
     }
   },
   corr: function(i) {
-    console.log("corr de qtrou," + pCourante + " - " + i);
     $("#ctnQuestion_" + i + " .feedback").show("fast");
     // TODO: adapter ce qui suis qui vient de sam
     for (var t in this.donnees.trous) { //boucle sur les trous
-      console.log("boucle sur trou : " + t + "\n" + JSON.stringify(this.donnees));
       var trouEnCours = document.getElementById("tiTrou_" + t);
-      document.getElementById("txtCorr_" + t).innerHTML = this.donnees.trous[t][0].saisie; //on met la réponse 0 en correction
+      document.getElementById("txtTrouRep_" + t).innerHTML = this.donnees.trous[t][0].saisie; //on met la réponse 0 en correction
       if (trouEnCours) {
         trouEnCours.disabled = true;
         trouEnCours.classList.add("saisieFausse"); // au départ on mets faux
         for (var j = 0; j < this.donnees.trous[t].length; j++) {
-          if (tblReponses[pCourante].reps[i] === this.donnees.trous[t][j].saisie) { // on a une corr
+          if (tblReponses[pCourante].reps[i][t] === this.donnees.trous[t][j].saisie) { // on a une corr
             //  if (this.donnees.trous[t][j].score > 0) { //test de la corre si bon
             if (this.donnees.trous[t][j].correct) {
               trouEnCours.classList.remove("saisieFausse");
               trouEnCours.classList.add("saisieBonne");
-              document.getElementById("txtCorr_" + t).style.display = "none";
+              document.getElementById("txtTrouRep_" + t).style.display = "none";
 
             } else { // la réponse connue est fausse
-              document.getElementById("txtCorr_" + t).style.display = "inline";
+              document.getElementById("txtTrouRep_" + t).style.display = "inline";
             }
             // incremente le score si l'event est un click (j'arrive pas à passer un parametre sur le onclick du bouton)
-            if (e) {
-              reponses.score += parseInt(this.donnees.trous[t][j].score);
-            }
+              //reponses.score += parseInt(this.donnees.trous[t][j].score);
+
             if (this.donnees.trous[t][j].fb) {
               $("#txtFb_" + t).html(this.donnees.trous[t][j].fb);
             }
             break; // passe au trou suivant
           } else { //saisie inconnue dans exo.pages.corrections
-            document.getElementById("txtCorr_" + t).style.display = "inline";
+            document.getElementById("txtTrouRep_" + t).style.display = "inline";
           }
         }
       }
     }
 
   }
+}
+
+function qTrousEdition(){
+
+  $("input[type='text']").attr('disabled', false);
+  //$("input[type='checkbox']").removeClass("QCMCocheInactif");
+  $("input[type='text']").removeClass("saisieFausse");
+  $("input[type='text']").removeClass("saisieBonne");
 }
 
 //****** fonction a garder là ?

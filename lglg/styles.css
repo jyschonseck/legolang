@@ -197,7 +197,6 @@ h2 {
   font-size: 1.125rem;
   font-style: italic;
   padding: 0.5rem 0 0 0.5rem;
-  /*color:#28b2aa;*/
 }
 
 textarea {
@@ -333,7 +332,11 @@ textarea:focus {
 	color: red;
 }
 
-
+.txtTrouRep{
+  color: blue;
+  font-style: italic;
+  background-color: lightgrey;
+}
 
 /****************************/
 
