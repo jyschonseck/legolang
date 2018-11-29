@@ -1,12 +1,10 @@
-
-
 var proto_qcm = {
-  donnees: {},
+        donnees: {},
   // reponses:"",
   // ae:null,
   // score:0,
-  affich: function(i) {
-    "use strict";
+    affich: function(i) {
+   "use strict";
     var questionEnCours = document.getElementById("ctnQuestion_" + i);
 
     var question = document.createElement("p"); //question
@@ -96,7 +94,7 @@ var proto_qcm = {
     autoEvaluation.id = "ctnAutoEvaluation_" + i;
     questionEnCours.appendChild(autoEvaluation);
     //$("#ctnAutoEvaluation_" + i).load("outils/autoeval.html");
-    if (tblExo.scenario.msgAE) {
+    if (tblExo.scenario.evalType === "AE") {
       creationAE(i);
     }
   },
@@ -116,16 +114,16 @@ var proto_qcm = {
         coche.className = "QCMCocheFaux";
         qCorr = false;
       }
-      //****score
-      if (coche.checked && this.donnees.scoreActif) {
+      //****score % proposition
+      if (coche.checked && this.donnees.scoreActif && tblExo.scenario.evalType === "S") {
         var t = parseInt(this.donnees.propositions[j].score);
         document.getElementById("score_" + i + "_" + j).innerHTML = t;
         document.getElementById("score_" + i + "_" + j).style = "display:block";
         qScore += t;
-        $("#ctnScore").removeClass("invisible"); //todo tester ou pas ?
       }
     }
-    if (this.donnees.scoreActif) {
+    //****score total
+    if (this.donnees.scoreActif && tblExo.scenario.evalType === "S") {
       document.getElementById("qScore_" + i).innerHTML = qScore;
       tblReponses[pCourante].score[i] = qScore;
       majScore();
@@ -134,7 +132,8 @@ var proto_qcm = {
   }
 }
 
-//****** fonction...
+/**********************
+*****fonctions...*****/
 function QCMClckHdlr(e) {
   var q = e.currentTarget.id.split("_")[1];
   tblReponses[pCourante].reps[q] = "";
@@ -145,44 +144,6 @@ function QCMClckHdlr(e) {
       tblReponses[pCourante].reps[q] += "0";
     }
   }
-  //***pour le moment les QCM ne rentre pas dans le prérequis pour acceder à loa correction....
+  //*** TODO pour le moment les QCM ne rentre pas dans le prérequis pour acceder à loa correction....
   //	verifAccesCorr();
-}
-
-function QCMsCorr() {
-  "use strict";
-  //boucle sur la page pour trouver les QCM
-  for (var i = 0; i < tblExo.pages[pCourante].questions.length; i++) {
-    if (tblExo.pages[pCourante].questions[i].type === "qcm") {
-      //verrrouile les coches
-      var qCorr = true;
-      var qScore = 0;
-      for (var j = 0; j < tblExo.pages[pCourante].questions[i].propositions.length; j++) {
-        //****coche
-        var coche = document.getElementById("cb_" + i + "_" + j);
-        if (coche.checked === tblExo.pages[pCourante].questions[i].propositions[j].reponseCorrecte) {
-          coche.className = "QCMCocheBon";
-        } else {
-          coche.className = "QCMCocheFaux";
-          qCorr = false;
-        }
-        //****score
-        if (coche.checked && tblExo.pages[pCourante].questions[i].scoreActif) {
-          var t = parseInt(tblExo.pages[pCourante].questions[i].propositions[j].score);
-          document.getElementById("score_" + i + "_" + j).innerHTML = t;
-          document.getElementById("score_" + i + "_" + j).style = "display:block";
-          qScore += t;
-          $("#ctnScore").removeClass("invisible"); //todo tester ou pas ?
-        }
-      }
-      if (tblExo.pages[pCourante].questions[i].scoreActif) {
-        document.getElementById("qScore_" + i).innerHTML = qScore;
-        tblReponses[pCourante].score[i] = qScore;
-        majScore();
-      }
-
-    } //***fin type === QCM
-  }
-  $("input[type='checkbox']").attr('disabled', 'disabled');
-  $("input[type='checkbox']").addClass("QCMCocheInactif");
 }

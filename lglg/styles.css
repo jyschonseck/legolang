@@ -333,9 +333,19 @@ textarea:focus {
 }
 
 .txtTrouRep{
-  color: blue;
-  font-style: italic;
+  color: black;
+  font-weight: bold;
+  /* font-style: italic; */
   background-color: lightgrey;
+}
+
+.txtFb{
+  /* display: inline-block; */
+  /* display: none; */
+  font-style: italic;
+  font-family: monospace;
+  background-color: lightgrey;
+  color: blue;
 }
 
 /****************************/
@@ -449,7 +459,7 @@ textarea:focus {
   background: none !important;
 }
 
-.ctnInfosResult{
+#ctnInfosResult{
   display: flex;
   flex-direction: row;
   border-top:.25em solid #28b2aa;

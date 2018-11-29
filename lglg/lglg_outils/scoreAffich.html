@@ -1,25 +1,24 @@
-<div >
-<p style="margin:  0; font-size:large">Votre score &nbsp;:&nbsp;
-<span id="txtScore"></span> / <span id="txtScoreMax"></span> </p>
-
+<div>
+  <p style="margin: 0; font-size:large" >Votre score &nbsp;:&nbsp;
+    <!-- <span id="txtScore"></span> / <span id="txtScoreMax"></span> </p> -->
+    <span id="txtScore"></span>
+    <div id="maProgress" style="flex:auto; margin:0.2rem; height:1em;"></div>
+    <span id="txtScoreMax"></span>
+    </p>
 </div>
 
 <script type="text/javascript">
-$(function(){
-  $("#txtScoreMax").html(scoreMax);
-});
+  $(function() {
+    $("#txtScoreMax").html(scoreMax);
+    $( "#maProgress").progressbar({
+      value: 0,
+      max : scoreMax
+      });
 
-function majScore(){
-  var monScore = 0;
-  for (var iPage = 0 ; iPage < tblReponses.length ; iPage++){
-    for (var iQuestion = 0 ; iQuestion < tblReponses[iPage].score.length ; iQuestion++){
-      if 	(tblReponses[iPage].score[iQuestion] > -1){
-        monScore += tblReponses[iPage].score[iQuestion];
-        $("#txtScore").html(monScore);
-      }
-    }
-  }
 
-}
+    majScore();
+    var porcent = parseInt(document.getElementById('txtScore').innerHTML);
+  	$("#maProgress").progressbar("value" , porcent);
 
+  });
 </script>

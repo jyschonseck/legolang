@@ -47,7 +47,6 @@
       menu: true,
       branding: false
     }).then(function() {
-      console.log("prommesse...");
       tinymce.get("taTxtQuestionQcm").setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
       tinymce.get("taTxtCorrectionQcm").setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
     });
@@ -68,7 +67,6 @@
     else
       $("#btnLireExtraitC").hide("fast");
 
-    console.log("avant loop " + tblExo.pages[pageCourante].questions[questionCourante].propositions.length);
     // affich les propositions
     for (var i = 0; i < tblExo.pages[pageCourante].questions[questionCourante].propositions.length; i++) {
       ajoutProp(tblExo.pages[pageCourante].questions[questionCourante].propositions[i].texte, tblExo.pages[pageCourante].questions[questionCourante].propositions[i].reponseCorrecte, tblExo.pages[pageCourante].questions[questionCourante].propositions[i].score);

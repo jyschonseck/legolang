@@ -67,7 +67,8 @@ var proto_qo = {
   	autoEvaluation.id = "ctnAutoEvaluation_" + i;
   	questionEnCours.appendChild(autoEvaluation);
   	//$("#ctnAutoEvaluation_" + i).load("outils/autoeval.html");
-  	if (tblExo.scenario.msgAE){
+    console.log("Dans QO scenaruio.type = " + tblExo.scenario.evalType);
+  	if (tblExo.scenario.evalType === "AE"){
   		creationAE(i);
   	}
   },

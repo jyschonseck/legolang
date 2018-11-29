@@ -101,7 +101,6 @@
       menubar: false,
       branding: false
     }).then(function() {
-      console.log("prommesse...");
       tinymce.get("taTxtQuestion").setContent(tblExo.pages[pageCourante].questions[questionCourante].txtQuestion);
       tinymce.get("taTxtCorrection").setContent(tblExo.pages[pageCourante].questions[questionCourante].txtCorrection);
     });
@@ -188,7 +187,6 @@
   }
 
   function affichTrous() {
-    console.log("affichTrou");
     document.getElementById("ctnTrous").innerHTML = "";
     for (var a in tblExo.pages[pageCourante].questions[questionCourante].trous) {
       var divTrou = document.createElement("div");
@@ -230,6 +228,10 @@
       var txt5 = document.createElement("span");
       txt5.style = "flex : 0 0 initial;width:4rem;padding-left:0.5rem;"
       txt5.innerHTML = 'score';
+      txt5.id="thScore";
+      if (!tblExo.pages[pageCourante].questions[questionCourante].scoreActif) {
+        txt5.className = "invisible";
+      }
       divEntete.appendChild(txt5);
       var txt6 = document.createElement("span");
       txt6.style = "flex : 0 0 initial;width:5rem;padding-left:0rem;"
@@ -255,7 +257,8 @@
         score.id = "score_" + a + "_" + iCorr;
         score.type = "number";
         score.value = tblExo.pages[pageCourante].questions[questionCourante].trous[a][iCorr].score;
-        if (!document.getElementById("cbScore").checked) {
+      console.log("AU momnet d'afficher " + tblExo.pages[pageCourante].questions[questionCourante].scoreActif );
+        if (!tblExo.pages[pageCourante].questions[questionCourante].scoreActif) {
           score.className = "invisible";
         }
         divCorr.appendChild(score);
@@ -291,7 +294,7 @@
   function ajoutCorr(e) {
     sauvTrous();
     var a = e.currentTarget.id.split("_")[1];
-    console.log("ajout Corr" + tblExo.pages[pageCourante].questions[questionCourante].trous[a].length);
+    // console.log("ajout Corr" + tblExo.pages[pageCourante].questions[questionCourante].trous[a].length);
     if (tblExo.pages[pageCourante].questions[questionCourante].trous[a].length === 0) {
       var newCorr = {
         "saisie": "Réponse correcte",
@@ -388,8 +391,10 @@ console.log("3");
 
     function changeScorableQtrou(e) {
       if (e.currentTarget.checked) {
+        $("#thScore").removeClass('invisible');
         $(".divCorr input[type='number']").removeClass('invisible');
       } else {
+        $("#thScore").addClass('invisible');
         $(".divCorr input[type='number']").addClass('invisible');
       }
     }

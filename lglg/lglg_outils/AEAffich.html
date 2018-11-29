@@ -14,7 +14,7 @@ $(function(){
 	$("#imgMoins").load("lglg/lglg_interface/images/minus_alt.svg");
 	$("#imgPlus").load("lglg/lglg_interface/images/plus_alt.svg");
 	$( "#maProgress").progressbar({
-      value: 0,
+    value: 0,
 	  max : AEValeurMax
     });
 
@@ -24,6 +24,7 @@ $(function(){
 });
 
 function majAE(){
+  console.log("majAE");
 	var somme = 0;
 	var nbRep =0 ;
 	for (var pageAE = 0 ; pageAE < tblReponses.length ; pageAE++){

@@ -2,7 +2,9 @@
 
   <h2>Paramètres Généraux</h2>
   <div class="boite1">
-    <h3><img src="img/help.svg" id="aide_titre" class="aide" alt="aide" >Nom de l'exercice <!--<button onClick="alert(nettoieChaine($('#txtTitreParam').val()));">test</button>--></h3>
+    <h3><img src="img/help.svg" id="aide_titre" class="aide" alt="aide">Nom de l'exercice
+      <!--<button onClick="alert(nettoieChaine($('#txtTitreParam').val()));">test</button>-->
+    </h3>
 
     <input type="text" id="txtTitreParam" style="width:50%" onChange="tblExo.titre = this.value;">
     <!-- -->
@@ -38,27 +40,28 @@
       <input type="radio" id="cbfrmEtiq0" name="btnOutilEtiq" value="0">Texte + icone
       <input type="radio" id="cbfrmEtiq1" name="btnOutilEtiq" value="1">Icone</form>
 
-    <h3>Bouton 1 : <!--<img src="img/help.svg" id="aide_btnOutilsEtiq" class="aide" alt="aide">-->étiquette / <img src="img/help.svg" id="aide_btnOutilFnctn" class="aide" alt="aide">fonction</h3>
-    <input type="text" id="txtBtn1Etiq" onchange="tblExo.btnOutil.liste[0].etiquette = this.value;"/> /
+    <h3>Bouton 1 :
+      <!--<img src="img/help.svg" id="aide_btnOutilsEtiq" class="aide" alt="aide">-->étiquette / <img src="img/help.svg" id="aide_btnOutilFnctn" class="aide" alt="aide">fonction</h3>
+    <input type="text" id="txtBtn1Etiq" onchange="tblExo.btnOutil.liste[0].etiquette = this.value;" /> /
     <select id="select1Fnctn" onchange="tblExo.btnOutil.liste[0].fonction = this[this.selectedIndex].text"></select>
 
     <h3>Bouton 2 : étiquette / fonction</h3>
-    <input type="text" id="txtBtn2Etiq" onchange="tblExo.btnOutil.liste[1].etiquette = this.value;"/> /
+    <input type="text" id="txtBtn2Etiq" onchange="tblExo.btnOutil.liste[1].etiquette = this.value;" /> /
     <select id="select2Fnctn" onchange="tblExo.btnOutil.liste[1].fonction = this[this.selectedIndex].text"></select>
 
     <h3>Bouton 3 : étiquette / fonction</h3>
-    <input type="text" id="txtBtn3Etiq" onchange="tblExo.btnOutil.liste[2].etiquette = this.value;"/> /
+    <input type="text" id="txtBtn3Etiq" onchange="tblExo.btnOutil.liste[2].etiquette = this.value;" /> /
     <select id="select3Fnctn" onchange="tblExo.btnOutil.liste[2].fonction = this[this.selectedIndex].text"></select>
 
     <h3>Bouton 4 : étiquette / fonction</h3>
-    <input type="text" id="txtBtn4Etiq" onchange="tblExo.btnOutil.liste[3].etiquette = this.value;"/> /
+    <input type="text" id="txtBtn4Etiq" onchange="tblExo.btnOutil.liste[3].etiquette = this.value;" /> /
     <select id="select4Fnctn" onchange="tblExo.btnOutil.liste[3].fonction = this[this.selectedIndex].text"></select>
   </div>
 
   <h2><img src="img/help.svg" id="aide_listClavier" class="aide" alt="aide">Caractères accentués</h2>
   <div class="boite1">
     <input type="text" id="txtClavier" style="width:60%;margin:0.3rem 0;" onchange="tblExo.clavier = this.value" />
-    <select id="selectClavier" onChange="document.getElementById('txtClavier').value = tblClaviers[this.selectedIndex].car;tblExo.clavier = tblClaviers[this.selectedIndex].car;" ></select>
+    <select id="selectClavier" onChange="document.getElementById('txtClavier').value = tblClaviers[this.selectedIndex].car;tblExo.clavier = tblClaviers[this.selectedIndex].car;"></select>
   </div>
 
   <h2>Scénario</h2>
@@ -76,16 +79,25 @@
     </form>
 
     <h3><img src="img/help.svg" id="aide_nbCarCorrection" class="aide" alt="aide">Nombre de caractères pour correction</h3>
-    <input type="text" id="saisieQoAccesC" style="width:4rem;" onchange="tblExo.scenario.qoAccesC = this.value"/>
+    <input type="text" id="saisieQoAccesC" style="width:4rem;" onchange="tblExo.scenario.qoAccesC = this.value" />
 
-    <h3><img src="img/help.svg" id="aide_msgAE" class="aide" alt="aide">Question pour l'auto-évaluation</h3>
-    <input type="text" id="saisieMsgAE" style="width:40rem;" onchange="tblExo.scenario.msgAE = this.value"/>
+    <h3><img src="img/help.svg" id="aide_evalType" class="aide" alt="aide">Type d'évaluation de l'exercice</h3>
+    <select id="slctEval" onchange="masqueEvalPlus();tblExo.scenario.evalType=this.value;">
+      <option value="N">Aucune</option>
+      <option value="AE">Auto-évaluation</option>
+      <option value="S">Score</option>
+    </select>
 
-    <h3><img src="img/help.svg" id="aide_scormScore" class="aide" alt="aide">Score à remonter vers Moodle</h3>
+    <div id="ctnAEplus">
+      <p><img src="img/help.svg" id="aide_msgAE" class="aide" alt="aide">Question pour l'auto-évaluation</p>
+      <input type="text" id="saisieMsgAE" style="width:40rem;" onchange="tblExo.scenario.msgAE = this.value" />
+    </div>
+
+    <!-- <h3><img src="img/help.svg" id="aide_scormScore" class="aide" alt="aide">Score à remonter vers Moodle</h3>
     <select id="selectScormNote" onChange="tblExo.scenario.scormScoreRaw = this.value;">
-					<option value="rep">% de reponses données</option>
-					<option value="ae">% d'auto-évaluation</option>
-				</select>
+      <option value="rep">% de reponses données</option>
+      <option value="ae">% d'auto-évaluation</option>
+    </select> -->
   </div>
 
   <h2>Interface</h2>
@@ -98,7 +110,7 @@
     <input type="checkbox" id="btnAffichLogo" style="" onchange="masqueLogoCoord();tblExo.interface.logoaffich=this.checked" />
     <div id="ctnLogoCoord" style="margin:-1.5rem 1rem 0 4rem;">
       <span>URL du logo :</span>
-      <input type="text" id="tiUrlLogo" style="width:100%;" onchange="tblExo.interface.logourl = this.value"/>
+      <input type="text" id="tiUrlLogo" style="width:100%;" onchange="tblExo.interface.logourl = this.value" />
       <span>Title du logo :</span>
       <input type="text" id="tiTitleLogo" style="width:100%;" onchange="tblExo.interface.logotitle = this.value" />
       <span>Lien pour clic :</span>
@@ -181,17 +193,17 @@
 
 
     // La consigne
-    console.log("init 1 = " + tinymce.editors.length);
+    // console.log("init 1 = " + tinymce.editors.length);
     if (tinymce.editors.length > 0) {
       tinymce.remove('#taConsigne0');
     }
-    console.log("init 2 = " + tinymce.editors.length);
+    // console.log("init 2 = " + tinymce.editors.length);
     tinymce.EditorManager.init({
       selector: '#taConsigne0',
       plugins: ' advlist lists table code image',
       toolbar: ' undo redo | styleselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | table image code ',
       menu: true,
-       auto_focus: 'taConsigne0',
+      auto_focus: 'taConsigne0',
       branding: false,
       // setup: function(editor) {
       //   editor.on('init', function(e) {
@@ -206,18 +218,18 @@
       }
     }).then(function() {
       tinymce.get("taConsigne0").setContent(tblExo.consigne);
-    // document.getElementsByTagName("html")[0].focus();
-    // document.getElementById("txtTitreParam").focus();
+      // document.getElementsByTagName("html")[0].focus();
+      // document.getElementById("txtTitreParam").focus();
     });
 
     //***** scenario
     document.forms.accesQuestionnaire.accesQ.value = tblExo.scenario.accesQ;
-document.forms.verrCorrf.verrCorr.value = tblExo.scenario.verrCorr;
+    document.forms.verrCorrf.verrCorr.value = tblExo.scenario.verrCorr;
 
     if (tblExo.scenario.qoAccesC) document.getElementById("saisieQoAccesC").value = tblExo.scenario.qoAccesC;
     if (tblExo.scenario.msgAE) document.getElementById("saisieMsgAE").value = tblExo.scenario.msgAE;
-    if (tblExo.scenario.scormScoreRaw) document.getElementById("selectScormNote").value = tblExo.scenario.scormScoreRaw;
-
+    // if (tblExo.scenario.scormScoreRaw) document.getElementById("selectScormNote").value = tblExo.scenario.scormScoreRaw;
+if (tblExo.scenario.evalType) document.getElementById("slctEval").value = tblExo.scenario.evalType;
 
     if (tblExo.interface.couleur1) {
       document.getElementById("inputCouleur1").value = tblExo.interface.couleur1;
@@ -229,6 +241,7 @@ document.forms.verrCorrf.verrCorr.value = tblExo.scenario.verrCorr;
       document.getElementById("tiLienLogo").value = tblExo.interface.logolien;
     }
     masqueLogoCoord();
+    masqueEvalPlus();
 
 
     $("#ctnVideo").dialog("close");
@@ -259,6 +272,14 @@ document.forms.verrCorrf.verrCorr.value = tblExo.scenario.verrCorr;
       $("#ctnLogoCoord").show("fast");
     } else {
       $("#ctnLogoCoord").hide("fast");
+    }
+  }
+
+  function masqueEvalPlus() {
+    if (document.getElementById("slctEval").value === "AE") {
+      $("#ctnAEplus").show("fast");
+    } else {
+      $("#ctnAEplus").hide("fast");
     }
   }
 </script>

@@ -72,14 +72,14 @@ function tempsPon2lisible(entree){
 }
 
 function eDblQ(entree){
-  console.log("eDblQ entree " + entree);
+  // console.log("eDblQ entree " + entree);
 	"use strict";
 	var regExp = /"/g; // pour virer les doubleQuote qui plante le paquet scorm...
 	var sortie = entree.replace(regExp , "'");
-    console.log("eDblQ  etap 1 sortie " + sortie);
+    // console.log("eDblQ  etap 1 sortie " + sortie );
   	 regExp = /\n/g; // pour virer les retour à la ligne généré par tinyMCE...
   	var sortie2 = sortie.replace(regExp , "");
-      console.log("eDblQ  etap 1 sortie " + sortie2);
+      // console.log("eDblQ  etap 1 sortie " + sortie2);
 	return sortie2;
 }
 
@@ -103,7 +103,7 @@ function chargerVideo(){
 			//$("#video").attr("src",tblExo["videoUrl"]);
 			var temp = tblExo.videoUrl.split("/");
 			var adresse = temp[0] + "//" + temp[2] + "/public.php?service=files&t=" +temp[temp.length - 1] + "&download";
-      console.log("video OWNCMOUL " + adresse);
+      // console.log("video OWNCMOUL " + adresse);
 			$("#video").attr("src" , adresse );
 		});
 	}else if (tblExo.videoType === "2"){
