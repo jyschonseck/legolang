@@ -5,29 +5,30 @@
 function creationAE(q){
   console.log("function creationAE" + q);
 		var ctnAE = document.getElementById("ctnAutoEvaluation_" + q)
-		var elt = document.createElement("span");
 
-		elt.innerHTML = tblExo.scenario.msgAE;
-		ctnAE.appendChild(elt);
+    var elt0 = document.createElement("span");
+		elt0.innerHTML = tblExo.scenario.msgAE;
+		ctnAE.appendChild(elt0);
 
 		var elt1 = document.createElement("div");
-		elt1.id = "ctnAE_"+q
+		elt1.id = "ctnAE_"+q;
+    elt1.className = "ctnAE";
 
-		elt = document.createElement("span");
-		elt.className = "clicable";
-		elt.id = "AEMoins_" + q;
-		elt.onclick = inputHdlr;
-		elt1.appendChild(elt);
+		var elt10 = document.createElement("button");
+		elt10.className = "clicable";
+		elt10.id = "AEMoins_" + q;
+		elt10.onclick = inputHdlr;
+		elt1.appendChild(elt10);
 
-		elt =  document.createElement("div");
-		elt.id = "AEProgress_" + q;
-		elt1.appendChild(elt);
+		var elt11 =  document.createElement("div");
+		elt11.id = "AEProgress_" + q;
+		elt1.appendChild(elt11);
 
-		elt = document.createElement("span");
-		elt.className = "clicable";
-		elt.id = "AEPlus_" + q;
-		elt.onclick = inputHdlr;
-		elt1.appendChild(elt);
+		var elt12 = document.createElement("button");
+		elt12.className = "clicable";
+		elt12.id = "AEPlus_" + q;
+		elt12.onclick = inputHdlr;
+		elt1.appendChild(elt12);
 
 		ctnAE.appendChild(elt1);
 

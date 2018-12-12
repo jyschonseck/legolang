@@ -6,6 +6,7 @@
     if (tblExo.videoType === "0" || !tblExo.videoType) { // si on
       $("#video").attr("src", tblExo["videoUrl"]);
     } else if (tblExo.videoType === "1") {
+      // je conserve encore un peu la fonction video sur owncloud même si elle n'est plus proposée en editParamètres
       var temp = tblExo["videoUrl"].split("/");
       var adresse = temp[0] + "//" + temp[2] + "/public.php?service=files&t=" + temp[temp.length - 1] + "&download";
       $("#video").attr("src", adresse);
@@ -14,9 +15,9 @@
 
     // gestion de la lecture obligatoire de la video
     video = document.getElementById('video');
-    console.log("test scenario " + tblExo.scenario.accesQ  + typeof tblExo.scenario.accesQ );
+    // console.log("test scenario " + tblExo.scenario.accesQ  + typeof tblExo.scenario.accesQ );
     if (parseInt(tblExo.scenario.accesQ) === 0 || $("#nav_3").hasClass("actif")) { //acces immédiat ou déja repondu, donc onglet 3 actif
-      console.log("donc on active la nav");
+      // console.log("donc on active la nav");
       maVideoActiveNav();
     } else {
       setTimeout(poseEcouteurFin(), 3000);
@@ -78,7 +79,6 @@
   function test() {}
 
   function sousTitrage1() {
-    console.log("on va st TOGGLE");
     if (video.textTracks.length === 0) {
       sousTitrage(true);
     } else {
@@ -87,12 +87,16 @@
   }
 
   function sousTitrage(stOn) {
-    console.log('function sousTitrage(' + stOn + '), on a video.textTracks.length = ' + video.textTracks.length);
     if (stOn) {
       if (video.textTracks.length === 0) {
         $("#outil-sousTitrage1").addClass("choisi");
         var ST = document.createElement("track");
         var fichierST = "module/st.vtt";
+        if (sessionStorage.stUrl){//****JYS 11/2018 compatibilite avec aulias (ou dispositif similaire)
+          fichierST = sessionStorage.stUrl;
+        } else  if (tblExo.stUrl) {
+          fichierST = tblExo.stUrl;
+        }
         if (modeAuteur) {
           var antiCache = new Date();
           fichierST = "_vtt/st_" + siege + ".vtt?" + antiCache;
@@ -109,10 +113,10 @@
       }
     } else {
       if (video.textTracks.length > 0) {
-      var pourSuppr = document.getElementsByTagName("track")
-      video.removeChild(pourSuppr[0]);
-      $("#outil-sousTitrage1").removeClass("choisi");
-    }
+        var pourSuppr = document.getElementsByTagName("track")
+        video.removeChild(pourSuppr[0]);
+        $("#outil-sousTitrage1").removeClass("choisi");
+      }
     }
   }
 </script>

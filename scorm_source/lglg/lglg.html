@@ -22,10 +22,7 @@
       </div>
       <div id="ctnMedia"></div>
       <div id="ctnOutils"></div>
-      <div class="ctnInfosResult">
-
-        <div id="ctnAEAffich" class="invisible ctnResult"></div>
-        <div id="ctnScore" class="invisible ctnResult"></div>
+      <div id="ctnInfosResult" >
       </div>
       <div id="ctnLogo">
         <a id="lienLogoP" href="http://klip.univ-lille.fr/fiche/75-legolang-nbsp-une-application-pour-les-langues" target="_blank" title="Cet exercice à été réalisé avec LeGoLanG">
@@ -39,11 +36,9 @@
 
     <section id="questionnaire">
       <div id="ctnOnglets" onClick="ongletsClickHdlr(event);">
-        <div id="nav_1" class="actif choisi">vidéo</div>
-
-        <div id="nav_2">questions</div>
-
-        <div id="nav_3">correction</div>
+        <button id="nav_1" class="actif choisi">consigne</button>
+        <button id="nav_2">questions</button>
+        <button id="nav_3">correction</button>
       </div>
       <div id="ctnDroit">
         <div id="ctnConsigne"></div>
@@ -55,10 +50,7 @@
     </section>
   </div>
 
-
-
   <script src="lglg/lglg_js/lglg.js"></script>
-
   <!--****les libs pour la création de .pdf****-->
   <script src="lglg/lglg_js/pdfmake.min.js"></script>
   <script src="lglg/lglg_js/vfs_fonts.js"></script>
@@ -70,7 +62,6 @@
   <script src="lglg/lglg_questions/qcm.js"></script>
   <script>
     $(function() {
-      console.log("lglg.html onloaded");
       //*** pour affichage des titres : je l'ai désactivé pour les paquest scorm : on faisait redondance avec le titre obligatoire de moodle. Mais je l'avais gardé un temps pour actufle...
       // if (affichTitre) {
       //   $("#txtTitre").css("display", "block");
@@ -82,32 +73,28 @@
         document.oncontextmenu = new Function("return false");
       }
 
-      if (sessionStorage.getItem("lglg_data") == null) { //test présence donnée du mode auteur
+      if (sessionStorage.getItem("lglg_data") == null) { //test présence donnée en sessionStorage
         if (location.hash.length > 0) { //on a une adresse dans le hash
-          console.log("on a du hash (!!!) : on charge le fichier : " + location.hash);
           chargeFichierData(location.hash.substring(1));
         } else {
-          console.log("on charge le fichier exo.json");
-chargeFichierData('module/data.json');
+          chargeFichierData('module/data.json');
         }
-
       } else {
         tblExo = jQuery.parseJSON(sessionStorage.lglg_data);
-        console.log("on a du session storage ..; on est en auteur");
-        modeAuteur = true;
         //** initialisation du tableau reponse :;
         tblReponsesInit();
         tblQuestionsInit();
         afficheExo();
       }
 
-
+      if (sessionStorage.auteur === "true"){
+      modeAuteur = true;
+    }
 
 
       //******** resize de la partie question (pas réussi à gérer en css ...
       //si on redimensionne la fenetre
       window.addEventListener("resize", redimCtnQuestions);
-
 
     });
 
@@ -115,7 +102,6 @@ chargeFichierData('module/data.json');
       //var url = 'module/data.json';
       // si on vient de lglg_auteur :
       //  if (sessionStorage.getItem("lglg_lien") != null) url = sessionStorage.getItem("lglg_lien");
-      console.log("url avant le $.ajax = " + url);
       $.ajax({
         type: 'GET',
         url: url,
@@ -125,7 +111,6 @@ chargeFichierData('module/data.json');
             tblExo = data;
             //** initialisation du tableau reponse :;
             tblReponsesInit();
-
             tblQuestionsInit();
             afficheExo();
           }
@@ -145,7 +130,7 @@ chargeFichierData('module/data.json');
       if ($(e.target).hasClass('actif') && !$(e.target).hasClass('choisi')) { // donc on a cliqué sur un onglet 'actif' et pas encore choisi
 
         var onglet = e.target.id.split("_")[1];
-
+console.log("on vient de cliquer sur " + onglet);
         if (onglet === "1") {
           $("#ctnQuestionnaire").fadeOut("fast", function() {
             $("#ctnConsigne").fadeIn("fast");
@@ -172,13 +157,13 @@ chargeFichierData('module/data.json');
             $("#nav_2").removeClass("actif")
           }
           effacerClavier();
-          if ($("#nav_1").hasClass("choisi")) { //on vient de consigne (donc c'était d'ja validé
+          // if ($("#nav_1").hasClass("choisi")) { //on vient de consigne (donc c'était d'ja validé
             $("#ctnConsigne").fadeOut("fast", function() {
               $("#ctnQuestionnaire").fadeIn("fast");
             });
-          } else { //on vient de questionnaire
+          // } else { //on vient de questionnaire
             validation();
-          }
+          // }
         }
         // on affiche les onglets
         ongletsAffich(onglet);
@@ -187,7 +172,7 @@ chargeFichierData('module/data.json');
 
 
     function ongletsAffich(i) {
-      $("#ctnOnglets div").removeClass("choisi");
+      $("#ctnOnglets button").removeClass("choisi");
       $("#nav_" + i).addClass("choisi");
     }
 

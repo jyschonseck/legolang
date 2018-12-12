@@ -1,6 +1,6 @@
 <div id="ctnEditParam" class="pageContenuPetit">
 
-  <h2>Paramètres Généraux</h2>
+  <h2>Paramètres généraux</h2>
   <div class="boite1">
     <h3><img src="img/help.svg" id="aide_titre" class="aide" alt="aide">Nom de l'exercice
       <!--<button onClick="alert(nettoieChaine($('#txtTitreParam').val()));">test</button>-->
@@ -16,7 +16,7 @@
     <h3 class="clicableUtilisateurPlus"><img src="img/help.svg" id="aide_videoUrl" class="aide" alt="aide"><img id="imgVideoVerrou" src="img/verrou.png" alt="verrou">Vidéo </h3>
     <form id="videoBlocType" onClick="tblExo.videoType = this.videoType.value;">
       <input type="radio" name="videoType" value="0">Serveur <img src="img/help.svg" id="aide_videoType0" class="aide" alt="aide">
-      <input type="radio" name="videoType" value="1">Owncloud<img src="img/help.svg" id="aide_videoType1" class="aide" alt="aide">
+      <!-- <input type="radio" name="videoType" value="1">Owncloud<img src="img/help.svg" id="aide_videoType1" class="aide" alt="aide"> -->
       <input type="radio" name="videoType" value="2">Youtube<img src="img/help.svg" id="aide_videoType2" class="aide" alt="aide">
     </form>
     <input type="text" id="taVideoUrl" style="width:100%" onChange="tblExo.videoUrl = this.value;videoARecharger = true">
@@ -79,7 +79,7 @@
     </form>
 
     <h3><img src="img/help.svg" id="aide_nbCarCorrection" class="aide" alt="aide">Nombre de caractères pour correction</h3>
-    <input type="text" id="saisieQoAccesC" style="width:4rem;" onchange="tblExo.scenario.qoAccesC = this.value" />
+    <input type="number" id="saisieQoAccesC" style="width:4rem;" onchange="tblExo.scenario.qoAccesC = this.value" />
 
     <h3><img src="img/help.svg" id="aide_evalType" class="aide" alt="aide">Type d'évaluation de l'exercice</h3>
     <select id="slctEval" onchange="masqueEvalPlus();tblExo.scenario.evalType=this.value;">
@@ -89,8 +89,23 @@
     </select>
 
     <div id="ctnAEplus">
-      <p><img src="img/help.svg" id="aide_msgAE" class="aide" alt="aide">Question pour l'auto-évaluation</p>
-      <input type="text" id="saisieMsgAE" style="width:40rem;" onchange="tblExo.scenario.msgAE = this.value" />
+      <p>
+        <img src="img/help.svg" id="aide_msgAE" class="aide" alt="aide">
+        <label for="saisieMsgAE">Question pour l'auto-évaluation</label>
+        <input type="text" id="saisieMsgAE" style="width:20rem;" onchange="tblExo.scenario.msgAE = this.value" />
+      </p>
+      <p>
+        <img src="img/help.svg" id="aide_tAE" class="aide" alt="aide">
+        <label for="tiTxtAE">Texte pour l'auto-évaluation : </label>
+        <input type="text" id="tiTxtAE" style="width:12rem;" onchange="tblExo.interface.txtAE = this.value" />
+      </p>
+    </div>
+    <div id="ctnScplus">
+      <p>
+        <img src="img/help.svg" id="aide_tSc" class="aide" alt="aide">
+        <label for="tiTxtSc">Texte pour le score calculé : </label>
+        <input type="text" id="tiTxtSc" style="width:12rem;" onchange="tblExo.interface.txtSc = this.value" />
+      </p>
     </div>
 
     <!-- <h3><img src="img/help.svg" id="aide_scormScore" class="aide" alt="aide">Score à remonter vers Moodle</h3>
@@ -104,6 +119,15 @@
   <div class="boite1">
     <h3><img src="img/help.svg" id="aide_guiCouleur" class="aide" alt="aide">Couleur </h3>
     <input type="color" id="inputCouleur1" onchange="tblExo.interface.couleur1 = this.value">
+
+    <h3>intitulé des onglets</h3>
+    <label for="tiNav1">Onglet 1 (consigne) : </label>
+    <input type="text" id="tiNav1" style="width:8rem;" onchange="tblExo.interface.nav1 = this.value" />
+    <label for="tiNav2">Onglet 2 (questions) : </label>
+    <input type="text" id="tiNav2" style="width:8rem;" onchange="tblExo.interface.nav2 = this.value" />
+    <label for="tiNav3">Onglet 3 (correction) : </label>
+    <input type="text" id="tiNav3" style="width:8rem;" onchange="tblExo.interface.nav3 = this.value" />
+
 
 
     <h3><img src="img/help.svg" id="aide_affichLogo" class="aide" alt="aide">Affichage d'un logo additionel</h3>
@@ -125,7 +149,6 @@
   var tblFnctn = new Array("--", "sousTitrage1", "impression", "doc", "clavier")
 
   $(function() {
-    console.log("affich editParametres");
     $(".aide").on("click", function() {
       affichAide(this);
     });
@@ -193,11 +216,9 @@
 
 
     // La consigne
-    // console.log("init 1 = " + tinymce.editors.length);
     if (tinymce.editors.length > 0) {
       tinymce.remove('#taConsigne0');
     }
-    // console.log("init 2 = " + tinymce.editors.length);
     tinymce.EditorManager.init({
       selector: '#taConsigne0',
       plugins: ' advlist lists table code image',
@@ -205,11 +226,6 @@
       menu: true,
       auto_focus: 'taConsigne0',
       branding: false,
-      // setup: function(editor) {
-      //   editor.on('init', function(e) {
-      //     console.log('Editor was initialized sur ' + e.target.id);
-      //   });
-      // },
       init_instance_callback: function(editor) {
         editor.on('change', function(e) {
           tblExo["consigne"] = eDblQ(tinymce.get('taConsigne0').getContent());
@@ -218,8 +234,6 @@
       }
     }).then(function() {
       tinymce.get("taConsigne0").setContent(tblExo.consigne);
-      // document.getElementsByTagName("html")[0].focus();
-      // document.getElementById("txtTitreParam").focus();
     });
 
     //***** scenario
@@ -229,11 +243,28 @@
     if (tblExo.scenario.qoAccesC) document.getElementById("saisieQoAccesC").value = tblExo.scenario.qoAccesC;
     if (tblExo.scenario.msgAE) document.getElementById("saisieMsgAE").value = tblExo.scenario.msgAE;
     // if (tblExo.scenario.scormScoreRaw) document.getElementById("selectScormNote").value = tblExo.scenario.scormScoreRaw;
-if (tblExo.scenario.evalType) document.getElementById("slctEval").value = tblExo.scenario.evalType;
+    if (tblExo.scenario.evalType) document.getElementById("slctEval").value = tblExo.scenario.evalType;
 
     if (tblExo.interface.couleur1) {
       document.getElementById("inputCouleur1").value = tblExo.interface.couleur1;
     }
+    if (tblExo.interface.nav1) {
+      document.getElementById("tiNav1").value = tblExo.interface.nav1;
+    }
+    if (tblExo.interface.nav2) {
+      document.getElementById("tiNav2").value = tblExo.interface.nav2;
+    }
+    if (tblExo.interface.nav3) {
+      document.getElementById("tiNav3").value = tblExo.interface.nav3;
+    }
+    if (tblExo.interface.txtAE) {
+      document.getElementById("tiTxtAE").value = tblExo.interface.txtAE;
+    }
+    if (tblExo.interface.txtSc) {
+      document.getElementById("tiTxtSc").value = tblExo.interface.txtSc;
+    }
+
+
     document.getElementById("btnAffichLogo").checked = tblExo.interface.logoaffich;
     if (tblExo.interface.logourl) {
       document.getElementById("tiUrlLogo").value = tblExo.interface.logourl;
@@ -276,10 +307,12 @@ if (tblExo.scenario.evalType) document.getElementById("slctEval").value = tblExo
   }
 
   function masqueEvalPlus() {
+    $("#ctnScplus").hide("fast");
+    $("#ctnAEplus").hide("fast");
     if (document.getElementById("slctEval").value === "AE") {
       $("#ctnAEplus").show("fast");
-    } else {
-      $("#ctnAEplus").hide("fast");
+    } else if (document.getElementById("slctEval").value === "S") {
+      $("#ctnScplus").show("fast");
     }
   }
 </script>

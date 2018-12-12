@@ -6,6 +6,7 @@
     if (tblExo.videoType === "0" || !tblExo.videoType) { // si on
       $("#video").attr("src", tblExo["videoUrl"]);
     } else if (tblExo.videoType === "1") {
+      // je conserve encore un peu la fonction video sur owncloud même si elle n'est plus proposée en editParamètres
       var temp = tblExo["videoUrl"].split("/");
       var adresse = temp[0] + "//" + temp[2] + "/public.php?service=files&t=" + temp[temp.length - 1] + "&download";
       $("#video").attr("src", adresse);
@@ -70,7 +71,7 @@
   }
 
   function maVideoActiveNav() {
-    //$("#nav_2").addClass("actif");
+    $("#nav_2").addClass("actif");
     video.controls = true;
     video.removeEventListener("ended", maVideoActiveNav);
   }

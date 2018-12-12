@@ -22,7 +22,7 @@
       </div>
       <div id="ctnMedia"></div>
       <div id="ctnOutils"></div>
-      <div id="ctnInfosResult" >
+      <div id="ctnInfosResult">
       </div>
       <div id="ctnLogo">
         <a id="lienLogoP" href="http://klip.univ-lille.fr/fiche/75-legolang-nbsp-une-application-pour-les-langues" target="_blank" title="Cet exercice à été réalisé avec LeGoLanG">
@@ -36,11 +36,9 @@
 
     <section id="questionnaire">
       <div id="ctnOnglets" onClick="ongletsClickHdlr(event);">
-        <div id="nav_1" class="actif choisi">vidéo</div>
-
-        <div id="nav_2">questions</div>
-
-        <div id="nav_3">correction</div>
+        <button id="nav_1" class="actif choisi">consigne</button>
+        <button id="nav_2">questions</button>
+        <button id="nav_3">correction</button>
       </div>
       <div id="ctnDroit">
         <div id="ctnConsigne"></div>
@@ -89,10 +87,9 @@
         afficheExo();
       }
 
-      if (sessionStorage.auteur === "true"){
-      modeAuteur = true;
-    }
-
+      if (sessionStorage.auteur === "true") {
+        modeAuteur = true;
+      }
 
 
       //******** resize de la partie question (pas réussi à gérer en css ...
@@ -133,12 +130,15 @@
       if ($(e.target).hasClass('actif') && !$(e.target).hasClass('choisi')) { // donc on a cliqué sur un onglet 'actif' et pas encore choisi
 
         var onglet = e.target.id.split("_")[1];
-
+        console.log("on vient de cliquer sur " + onglet);
         if (onglet === "1") {
           $("#ctnQuestionnaire").fadeOut("fast", function() {
             $("#ctnConsigne").fadeIn("fast");
           });
         } else if (onglet === "2") {
+          // en test :
+          affichPage();
+
           if ($('#ctnOutils').hasClass("outilsInactif")) {
             $('#ctnOutils').show(200);
             var tempo = setTimeout(function() {
@@ -160,13 +160,13 @@
             $("#nav_2").removeClass("actif")
           }
           effacerClavier();
-          if ($("#nav_1").hasClass("choisi")) { //on vient de consigne (donc c'était d'ja validé
-            $("#ctnConsigne").fadeOut("fast", function() {
-              $("#ctnQuestionnaire").fadeIn("fast");
-            });
-          } else { //on vient de questionnaire
-            validation();
-          }
+          // if ($("#nav_1").hasClass("choisi")) { //on vient de consigne (donc c'était d'ja validé
+          $("#ctnConsigne").fadeOut("fast", function() {
+            $("#ctnQuestionnaire").fadeIn("fast");
+          });
+          // } else { //on vient de questionnaire
+          validation();
+          // }
         }
         // on affiche les onglets
         ongletsAffich(onglet);
@@ -175,7 +175,7 @@
 
 
     function ongletsAffich(i) {
-      $("#ctnOnglets div").removeClass("choisi");
+      $("#ctnOnglets button").removeClass("choisi");
       $("#nav_" + i).addClass("choisi");
     }
 

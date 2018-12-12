@@ -1,184 +1,208 @@
 <div id="ctnEditQuestions" class="pageContenuPetit">
-    <div id="ctnEdQuestions" > </div>
+  <div id="ctnEdQuestions"> </div>
 </div>
 
-<div id="popupModifQuestion" title="Édition question " >
+<div id="popupModifQuestion" title="Édition question ">
 
 </div>
 
 <div id="popupModifTitre" title="Modifier titre de la page de question" style="width:80%;">
-    <table width="100%" border="1">
-        <tr>
-            <td width="15%" align="right" valign="top" > Titre de la page : </td>
-
-            <td><textarea id="taTxtTitrePage" cols="88">lorem ipsum</textarea></td>
-        </tr>
-    </table>
+  <input type="text" id="taTxtTitrePage" style="width:90%">
 </div>
+
+
+
+
+<div id="dialog-confirm-delQ" title="Supprimer la question ?">
+  <p>
+    <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Voulez-vous vraiment supprimer cette question ?
+  </p>
+</div>
+
 <script>
-    var questionCourante = 0;
-    var pageCourante = 0;
+  var questionCourante = 0;
+  var pageCourante = 0;
 
-    $(function () {
-        //***construction du tableau affichage des questions***/
-        affichTableauQuestions();
+  $(function() {
+    //***construction du tableau affichage des questions***/
+    affichTableauQuestions();
 
-        //***popup édition Question
-        $("#popupModifQuestion").dialog({
-            modal: false,
-            autoOpen: false,
-            width: 800,
-            position: {my: "left top", at: "left top"},
-            show: {
-                effect: "fade",
-                duration: 333
-            },
-            hide: {
-                effect: "fade",
-                duration: 333
-            },
-            buttons: {
-                "OK": function () {
-                    questionEnregistre();
-                },
-                "Annuler": function () {
-                    $(this).dialog("close");
-                    $("#ctnVideo").dialog("close");
-                }
-            }
-        });
-
-        //***popup édition titre
-        $("#popupModifTitre").dialog({
-            modal: false,
-            autoOpen: false,
-            width: 560,
-            show: {
-                effect: "fade",
-                duration: 333
-            },
-            hide: {
-                effect: "fade",
-                duration: 333
-            },
-            buttons: {
-                "OK": function () {
-                    tblExo.pages[pageCourante].titre = eDblQ(document.getElementById('taTxtTitrePage').value);
-                    affichTableauQuestions();
-                    $(this).dialog("close");
-                },
-                "Annuler": function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-
-
-
-
-        //$("#ctnVideo" ).dialog("open");
-        if (videoARecharger) {
-            chargerVideo();
+    //***popup édition Question
+    $("#popupModifQuestion").dialog({
+      modal: false,
+      autoOpen: false,
+      width: 800,
+      position: {
+        my: "left top",
+        at: "left top"
+      },
+      show: {
+        effect: "fade",
+        duration: 333
+      },
+      hide: {
+        effect: "fade",
+        duration: 333
+      },
+      buttons: {
+        "OK": function() {
+          questionEnregistre();
+        },
+        "Annuler": function() {
+          $(this).dialog("close");
+          $("#ctnVideo").dialog("close");
         }
+      }
     });
 
-    function affichTableauQuestions() {
-        //prévoir initialisation
-        /****vidage ctnQuestions****/
-        while (ctnEdQuestions.firstChild) {
-            ctnEdQuestions.removeChild(ctnEdQuestions.firstChild);
+    //***popup édition titre
+    $("#popupModifTitre").dialog({
+      modal: false,
+      autoOpen: false,
+      width: 560,
+      show: {
+        effect: "fade",
+        duration: 333
+      },
+      hide: {
+        effect: "fade",
+        duration: 333
+      },
+      buttons: {
+        "OK": function() {
+          tblExo.pages[pageCourante].titre = eDblQ(document.getElementById('taTxtTitrePage').value);
+          affichTableauQuestions();
+          $(this).dialog("close");
+        },
+        "Annuler": function() {
+          $(this).dialog("close");
         }
+      }
+    });
 
-        for (var i = 0; i < tblExo.pages.length; i++) {
-            var pageQuestions = document.createElement("div");// conteneur page question
-            pageQuestions.className = "eqPage";
-            var pageQuestionsEntete = document.createElement("div");
-            pageQuestionsEntete.id = "titrePage_" + i;
-            pageQuestionsEntete.className = "eqPageEntete";
-            var titre = document.createElement("h2");
-            titre.className = "txtTitrePage";
-            titre.innerHTML = tblExo.pages[i].titre;
-            titre.ondblclick = modifierTitrePage;
-            pageQuestionsEntete.appendChild(titre);
-            var pageOutils = document.createElement("div");
-            pageOutils.id = "ctnOutilsPages_" + i;
-            pageOutils.className = "eqPageOutils";
-            pageQuestionsEntete.appendChild(pageOutils);
-            pageQuestions.appendChild(pageQuestionsEntete);
-
-            for (var j = 0; j < tblExo.pages[i].questions.length; j++) {
-                var question = document.createElement("div");
-                //var quest = document.createElement("td");
-                question.className = "eqQuestion edQtype_"+tblExo.pages[i].questions[j].type; //TODO : faire les style ...
-
-                var textQ = document.createElement("div");
-                textQ.innerHTML = tblExo.pages[i].questions[j].txtQuestion;
-                textQ.ondblclick = modifierQuestion;
-                textQ.className = "eqTextQuest"
-                question.id = "txtQuest_" + i + "_" + j;
-                question.appendChild(textQ);
-                var outils = document.createElement("div");
-                outils.id = "ctnOutils_" + i + "_" + j;
-                outils.className = "eqQuestionOutils";
-                question.appendChild(outils);
-                pageQuestions.appendChild(question);
-            }
-            ctnEdQuestions.appendChild(pageQuestions);
-
-            for (var j = 0; j < tblExo.pages[i].questions.length; j++) {
-                $("#ctnOutils_" + i + "_" + j).load('editQuestionsOutils.html');
-            }
+    $("#dialog-confirm-delQ").dialog({
+      autoOpen: false,
+      resizable: false,
+      height: "auto",
+      width: 400,
+      modal: true,
+      buttons: {
+        "Oui": function() {
+          localStorage.removeItem(tblExo.moduleId);
+          tblExo.pages[pageOrdre].questions.splice(questionOrdre, 1);
+          $('#ctnContenu').load('editQuestions.html');
+          $(this).dialog("close");
+        },
+        Cancel: function() {
+          $(this).dialog("close");
         }
-        for (var i = 0; i < tblExo.pages.length; i++) {
-            $("#ctnOutilsPages_" + i).load('editPagesOutils.html');
-        }
+      }
+    });
+
+
+    //$("#ctnVideo" ).dialog("open");
+    if (videoARecharger) {
+      chargerVideo();
+    }
+  });
+
+  function affichTableauQuestions() {
+    //prévoir initialisation
+    /****vidage ctnQuestions****/
+    while (ctnEdQuestions.firstChild) {
+      ctnEdQuestions.removeChild(ctnEdQuestions.firstChild);
     }
 
-function modifierQuestion(modEvt) {
-        pageCourante = modEvt.currentTarget.parentElement.id.split("_")[1];
-        questionCourante = modEvt.currentTarget.parentElement.id.split("_")[2];
+    for (var i = 0; i < tblExo.pages.length; i++) {
+      var pageQuestions = document.createElement("div"); // conteneur page question
+      pageQuestions.className = "eqPage";
+      var pageQuestionsEntete = document.createElement("div");
+      pageQuestionsEntete.id = "titrePage_" + i;
+      pageQuestionsEntete.className = "eqPageEntete";
+      var titre = document.createElement("h2");
+      titre.className = "txtTitrePage";
+      titre.innerHTML = tblExo.pages[i].titre;
+      titre.ondblclick = modifierTitrePage;
+      pageQuestionsEntete.appendChild(titre);
+      var pageOutils = document.createElement("div");
+      pageOutils.id = "ctnOutilsPages_" + i;
+      pageOutils.className = "eqPageOutils";
+      pageQuestionsEntete.appendChild(pageOutils);
+      pageQuestions.appendChild(pageQuestionsEntete);
 
-        var typeQuestion = tblExo.pages[pageCourante].questions[questionCourante].type;
-        if (typeQuestion === "qtrous") {
-            $("#popupModifQuestion").load("questions/edit_qtrous.html");
-        } else if (typeQuestion === "qo") {
-            $("#popupModifQuestion").load("questions/edit_qo.html");
-        } else if (typeQuestion === "qcm"){
-            $("#popupModifQuestion").load("questions/edit_qcm.html");
-        }
+      for (var j = 0; j < tblExo.pages[i].questions.length; j++) {
+        var question = document.createElement("div");
+        //var quest = document.createElement("td");
+        question.className = "eqQuestion edQtype_" + tblExo.pages[i].questions[j].type; //TODO : faire les style ...
 
-        $('#popupModifQuestion').dialog('open');
-        $("#ctnVideo").dialog("open");
+        var textQ = document.createElement("div");
+        textQ.innerHTML = tblExo.pages[i].questions[j].txtQuestion;
+        textQ.ondblclick = modifierQuestion;
+        textQ.className = "eqTextQuest"
+        question.id = "txtQuest_" + i + "_" + j;
+        question.appendChild(textQ);
+        var outils = document.createElement("div");
+        outils.id = "ctnOutils_" + i + "_" + j;
+        outils.className = "eqQuestionOutils";
+        question.appendChild(outils);
+        pageQuestions.appendChild(question);
+      }
+      ctnEdQuestions.appendChild(pageQuestions);
 
+      for (var j = 0; j < tblExo.pages[i].questions.length; j++) {
+        $("#ctnOutils_" + i + "_" + j).load('editQuestionsOutils.html');
+      }
+    }
+    for (var i = 0; i < tblExo.pages.length; i++) {
+      $("#ctnOutilsPages_" + i).load('editPagesOutils.html');
+    }
+  }
 
+  function modifierQuestion(modEvt) {
+    pageCourante = modEvt.currentTarget.parentElement.id.split("_")[1];
+    questionCourante = modEvt.currentTarget.parentElement.id.split("_")[2];
 
-
-
-
+    var typeQuestion = tblExo.pages[pageCourante].questions[questionCourante].type;
+    if (typeQuestion === "qtrous") {
+      $("#popupModifQuestion").load("questions/edit_qtrous.html");
+    } else if (typeQuestion === "qo") {
+      $("#popupModifQuestion").load("questions/edit_qo.html");
+    } else if (typeQuestion === "qcm") {
+      $("#popupModifQuestion").load("questions/edit_qcm.html");
     }
 
-    function modifierTitrePage(modEvt) {
-        pageCourante = modEvt.currentTarget.parentElement.id.split("_")[1];
-        document.getElementById('taTxtTitrePage').value = tblExo.pages[pageCourante].titre;
-        $('#popupModifTitre').dialog('open');
+    $('#popupModifQuestion').dialog('open');
+    $("#ctnVideo").dialog("open");
+
+
+
+
+
+
+  }
+
+  function modifierTitrePage(modEvt) {
+    pageCourante = modEvt.currentTarget.parentElement.id.split("_")[1];
+    document.getElementById('taTxtTitrePage').value = tblExo.pages[pageCourante].titre;
+    $('#popupModifTitre').dialog('open');
+  }
+
+  function heureChange(ext) {
+    var deb = parseFloat(document.getElementById('ext' + ext + 'DebQo').value);
+    var fin = parseFloat(document.getElementById('ext' + ext + 'FinQo').value);
+    var diff = fin - deb;
+    if (diff > 0) {
+      $('#btnLireExtrait' + ext).show('fast');
+    } else {
+      $('#btnLireExtrait' + ext).hide('fast');
     }
-
-    function heureChange(ext) {
-        var deb = parseFloat(document.getElementById('ext' + ext + 'DebQo').value);
-        var fin = parseFloat(document.getElementById('ext' + ext + 'FinQo').value);
-        var diff = fin - deb;
-        if (diff > 0) {
-            $('#btnLireExtrait' + ext).show('fast');
-        } else {
-            $('#btnLireExtrait' + ext).hide('fast');
-        }
-    }
+  }
 
 
 
-    function modifierTitrePage(modEvt) {
-        pageCourante = modEvt.currentTarget.parentElement.id.split("_")[1];
-        document.getElementById('taTxtTitrePage').value = tblExo.pages[pageCourante].titre;
-        $('#popupModifTitre').dialog('open');
-    }
+  function modifierTitrePage(modEvt) {
+    pageCourante = modEvt.currentTarget.parentElement.id.split("_")[1];
+    document.getElementById('taTxtTitrePage').value = tblExo.pages[pageCourante].titre;
+    $('#popupModifTitre').dialog('open');
+  }
 </script>

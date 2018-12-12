@@ -6,11 +6,12 @@ var proto_qcm = {
     affich: function(i) {
    "use strict";
     var questionEnCours = document.getElementById("ctnQuestion_" + i);
+    questionEnCours.onclick = effacerClavier;
 
     var question = document.createElement("p"); //question
     //****extrait vidéo -question
     if (this.donnees.extraitQuestion.fin > 0) {
-      var btnExtrait = document.createElement("span");
+      var btnExtrait = document.createElement("button");
       btnExtrait.id = "btnVidExtrait_q_" + i + "_vo";;
       btnExtrait.className = " btnExtraitVidVo";
       btnExtrait.onclick = lireExtraitVid;
@@ -65,14 +66,14 @@ var proto_qcm = {
     ctnFBl2.className = "ctnFlexH";
     /**** extrait vidéo ****/
     if (this.donnees.extraitCorrection.fin > 0) {
-      var btnExtrait_c1 = document.createElement("div");
+      var btnExtrait_c1 = document.createElement("button");
       btnExtrait_c1.id = "btnVidExtrait_c_" + i + "_vo";
       btnExtrait_c1.className = "feedback btnExtraitVidVo";
       btnExtrait_c1.onclick = lireExtraitVid;
       ctnFBl2.appendChild(btnExtrait_c1);
 
       if (!this.donnees.extraitCorrection.affichST) {
-        var btnExtrait_c2 = document.createElement("div");
+        var btnExtrait_c2 = document.createElement("button");
         btnExtrait_c2.id = "btnVidExtrait_c_" + i + "_st";
         btnExtrait_c2.className = "feedback btnExtraitVidSt";
         btnExtrait_c2.onclick = lireExtraitVid;
@@ -144,6 +145,7 @@ function QCMClckHdlr(e) {
       tblReponses[pCourante].reps[q] += "0";
     }
   }
-  //*** TODO pour le moment les QCM ne rentre pas dans le prérequis pour acceder à loa correction....
-  //	verifAccesCorr();
+  	verifAccesCorr();
+
+    console.log("tblReponses.length : "+tblReponses.length);
 }

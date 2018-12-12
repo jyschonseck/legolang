@@ -7,7 +7,6 @@
 
   <link rel="stylesheet" href="css/lglgA.css" type="text/css" media="screen">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-
 </head>
 
 <body>
@@ -17,7 +16,7 @@
     <span style="position:absolute;right:1rem;font-size:smaller;">Version : <span id="dateVersion"></span></span>
   </div>
   <main>
-    
+
     <div id="ctnPrincipal">
       <nav id="navA" style="display:none;">
         <div id="nav0">Fichier</div>
@@ -67,18 +66,18 @@
     <input type="hidden" name="ST" id="ecritST" value="" />
   </form>
 
-  <script src="js/jquery-2.1.4.min.js" type="text/javascript"></script>
-  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-  <script src="js/tinymce/tinymce.min.js"></script>
+  <script src="js/bib/jquery-2.1.4.min.js" type="text/javascript"></script>
+  <script src="js/bib/jquery-ui.min.js" type="text/javascript"></script>
+  <script src="js/bib/tinymce/tinymce.min.js"></script>
 
   <script src="js/lglgA.js" type="text/javascript"></script>
-  <script src="js/popupblocktest.js" type="text/javascript"></script>
+  <script src="js/bib/popupblocktest.js" type="text/javascript"></script>
   <script>
     var ouvrirQuoi = "";
     $(function() {
 
       // ****affichage version
-      $("#dateVersion").html(document.lastModified);
+      $("#dateVersion").html(document.lastModified );
 
       /****test popup******/
       if (!resultatTest) {
@@ -203,25 +202,25 @@
       }
 
       // on charge fichier aide :
-      url = 'js/aide.json';
+      var url1 = 'js/aide.json';
       $.ajax({
         type: 'GET',
-        url: url,
+        url: url1,
         dataType: 'json',
         success: function(data) {
           if (data) tblAide = data;
         },
         error: function() {
-          alert('Pas de lecture du fichier : ' + url, 'erreur');
+          alert('01 - Pas de lecture du fichier : ' + url1, 'erreur');
         }
       });
 
       //************************
       //** attribution de siège
-      var url = '_vtt/sieges.json';
+      var url2 = '_vtt/sieges.json';
       $.ajax({
         type: 'GET',
-        url: url,
+        url: url2,
         dataType: 'json',
         success: function(data) {
           if (data) {
@@ -246,7 +245,7 @@
 
         },
         error: function() {
-          alert('Pas de lecture du fichier : ' + url, 'erreur');
+          alert('Pas de lecture du fichier : ' + url2, 'erreur');
         }
       });
 
@@ -304,8 +303,8 @@
       tblExo.titre = "nom du fichier";
       tblExo.sousTitre = "le sous-titre ";
       tblExo.consigne = "<font size=\'4\'>Répondez aux questions</font>";
-      tblExo.videoUrl = "https://youtu.be/TiObBlwTJrY";
-      tblExo.videoType = "2";
+      tblExo.videoUrl = "https://rpn.univ-lille3.fr/public/legolang/test/videoTestMuette.mp4";
+      tblExo.videoType = "0";
       tblExo.btnOutil = {
         "format": 1,
         "liste": [{

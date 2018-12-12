@@ -8,11 +8,12 @@
   <button id="btnQChgPage" onClick="btnQChgPageHdlr(event);">ok</button></div>
 
 <select onChange="selectChangeHdlr(event);">
-    <option value="0">Ajouter une question </option>
-    <option value="qo">Question ouverte</option>
-    <option value="qtrous">Question à trous</option>
-    <option value="qcm">Question à choix multiples</option>
+  <option value="0">Ajouter une question </option>
+  <option value="qo">Question ouverte</option>
+  <option value="qtrous">Question à trous</option>
+  <option value="qcm">Question à choix multiples</option>
 </select>
+
 
 <script>
   var pageArr = "0";
@@ -22,9 +23,21 @@
   });
 
   function btnQSupprHdlr(pageOrdre, questionOrdre) {
-    localStorage.removeItem(tblExo.moduleId);
-    tblExo.pages[pageOrdre].questions.splice(questionOrdre, 1);
-    $('#ctnContenu').load('editQuestions.html');
+    $("#dialog-confirm-delQ").dialog(
+      "option",
+      "buttons", {
+        "Oui": function() {
+          localStorage.removeItem(tblExo.moduleId);
+          tblExo.pages[pageOrdre].questions.splice(questionOrdre, 1);
+          $('#ctnContenu').load('editQuestions.html');
+          $(this).dialog('close');
+        },
+        "Non": function() {
+          $(this).dialog("close");
+        }
+      });
+
+    $("#dialog-confirm-delQ").dialog("open");
   }
 
 
@@ -38,7 +51,7 @@
     tblExo.pages[pageOrdre].questions.splice(questionNum, 0, {
       "type": questionType,
       "titreQ": "",
-      "txtQuestion": "Nouvelle question",// ( " + questionType + " ) (" + (questionNum + 1) + " / " + (pageOrdre + 1) + ")",
+      "txtQuestion": "Nouvelle question", // ( " + questionType + " ) (" + (questionNum + 1) + " / " + (pageOrdre + 1) + ")",
       "extraitQuestion": {
         "debut": "0",
         "fin": "0"

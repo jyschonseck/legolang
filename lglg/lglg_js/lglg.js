@@ -15,13 +15,14 @@ var scorm = false; //valeur à true si on a du scorm : utilisé dans enregistrem
 var affichClavier = false; // variable pour affichage du clavier
 // var affichST = false; // mettre à true lors de afficheExo si on affiche les ST pour extrait)
 var scoreMax = 0; // le score max qu'on peut atteindre !
-var tScore = 0; // totalScore
+var monScore = 0; //  score global car calculé/utilisé par majScore et utilisé par enregistreRep
+var nbRep = 0; // nb de reponse pour AE calculée/utilise par majAE et utilisé par enregistreRep
+var monAE = 0; // note d'AE calculée/utilise par majAE et utilisé par enregistreRep
 
 //**constante***********//
 // si je déclare const si je lance plusieur fois lglg j'ai une erreur 'déja déclaré'
 var IF_VALID = "Valider";
 var AEValeurMax = 2; // Valeur max  pour l'AE (le 0 =pas repondu)
-
 
 //***** pour debug ******//
 var tempsDebut = new Date();
@@ -44,20 +45,18 @@ function shadeColor(color, percent) {
 // fonction qui crée une CSS customisée avec la couleur du back office
 function useCustomColor(pColor) {
     'use strict';
-    var newStyle = "#txtTitre, { color: " + pColor + " !important;} \n"; //.txtCorrection
-    newStyle += "#ctnTitres, #ctnOnglets, textarea:focus, .ctnQuestion { border-color: " + pColor + " !important;} \n";
-    newStyle += "#ctnOnglets > div.actif { background:" + shadeColor(pColor, 0.5) + " !important; border-color: " + shadeColor(pColor, 0.5) + " !important;}\n";
-    newStyle += "#ctnOnglets > div.choisi { background: " + pColor + " !important; border-color: " + pColor + " !important;}\n";
+    var newStyle = "#txtTitre { color: " + pColor + " !important;} \n"; //.txtCorrection
+    newStyle += "#ctnTitres, #ctnOnglets, #ctnInfosResult,  textarea:focus, .ctnQuestion { border-color: " + pColor + " !important;} \n";
+    newStyle += "#ctnOnglets > button.actif { background:" + shadeColor(pColor, 0.5) + " !important; border-color: " + shadeColor(pColor, 0.5) + " !important;}\n";
+    newStyle += "#ctnOnglets > button.choisi { background: " + pColor + " !important; border-color: " + pColor + " !important;}\n";
     newStyle += ".navigActif:hover .st0 { fill: " + pColor + " !important;}";
     $('<style type="text/css"></style>')
         .html(newStyle)
         .appendTo("head");
 }
 
-
 function affichPage() {
     'use strict';
-    console.log("affichpage, onglet 3" + document.getElementById("nav_3").classList);
     /****vidage ctnQuestions****/
     while (ctnPageQ.firstChild) {
         ctnPageQ.removeChild(ctnPageQ.firstChild);
@@ -84,21 +83,20 @@ function affichPage() {
         tblQuestions[pCourante][i].affich(i); //
     }
 
-    ///***** gestion des onglets
+    ///***** gestion des onglets (todo : a revoir )
     if (tblReponses[pCourante].valid && tblExo.scenario.verrCorr === "1") { //Déja validé ET verrouille -> on passe à 3 sans ouvrir 2
-        console.log("valid && verrouillé");
         $("#nav_3").addClass("actif");
         //$("#nav_3").addClass("choisi");
         $("#nav_2").removeClass("actif");
         $("#nav_2").removeClass("choisi");
-        validation(); //pour afficher les fb correctement
-    } else if (tblReponses[pCourante].valid) {
-        console.log("validé");
+        // validation(); //pour afficher les fb correctement
+    } else if (tblReponses[pCourante].valid) {//Déja validé et donc  sans verrouille
         $("#nav_3").addClass("actif");
-        //$("#nav_3").addClass("choisi");
         $("#nav_2").addClass("actif");
-
     } else { //sinon on revient à 2
+      console.log("*******\non passe ici au demarrage ? " + tblExo.scenario.accesQ + " - " );
+      console.log("tblReponses.length : "+JSON.stringify(tblReponses));
+
         $("#nav_2").addClass("actif"); // donc
         if (!$("#nav_1").hasClass("choisi")) {
             ongletsAffich(2); //on revient sur onglet2 (cas ou  on a pas encore validé
@@ -106,12 +104,16 @@ function affichPage() {
             verifAccesCorr(); // voir si on active l'onglet 3 à correction
         }
     }
+    if ($("#nav_3").hasClass("choisi")) {
+        validation();
+    }
+
     verifAccesCorr();
 }
 
 function verifAccesCorr() {
     "use strict";
-    console.log("verifAccessCorr");
+    console.log("verifAccesCorr");
     var accesCor = true;
     var debug_tblReponses = tblReponses;
     for (var i = 0; i < tblExo.pages[pCourante].questions.length; i++) {
@@ -122,6 +124,10 @@ function verifAccesCorr() {
                 if (tblReponses[pCourante].reps[i][j].length < tblExo.scenario.qoAccesC) {
                     accesCor = false;
                 }
+            }
+        } else if (tblExo.pages[pCourante].questions[i].type == "qcm") {
+            if (tblReponses[pCourante].reps[i].length === 0) {
+                accesCor = false;
             }
         }
     }
@@ -135,41 +141,19 @@ function verifAccesCorr() {
 
 function enregistreRep() {
     "use strict";
+    console.log("FUNCTION enregistreRep");
     //on enregistre sur
-    //-getFocus et mouseOut des textarea pour qo et qtrous
+    //- sur qo change
     //-des tourner de pages
     // c'etait trop gourmand de le faire suite au verifAccessCorr qui declenche sur le onchange
 
     /******* calcul score.raw******/
     var pourScoreRaw = 0;
     var nbQ = 0;
-    /******** option 1  calcul du nb de caractères saisis pour score.raw (plafonné à 100 cars par réponse)**/
-    /*var nbCar = 0;
-    for (var indP = 0 ; indP < tblReponses.length ; indP++){
-    	for (var indQ = 0 ; indQ < tblReponses[indP].reps.length ; indQ++){
-    		if (tblExo.pages[indP].questions[indQ].type === "qo"){
-    			var nbCarRep = tblReponses[indP].reps[indQ].length;
-    			if (nbCarRep > 100) { nbCarRep = 100;}
-    			nbCar += nbCarRep;
-    			nbQ +=1 ;
-    		}
-    	}
-    }
-    pourScoreRaw = parseInt(nbCar / nbQ);
-    */
 
     if (tblExo.scenario.evalType === "AE") {
         //*** moyenne des AE
-        var sommeAE = 0;
-        for (var indP = 0; indP < tblReponses.length; indP++) {
-            for (var indQ = 0; indQ < tblReponses[indP].AE.length; indQ++) {
-                if (tblReponses[indP].AE[indQ] > -1) {
-                    sommeAE += tblReponses[indP].AE[indQ];
-                }
-                nbQ += 1;
-            }
-        }
-        pourScoreRaw = parseInt((sommeAE / nbQ) * 50);
+        pourScoreRaw = parseInt((monAE / nbRep) * 50);
     } else if (tblExo.scenario.evalType === "N") {
         /*******  calcul du % de reponses saisies ****/
         var nbRepSaisies = 0;
@@ -185,10 +169,8 @@ function enregistreRep() {
         }
         pourScoreRaw = parseInt((nbRepSaisies / nbQ) * 100);
     } else if (tblExo.scenario.evalType === "S") {
-        console.log('il faut calculer le score sur 100');
-        //****TODO
+      pourScoreRaw = parseInt((monScore / scoreMax) * 100);
     }
-
 
     //enregistrer reponses dans suspend_data (si scorm) ou localStorage
     if (scorm) {
@@ -345,7 +327,6 @@ function tblReponsesInit() {
                 //for (var i = 0; i < tblExo.pages[pageId].questions[questionId].txtQuestion.split(":SHORTANSWER:").length - 1; i++) {
                 var toto = new Object();
                 for (var i in tblExo.pages[pageId].questions[questionId].trous) {
-                    console.log("dan slinit de tblReponses " + i);
                     var monI = parseInt(i.substring(0, 4));
                     toto[i] = "";
                 }
@@ -355,7 +336,6 @@ function tblReponsesInit() {
             }
         }
     }
-    console.log("tblReponses Init avant load SessionStorage :\n" + JSON.stringify(tblReponses));
 
     /* si on a lglgScorm dans sessionStorage on le charge et on l'efface...
     Sinon on regarde si on a du moduleId dans localStorage*/
@@ -395,18 +375,6 @@ function tblQuestionsInit() {
     }
 }
 
-function majScore() {
-    var monScore = 0;
-    console.log("function majScore() : tblReponses" + JSON.stringify(tblReponses));
-    for (var iPage = 0; iPage < tblReponses.length; iPage++) {
-        for (var iQuestion = 0; iQuestion < tblReponses[iPage].score.length; iQuestion++) {
-            if (tblReponses[iPage].score[iQuestion] > -1) { //todo et les notes négatives
-                monScore += tblReponses[iPage].score[iQuestion];
-                $("#txtScore").html(monScore);
-            }
-        }
-    }
-}
 
 function nettoieChaine(entree) { //pour nettoyer nom des fichier à enregistrer (scorm surtout)
     "use strict";
@@ -422,6 +390,17 @@ function afficheExo() {
     if (tblExo.interface.couleur1) {
         useCustomColor(tblExo.interface.couleur1);
     }
+    if (tblExo.interface.nav1) {
+        document.getElementById('nav_1').innerHTML = tblExo.interface.nav1;
+    }
+    if (tblExo.interface.nav2) {
+        document.getElementById('nav_2').innerHTML = tblExo.interface.nav2;
+    }
+    if (tblExo.interface.nav3) {
+        document.getElementById('nav_3').innerHTML = tblExo.interface.nav3;
+    }
+
+
 
     if (tblExo.interface.logoaffich) {
         $("#logo").css("display", "block");
@@ -468,18 +447,11 @@ function afficheExo() {
                 window[this.id.substring(6)]();
             });
         }
-        //  ***jys : enlevé car affich feedbact avec ST même si pas outil
-        // if (tblExo.btnOutil.liste[i].fonction === "sousTitrage1") {
-        //   affichST = true;
-        // }
     }
-
-
 
     /******************
      **ffichage evaluation***/
 
-    console.log("on affiche l'évaluation de type |" + tblExo.scenario.evalType + "|");
     if (tblExo.scenario.evalType === "S") {
         //*****score total
         scoreMax = 0;
@@ -491,31 +463,24 @@ function afficheExo() {
                         for (var iProp = 0; iProp < tblExo.pages[iPage].questions[iQ].propositions.length; iProp++) {
                             var tScore = parseInt(tblExo.pages[iPage].questions[iQ].propositions[iProp].score);
                             if (tScore > 0) {
-                            console.log("à exo  " + iPage + "-" + iQ +" on increment de " + tScore);
                                 scoreMax += tScore;
                             }
                         }
                     } else if (tblExo.pages[iPage].questions[iQ].type === "qtrous") {
-                        // TODO: calculer le score (attention une seule valeur par trou !)
                         for (var t in tblExo.pages[iPage].questions[iQ].trous) { //boucle sur les trous
-                            // console.log("SCOREMAX 1 " + t);
                             for (var p = 0; p < tblExo.pages[iPage].questions[iQ].trous[t].length; p++) {
-                                // console.log("SCOREMAX 2 " + t);
                                 var scoreTrPr = parseInt(tblExo.pages[iPage].questions[iQ].trous[t][p].score)
                                 if (scoreTrPr > tScore) {
                                     tScore = scoreTrPr;
-                                    // console.log("A " + t + "-" + p + "on incrément le local trou  à " + tScore);
                                 }
 
                             }
-                            console.log("à exo  " + iPage + "-" + iQ +"-"+ t +" on increment de " + tScore);
                             scoreMax += tScore;
                         }
                     }
                 }
             }
         }
-        console.log("scoreMax = " + scoreMax);
         $("#ctnInfosResult").load("lglg/lglg_outils/scoreAffich.html");
     } else if (tblExo.scenario.evalType === "AE") {
         $("#ctnInfosResult").load("lglg/lglg_outils/AEAffich.html");
@@ -537,5 +502,5 @@ function afficheExo() {
     $("#ctnOutils").hide(); // on hide en plus de la transparence pour l'organisation de la page...
 
     //**** affichage de la page de question courante ;
-    affichPage();
+    //affichPage(); ça casse le verrouillage accesQ ... pourquoi j'ai mis ça là ?
 }

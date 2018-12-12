@@ -1,21 +1,17 @@
-// lecture de : https://developer.mozilla.org/fr/docs/Web/JavaScript/Guide/Utiliser_les_objets
-
-
 var proto_qcm = {
-  donnees: {},
+        donnees: {},
   // reponses:"",
   // ae:null,
   // score:0,
-  affich: function(i) {
-    console.log("QO affich question " + this.donnees.txtQuestion + " - " + i);
-
-    "use strict";
+    affich: function(i) {
+   "use strict";
     var questionEnCours = document.getElementById("ctnQuestion_" + i);
+    questionEnCours.onclick = effacerClavier;
 
     var question = document.createElement("p"); //question
     //****extrait vidéo -question
     if (this.donnees.extraitQuestion.fin > 0) {
-      var btnExtrait = document.createElement("span");
+      var btnExtrait = document.createElement("button");
       btnExtrait.id = "btnVidExtrait_q_" + i + "_vo";;
       btnExtrait.className = " btnExtraitVidVo";
       btnExtrait.onclick = lireExtraitVid;
@@ -70,14 +66,14 @@ var proto_qcm = {
     ctnFBl2.className = "ctnFlexH";
     /**** extrait vidéo ****/
     if (this.donnees.extraitCorrection.fin > 0) {
-      var btnExtrait_c1 = document.createElement("div");
+      var btnExtrait_c1 = document.createElement("button");
       btnExtrait_c1.id = "btnVidExtrait_c_" + i + "_vo";
       btnExtrait_c1.className = "feedback btnExtraitVidVo";
       btnExtrait_c1.onclick = lireExtraitVid;
       ctnFBl2.appendChild(btnExtrait_c1);
 
       if (!this.donnees.extraitCorrection.affichST) {
-        var btnExtrait_c2 = document.createElement("div");
+        var btnExtrait_c2 = document.createElement("button");
         btnExtrait_c2.id = "btnVidExtrait_c_" + i + "_st";
         btnExtrait_c2.className = "feedback btnExtraitVidSt";
         btnExtrait_c2.onclick = lireExtraitVid;
@@ -99,12 +95,11 @@ var proto_qcm = {
     autoEvaluation.id = "ctnAutoEvaluation_" + i;
     questionEnCours.appendChild(autoEvaluation);
     //$("#ctnAutoEvaluation_" + i).load("outils/autoeval.html");
-    if (tblExo.scenario.msgAE) {
+    if (tblExo.scenario.evalType === "AE") {
       creationAE(i);
     }
   },
   corr: function(i) {
-    console.log("corr de qcm, page " + pCourante + " - " + i);
     $("#ctnQuestion_" + i + " .feedback").show("fast");
 
     var qCorr = true;
@@ -112,7 +107,6 @@ var proto_qcm = {
     $("#ctnQuestion_" + i + " input[type='checkbox']").addClass("QCMCocheInactif");
     for (var j = 0; j < this.donnees.propositions.length; j++) {
       //****coche
-      // console.log("on est dans pCourante " + pCourante + " - exo : " + i + " - prop " + j);
       var coche = document.getElementById("cb_" + i + "_" + j);
       coche.disabled = true;
       if (coche.checked === this.donnees.propositions[j].reponseCorrecte) {
@@ -121,17 +115,16 @@ var proto_qcm = {
         coche.className = "QCMCocheFaux";
         qCorr = false;
       }
-      //****score
-      if (coche.checked && this.donnees.scoreActif) {
+      //****score % proposition
+      if (coche.checked && this.donnees.scoreActif && tblExo.scenario.evalType === "S") {
         var t = parseInt(this.donnees.propositions[j].score);
         document.getElementById("score_" + i + "_" + j).innerHTML = t;
         document.getElementById("score_" + i + "_" + j).style = "display:block";
         qScore += t;
-        $("#ctnScore").removeClass("invisible"); //todo tester ou pas ?
       }
     }
-    if (this.donnees.scoreActif) {
-      // console.log("score actif à " + pCourante + " - " + i);
+    //****score total
+    if (this.donnees.scoreActif && tblExo.scenario.evalType === "S") {
       document.getElementById("qScore_" + i).innerHTML = qScore;
       tblReponses[pCourante].score[i] = qScore;
       majScore();
@@ -140,7 +133,8 @@ var proto_qcm = {
   }
 }
 
-//****** fonction...
+/**********************
+*****fonctions...*****/
 function QCMClckHdlr(e) {
   var q = e.currentTarget.id.split("_")[1];
   tblReponses[pCourante].reps[q] = "";
@@ -151,45 +145,5 @@ function QCMClckHdlr(e) {
       tblReponses[pCourante].reps[q] += "0";
     }
   }
-  //***pour le moment les QCM ne rentre pas dans le prérequis pour acceder à loa correction....
-  //	verifAccesCorr();
-}
-
-function QCMsCorr() {
-  "use strict";
-  //boucle sur la page pour trouver les QCM
-  for (var i = 0; i < tblExo.pages[pCourante].questions.length; i++) {
-    if (tblExo.pages[pCourante].questions[i].type === "qcm") {
-      //verrrouile les coches
-      var qCorr = true;
-      var qScore = 0;
-      for (var j = 0; j < tblExo.pages[pCourante].questions[i].propositions.length; j++) {
-        //****coche
-        var coche = document.getElementById("cb_" + i + "_" + j);
-        if (coche.checked === tblExo.pages[pCourante].questions[i].propositions[j].reponseCorrecte) {
-          coche.className = "QCMCocheBon";
-        } else {
-          coche.className = "QCMCocheFaux";
-          qCorr = false;
-        }
-        //****score
-        if (coche.checked && tblExo.pages[pCourante].questions[i].scoreActif) {
-          var t = parseInt(tblExo.pages[pCourante].questions[i].propositions[j].score);
-          document.getElementById("score_" + i + "_" + j).innerHTML = t;
-          document.getElementById("score_" + i + "_" + j).style = "display:block";
-          qScore += t;
-          $("#ctnScore").removeClass("invisible"); //todo tester ou pas ?
-        }
-      }
-      if (tblExo.pages[pCourante].questions[i].scoreActif) {
-        console.log("score actif à " + pCourante + " - " + i);
-        document.getElementById("qScore_" + i).innerHTML = qScore;
-        tblReponses[pCourante].score[i] = qScore;
-        majScore();
-      }
-
-    } //***fin type === QCM
-  }
-  $("input[type='checkbox']").attr('disabled', 'disabled');
-  $("input[type='checkbox']").addClass("QCMCocheInactif");
+  	verifAccesCorr();
 }

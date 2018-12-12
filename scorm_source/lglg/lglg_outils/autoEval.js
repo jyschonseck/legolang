@@ -3,50 +3,52 @@
 
 
 function creationAE(q){
+  console.log("function creationAE" + q);
 		var ctnAE = document.getElementById("ctnAutoEvaluation_" + q)
-		var elt = document.createElement("span");
-		
-		elt.innerHTML = tblExo.scenario.msgAE;
-		ctnAE.appendChild(elt);
-		
-		var elt1 = document.createElement("div");
-		elt1.id = "ctnAE_"+q
-		
-		elt = document.createElement("span");
-		elt.className = "clicable";
-		elt.id = "AEMoins_" + q;
-		elt.onclick = inputHdlr; 
-		elt1.appendChild(elt);
-		
-		elt =  document.createElement("div");
-		elt.id = "AEProgress_" + q;
-		elt1.appendChild(elt);
 
-		elt = document.createElement("span");
-		elt.className = "clicable";
-		elt.id = "AEPlus_" + q;
-		elt.onclick = inputHdlr; 
-		elt1.appendChild(elt);
+    var elt0 = document.createElement("span");
+		elt0.innerHTML = tblExo.scenario.msgAE;
+		ctnAE.appendChild(elt0);
+
+		var elt1 = document.createElement("div");
+		elt1.id = "ctnAE_"+q;
+    elt1.className = "ctnAE";
+
+		var elt10 = document.createElement("button");
+		elt10.className = "clicable";
+		elt10.id = "AEMoins_" + q;
+		elt10.onclick = inputHdlr;
+		elt1.appendChild(elt10);
+
+		var elt11 =  document.createElement("div");
+		elt11.id = "AEProgress_" + q;
+		elt1.appendChild(elt11);
+
+		var elt12 = document.createElement("button");
+		elt12.className = "clicable";
+		elt12.id = "AEPlus_" + q;
+		elt12.onclick = inputHdlr;
+		elt1.appendChild(elt12);
 
 		ctnAE.appendChild(elt1);
 
-		$("#AEMoins_" + q).load("lglg/lglg_interface/images/minus_alt.svg");	
-		$("#AEPlus_" + q).load("lglg/lglg_interface/images/plus_alt.svg");	
+		$("#AEMoins_" + q).load("lglg/lglg_interface/images/minus_alt.svg");
+		$("#AEPlus_" + q).load("lglg/lglg_interface/images/plus_alt.svg");
 		$("#AEProgress_" + q).addClass("progressBar");
 		$( "#AEProgress_" + q ).progressbar({
 		  value: tblReponses[pCourante].AE[q],
 		  max : AEValeurMax
-		});	
+		});
 		if (tblReponses[pCourante].AE[q] < 0){
 			//$("#AEProgress_" + q).progressbar({value : false});
 			$("#ctnAE_" + q).css("opacity" , 0.3);
-		}		
+		}
 }
 
 function inputHdlr(e){
 	var q =  e.currentTarget.id.split("_")[1];
 	var val = 0;
-	if (tblReponses[pCourante].AE[q]){ 
+	if (tblReponses[pCourante].AE[q]){
 		val = tblReponses[pCourante].AE[q];
 	}
 	if (e.currentTarget.id.indexOf("Plus") > 0 ){
@@ -57,9 +59,8 @@ function inputHdlr(e){
 	}
 	//tblReponses[pCourante].reps[q].AE = val;
 	tblReponses[pCourante].AE[q] = val;
-	$("#AEProgress_" + q).progressbar("value" , val); 
+	$("#AEProgress_" + q).progressbar("value" , val);
 	$("#ctnAE_" + q).css("opacity" , 1);
 	majAE();
 	enregistreRep();
 }
-

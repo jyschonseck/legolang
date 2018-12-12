@@ -5,6 +5,7 @@ function clavier() { // handler du bouton outils
   affichClavier = !affichClavier;
   if (affichClavier) {
     $("#outil-clavier").addClass("choisi");
+    console.log("function clavier" + champSaisie.type);
     if (champSaisie.parentElement) { // comme champ saisie est chargé dans qo il existe si on a une qo dans la page (il faut qu'il soit initialisé dans l'affichage page
       afficherClavier(champSaisie.parentElement.id.split("_")[1]);
     }
@@ -30,12 +31,12 @@ function afficherClavier(i) {
       if (champSaisie.type = "textarea") {
         var selectionFin = champSaisie.selectionStart + 1;
         champSaisie.value = champSaisie.value.substring(0, champSaisie.selectionStart) + evt.target.innerHTML + champSaisie.value.substring(champSaisie.selectionEnd, champSaisie.length);
-        champSaisie.focus();
+        // champSaisie.focus();
         champSaisie.setSelectionRange(selectionFin, selectionFin);
         //**pour sauver saisie :
         var q = champSaisie.parentElement.id.split("_")[1]
         tblReponses[pCourante].reps[q] = champSaisie.value;
-        verifAccesCorr();
+        //verifAccesCorr();
       }
     });
   }
@@ -44,8 +45,9 @@ function afficherClavier(i) {
 function effacerClavier() {
   // retire tous les enfants d'un élément
   var lesClaviers = document.getElementsByClassName("ctnClavierClass");
-  for (var i = 0; i < lesClaviers.length; i++) {
-    var element = document.getElementById("ctnClavier_" + i);
+  for (var cli = 0; cli < lesClaviers.length; cli++) {
+    //var element = document.getElementById("ctnClavier_" + cli);
+    var element = lesClaviers[cli];
     if (element) {
       while (element.firstChild) {
         element.removeChild(element.firstChild);

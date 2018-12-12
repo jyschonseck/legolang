@@ -1,42 +1,41 @@
-
-	<p style="margin:0;font-size:large">Votre auto-évaluation&nbsp;:</p>
+<div id="txtEvalTitre">Votre auto-évaluation : </div>
 
 <div class="ctnFlexH">
 
-	<div id="imgMoins" style="opacity:0.4;"></div>
-		<div id="maProgress" style="flex:auto; margin:0.2rem; height:1em;" ></div>
-	<div id="imgPlus" style="opacity:0.4;"></div>
+  <div id="imgMoins" class="logoAE"></div>
+  <div id="maProgress"></div>
+  <!-- class="maProgressBar" -->
+  <div id="imgPlus" class="logoAE"></div>
 </div>
 
 <script>
-$(function(){
-	//eltBase = document.getElementById("maProgress");
-	$("#imgMoins").load("lglg/lglg_interface/images/minus_alt.svg");
-	$("#imgPlus").load("lglg/lglg_interface/images/plus_alt.svg");
-	$( "#maProgress").progressbar({
-    value: 0,
-	  max : AEValeurMax
+  $(function() {
+    if (tblExo.interface.txtAE) {
+      document.getElementById("txtEvalTitre").innerHTML = tblExo.interface.txtAE;
+    }
+    $("#imgMoins").load("lglg/lglg_interface/images/minus_alt.svg");
+    $("#imgPlus").load("lglg/lglg_interface/images/plus_alt.svg");
+    $("#maProgress").progressbar({
+      value: 0,
+      max: AEValeurMax
     });
 
-	//$( "#maProgress" ).find( ".ui-progressbar-value" ).css({"background": '#28b2aa'});
+    majAE();
+  });
 
-	majAE();
-});
-
-function majAE(){
-  console.log("majAE");
-	var somme = 0;
-	var nbRep =0 ;
-	for (var pageAE = 0 ; pageAE < tblReponses.length ; pageAE++){
-		for (var questionAE = 0 ; questionAE < tblReponses[pageAE].AE.length ; questionAE++){
-			if 	(tblReponses[pageAE].AE[questionAE] > -1){
-				nbRep += 1;
-				somme += parseInt(tblReponses[pageAE].AE[questionAE]);
-				//if ( $('#ctnAEAffich').css('display') == "none"){ $('#ctnAEAffich').show("slow");}
-        $('#ctnAEAffich').removeClass("invisible");
-			}
-		}
-	}
-	$("#maProgress").progressbar("value" , somme/nbRep);
-}
+  function majAE() {
+    console.log("majAE");
+    monAE = 0;
+    nbRep = 0; // on recalcule à chaque fois  ??
+    for (var pageAE = 0; pageAE < tblReponses.length; pageAE++) {
+      for (var questionAE = 0; questionAE < tblReponses[pageAE].AE.length; questionAE++) {
+        if (tblReponses[pageAE].AE[questionAE] > -1) {
+          nbRep += 1;
+          monAE += parseInt(tblReponses[pageAE].AE[questionAE]);
+          $('#ctnAEAffich').removeClass("invisible");
+        }
+      }
+    }
+    $("#maProgress").progressbar("value", monAE / nbRep);
+  }
 </script>

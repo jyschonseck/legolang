@@ -10,7 +10,7 @@ var proto_qtrous = {
         var question = document.createElement("p"); //question
         //****extrait vidéo -question
         if (this.donnees.extraitQuestion.fin > 0) {
-            var btnExtrait = document.createElement("span");
+            var btnExtrait = document.createElement("button");
             btnExtrait.id = "btnVidExtrait_q_" + i + "_vo";;
             btnExtrait.className = " btnExtraitVidVo";
             btnExtrait.onclick = lireExtraitVid;
@@ -28,7 +28,6 @@ var proto_qtrous = {
             if ((j % 2) === 0) {
                 texte += texteQuestion[j];
             } else {
-                console.log("creation dus trous" + texteQuestion[j]);
                 texte += "<input type='text' id=tiTrou_" + i + "_" + texteQuestion[j] + " onchange='QTrousChangeHdr(this);' value='" + tblReponses[pCourante].reps[i][texteQuestion[j]] + "'>";
                 texte += "<span id='txtTrouRep_" + i + "_" + texteQuestion[j] + "' class='txtTrouRep feedback'></span>";
             }
@@ -57,14 +56,14 @@ var proto_qtrous = {
         ctnFBl2.className = "ctnFlexH";
         /**** extrait vidéo ****/
         if (this.donnees.extraitCorrection.fin > 0) {
-            var btnExtrait_c1 = document.createElement("div");
+            var btnExtrait_c1 = document.createElement("button");
             btnExtrait_c1.id = "btnVidExtrait_c_" + i + "_vo";
             btnExtrait_c1.className = "feedback btnExtraitVidVo";
             btnExtrait_c1.onclick = lireExtraitVid;
             ctnFBl2.appendChild(btnExtrait_c1);
 
             if (!this.donnees.extraitCorrection.affichST) { //test pour masquer deuxieme bouton si pas de ST
-                var btnExtrait_c2 = document.createElement("div");
+                var btnExtrait_c2 = document.createElement("button");
                 btnExtrait_c2.id = "btnVidExtrait_c_" + i + "_st";
                 btnExtrait_c2.className = "feedback btnExtraitVidSt";
                 btnExtrait_c2.onclick = lireExtraitVid;
@@ -132,7 +131,6 @@ var proto_qtrous = {
                 }
             }
         }
-
     }
 }
 
@@ -144,7 +142,6 @@ function qTrousEdition() {
 }
 
 //****** fonction a garder là ?
-
 function QTrousChangeHdr(obj) {
     var objInd = obj.id.split("_");
     tblReponses[pCourante].reps[objInd[1]][objInd[2]] = obj.value;

@@ -1,6 +1,12 @@
+button {
+  background-color: #fff;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 
 /*********************************/
-
 #cols {
   display: -webkit-flex;
   display: -moz-flex;
@@ -34,7 +40,6 @@ h2 {
   padding-bottom: 1em;
   margin-bottom: 1em;
   min-height: 3.5rem;
-
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -53,12 +58,12 @@ h2 {
   font-size: 1.2rem;
 }
 
-#ctnLogo{
+#ctnLogo {
   display: flex;
   flex-direction: row;
 }
 
-.logo{
+.logo {
   max-height: 2rem;
   margin: 1rem;
 }
@@ -68,7 +73,6 @@ h2 {
 }
 
 /*** consigne prend le style voulu dans l'éditeur...*/
-
 #ctnConsigne {}
 
 .ctnQuestion input {
@@ -78,7 +82,6 @@ h2 {
 /*****************
 *     OUTILS     *
 *****************/
-
 #ctnOutils {
   display: -webkit-flex;
   display: -moz-flex;
@@ -134,15 +137,13 @@ h2 {
 /*****************
 *   FORMULAIRE   *
 *****************/
-
 /* onglets */
-
 #ctnOnglets {
   border-bottom: .25em solid #28b2aa;
   margin-bottom: 1rem;
 }
 
-#ctnOnglets>div {
+#ctnOnglets>button {
   display: inline-block;
   padding: 1em;
   font-size: .875rem;
@@ -156,24 +157,24 @@ h2 {
   cursor: default;
 }
 
-#ctnOnglets>div.actif {
+#ctnOnglets>button.actif {
   background: #7bd9d4;
   cursor: pointer;
 }
 
-#ctnOnglets>div.actif:hover {
+#ctnOnglets>button.actif:hover {
   border-top: .25rem solid #7bd9d4;
   margin-top: 0;
   opacity: .8;
 }
 
-#ctnOnglets>div.choisi {
+#ctnOnglets>button.choisi {
   background: #28b2aa;
   border-top: .25rem solid #28b2aa;
   margin-top: 0;
 }
 
-#ctnOnglets>div.choisi:hover {
+#ctnOnglets>button.choisi:hover {
   border-color: #28b2aa;
   opacity: 1;
 }
@@ -214,29 +215,21 @@ textarea:focus {
 
 /****************************/
 /****    QCM     ***********/
-
 /* Cachons la case à cocher */
-
 [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
   position: absolute;
   left: -9999px;
 }
 
 /* on prépare le label */
-
 [type="checkbox"]:not(:checked)+label, [type="checkbox"]:checked+label {
   position: relative;
-  /* permet de positionner les pseudo-éléments */
   padding-left: 25px;
-  /* fait un peu d'espace pour notre case à venir */
   cursor: pointer;
-  /* affiche un curseur adapté */
 }
 
 /* Aspect des checkboxes */
-
 /* :before sert à créer la case à cocher */
-
 [type="checkbox"]:not(:checked)+label::before, [type="checkbox"]:checked+label::before {
   content: '';
   position: absolute;
@@ -244,23 +237,22 @@ textarea:focus {
   top: 2px;
   width: 17px;
   height: 17px;
-  /* dim. de la case */
   border: 1px solid #aaa;
-  /*background: #f8f8f8;*/
   border-radius: 3px;
-  /* angles arrondis */
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, .3)/* légère ombre interne */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, .3);
+}
+/* **** :hover */
+[type="checkbox"]:hover+label::before ,
+[type="checkbox"]:focus+label::before {
+  background: #aaa;
 }
 
 /*aspect de la boite si bonne*/
-
 /*TODO : le .QCMCocheBon passe pas ici !!!!*/
-
 /*[type="checkbox"]:not(:checked).QCMCocheBon + label:before,
 [type="checkbox"]:checked + label:before {
     color:green;
 }*/
-
 [type="checkbox"]:not(:checked).QCMCocheBon+label::before, [type="checkbox"]:checked.QCMCocheBon+label::before {
   background: #08dd0a;
 }
@@ -270,7 +262,6 @@ textarea:focus {
 }
 
 /* Aspect général de la coche */
-
 [type="checkbox"]:not(:checked)+label::after, [type="checkbox"]:checked+label:after {
   content: '✔';
   position: absolute;
@@ -284,7 +275,6 @@ textarea:focus {
 }
 
 /* Aspect si "pas cochée" */
-
 [type="checkbox"]:not(:checked)+label:after {
   opacity: 0;
   /* coche invisible */
@@ -293,7 +283,6 @@ textarea:focus {
 }
 
 /* Aspect si "cochée" */
-
 [type="checkbox"]:checked+label:after {
   opacity: 1;
   /* coche opaque */
@@ -306,67 +295,68 @@ textarea:focus {
   cursor: auto;
 }
 
-
 .QCMprop {
   padding-left: 2rem;
   display: flex;
   flex-direction: row;
 }
 
-.QCMprop .score{
+.QCMprop .score {
   margin-left: auto;
   margin-right: .5rem;
   font-size: small;
   font-style: italic;
 }
 
-
 /****************************/
 /****    qtrou     ***********/
 .saisieBonne {
-	color: green;
+  color: green;
 }
 
 .saisieFausse {
-	text-decoration: line-through;
-	color: red;
+  text-decoration: line-through;
+  color: red;
 }
 
-.txtTrouRep{
-  color: blue;
-  font-style: italic;
+.txtTrouRep {
+  color: black;
+  font-weight: bold;
+  /* font-style: italic; */
   background-color: lightgrey;
 }
 
-/****************************/
-
-.ctnFlexH{
-  display: flex;
-  flex-direction: row;
+.txtFb {
+  /* display: inline-block; */
+  /* display: none; */
+  font-style: italic;
+  font-family: monospace;
+  background-color: lightgrey;
+  color: blue;
 }
 
-.qScore{
+/****************************/
+.ctnFlexH {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.qScore {
   font-weight: bold;
-    margin-left: auto;
-    margin-right: .5rem;
+  margin-left: auto;
+  margin-right: .5rem;
 }
 
 .QCMTxtBon {
   color: green;
 }
 
-/*.QCMCocheBon{
-    color: green;
-}
-
-.QCMCocheFaux{
-    color: red;
-}*/
 
 /*** AUTO EVAL ***/
-
 .autoEval {
-  display: inline-block;
+  /* display : flex;
+  flex-direction: row; */
   font-size: 1rem;
   margin: .25em 0;
   font-weight: 700;
@@ -374,9 +364,30 @@ textarea:focus {
   line-height: 2;
 }
 
-.autoEval>div {
+.ctnAE {
+  /* width: 100%; */
   display: inline-block;
   vertical-align: middle;
+  width: 8rem;
+  margin-left: 0.3rem;
+}
+
+#txtEvalTitre {
+  /* flex: auto; */
+  font-size: large;
+  white-space: nowrap;
+  align-self: center;
+}
+
+.logoAE{
+align-self: center;
+opacity:0.4;
+}
+
+#maProgress {
+  width: 100%;
+  margin: 0.2rem;
+  height: 2rem;
 }
 
 .btnExtraitVidVo, .btnExtraitVidSt {
@@ -393,7 +404,8 @@ textarea:focus {
   transition: opacity .25s;
 }
 
-.btnExtraitVidVo:hover, .btnExtraitVidSt:hover {
+.btnExtraitVidVo:hover, .btnExtraitVidSt:hover ,
+.btnExtraitVidVo:focus, .btnExtraitVidSt:focus {
   opacity: .5;
 }
 
@@ -408,27 +420,24 @@ textarea:focus {
 /*************************
 ****   AE  & score***
 **************************/
-
-.ctnResult{
+.ctnResult {
   padding: 0 0.5rem;
-  flex:auto;
+  flex: auto;
   text-align: center;
 }
 
-
-
 .progressBar {
   display: inline-block;
-  width: 6em;
+  width: 4rem;
   height: 5px;
-  margin-bottom: 0.2em;
+  margin: 0 0.3rem 0.2rem 0.3rem;
   height: 1em !important;
 }
-
 .ui-progressbar {
   background: #ddd !important;
   border-radius: 0 !important;
   border: none !important;
+  /* height: 5rem !important; */
 }
 
 .ui-progressbar-value {
@@ -449,17 +458,16 @@ textarea:focus {
   background: none !important;
 }
 
-.ctnInfosResult{
+#ctnInfosResult {
   display: flex;
+  align-items: center;
   flex-direction: row;
-  border-top:.25em solid #28b2aa;
+  border-top: .25em solid #28b2aa;
 }
 
-
+/* ****************************** */
 /***************************/
-
 /***** en dessou sde 720 on reduit les tailles de caractères et margin, */
-
 @media screen and (max-width:760px) {
   .txtTitrePage {
     font-weight: bold;
@@ -468,13 +476,16 @@ textarea:focus {
     margin-bottom: 1rem;
     text-transform: uppercase;
   }
+
   .txtQuestion {
     font-size: 1rem;
     margin-bottom: .25rem;
   }
+
   .txtCorrection {
     font-size: 1rem;
   }
+
   #ctnOnglets>div {
     padding: 0.5rem;
     font-size: .75rem;
@@ -482,37 +493,43 @@ textarea:focus {
     color: #fff;
     font-weight: bold;
   }
+
   #ctnOutils a {
     margin-top: 0;
   }
+
   #ctnOutils img {
     width: 60%;
   }
 }
 
 /***** en dessou sde 640 on passe en une seule colonne*/
-
 @media screen and (max-width:639px) {
   #cols {
     display: block;
   }
+
   #ctnMedia {
     margin-bottom: 0.25em;
   }
+
   #ctnOutils span {
     display: none;
   }
+
   body.page h2 {
     text-align: left;
   }
+
   #ctnOutils img {
     max-width: 2.5rem;
   }
+
   #ctnOutils {
     margin-bottom: 0.25rem
   }
-#ctnPageQ{
-	max-height: none!important;
-}
 
+  #ctnPageQ {
+    max-height: none !important;
+  }
 }

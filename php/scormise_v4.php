@@ -57,7 +57,7 @@ $zip = new zipfile() ; //on crée un fichier zip
 'lglg/lglg_interface/navigQ.html' , 'lglg/lglg_interface/images/outils/clavier.svg' , 'lglg/lglg_interface/images/outils/doc.svg' , 'lglg/lglg_interface/images/outils/impression.svg' , 'lglg/lglg_interface/images/outils/sousTitrage1.svg' , 'lglg/lglg_interface/images/outils/sousTitrage2.svg',
 'lglg/lglg_interface/images/extrait.svg' ,'lglg/lglg_interface/images/extrait-.svg' , 'lglg/lglg_interface/images/minus_alt.svg' ,'lglg/lglg_interface/images/plus_alt.svg' , 'lglg/lglg_interface/logo/UL-NOIR-WEB-h120.png', 'lglg/lglg_interface/logo/logo_uoh.png',
 'lglg/lglg_medias/html5.html' , 'lglg/lglg_medias/youtube.html',
-'lglg/lglg_outils/AEAffich.html' , 'lglg/lglg_outils/autoEval.css' , 'lglg/lglg_outils/autoEval.js' , 'lglg/lglg_outils/clavier.html' , 'lglg/lglg_outils/outils.js' ,
+'lglg/lglg_outils/AEAffich.html' ,'lglg/lglg_outils/scoreAffich.html' ,  'lglg/lglg_outils/autoEval.js' , 'lglg/lglg_outils/clavier.html' , 'lglg/lglg_outils/outils.js' ,
 'lglg/lglg_questions/qo.js' ,  'lglg/lglg_questions/qtrous.js' ,  'lglg/lglg_questions/qcm.js'
  );
 
@@ -71,7 +71,6 @@ while(count($filename)>$a)
 	$zip->addfile($contenu, $filename[$a]) ; //on ajoute le fichier
 	$a++; //on incrémente $a
 }
-
 
 //ce qui suit force le doneload
 header('Content-Type: application/x-zip') ; //on détermine les en-tête
