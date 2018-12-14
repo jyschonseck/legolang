@@ -5,7 +5,6 @@ var proto_qo = {
     // reponses:"",
     // ae:null,
     affich: function(i) {
-        // console.log("affich question " +  this.donnees.txtQuestion + " - " + i);
         var questionEnCours = document.querySelector("#ctnQuestion_" + i);
         questionEnCours.onclick = QOClckHdlr;
 
@@ -53,7 +52,8 @@ var proto_qo = {
             btnExtrait_c1.onclick = lireExtraitVid;
             questionEnCours.appendChild(btnExtrait_c1);
 
-            if (!this.donnees.extraitCorrection.affichST) { //test pour masquer deuxieme bouton si pas de ST
+console.log("avant affich ST " + this.donnees.extraitCorrection.masqueST);
+            if (tblExo.scenario.usageGst === "1" && !this.donnees.extraitCorrection.masqueST) { //test pour masquer deuxieme bouton si pas de ST
                 var btnExtrait_c2 = document.createElement("div");
                 btnExtrait_c2.id = "btnVidExtrait_c_" + i + "_st";
                 btnExtrait_c2.className = "feedback btnExtraitVidSt";
@@ -68,13 +68,11 @@ var proto_qo = {
         autoEvaluation.id = "ctnAutoEvaluation_" + i;
         questionEnCours.appendChild(autoEvaluation);
         //$("#ctnAutoEvaluation_" + i).load("outils/autoeval.html");
-        console.log("Dans QO scenaruio.type = " + tblExo.scenario.evalType);
         if (tblExo.scenario.evalType === "AE") {
             creationAE(i);
         }
     },
     corr: function(i) {
-        console.log("corr de qo," + pCourante + " - " + i);
         $("#ctnQuestion_" + i + " .feedback").show("fast");
     }
 }

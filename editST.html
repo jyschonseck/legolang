@@ -121,7 +121,9 @@ function validOuvrirST(txtST){
 function txtSTChangeHdlr(){
 	"use strict";
 	tblExo.sousTitrage1 = document.getElementById("txtST").value;
+  // console.log("function txtSTChangeHdlr = \n" + tblExo.sousTitrage1);
 	document.getElementById("ecritST").value = eDblQ(document.getElementById("txtST").value);
+  // console.log("function txtSTChangeHdlr = \n" + document.getElementById("ecritST").value);
 }
 
 function chargeSTHdlr(){

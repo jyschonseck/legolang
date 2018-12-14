@@ -188,8 +188,8 @@
   }
 
   function heureChange(ext) {
-    var deb = parseFloat(document.getElementById('ext' + ext + 'DebQo').value);
-    var fin = parseFloat(document.getElementById('ext' + ext + 'FinQo').value);
+    var deb = parseFloat(document.getElementById('ext' + ext + 'DebQ').value);
+    var fin = parseFloat(document.getElementById('ext' + ext + 'FinQ').value);
     var diff = fin - deb;
     if (diff > 0) {
       $('#btnLireExtrait' + ext).show('fast');

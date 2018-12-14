@@ -72,7 +72,7 @@ var proto_qcm = {
       btnExtrait_c1.onclick = lireExtraitVid;
       ctnFBl2.appendChild(btnExtrait_c1);
 
-      if (!this.donnees.extraitCorrection.affichST) {
+      if (!this.donnees.extraitCorrection.masqueST) {
         var btnExtrait_c2 = document.createElement("button");
         btnExtrait_c2.id = "btnVidExtrait_c_" + i + "_st";
         btnExtrait_c2.className = "feedback btnExtraitVidSt";
@@ -146,4 +146,6 @@ function QCMClckHdlr(e) {
     }
   }
   	verifAccesCorr();
+
+    console.log("tblReponses.length : "+tblReponses.length);
 }

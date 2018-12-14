@@ -13,7 +13,6 @@ var lancement = true;
 var modeAuteur = false;
 var scorm = false; //valeur à true si on a du scorm : utilisé dans enregistrementReponses
 var affichClavier = false; // variable pour affichage du clavier
-// var affichST = false; // mettre à true lors de afficheExo si on affiche les ST pour extrait)
 var scoreMax = 0; // le score max qu'on peut atteindre !
 var monScore = 0; //  score global car calculé/utilisé par majScore et utilisé par enregistreRep
 var nbRep = 0; // nb de reponse pour AE calculée/utilise par majAE et utilisé par enregistreRep
@@ -83,17 +82,20 @@ function affichPage() {
         tblQuestions[pCourante][i].affich(i); //
     }
 
-    ///***** gestion des onglets
+    ///***** gestion des onglets (todo : a revoir )
     if (tblReponses[pCourante].valid && tblExo.scenario.verrCorr === "1") { //Déja validé ET verrouille -> on passe à 3 sans ouvrir 2
         $("#nav_3").addClass("actif");
         //$("#nav_3").addClass("choisi");
         $("#nav_2").removeClass("actif");
         $("#nav_2").removeClass("choisi");
         // validation(); //pour afficher les fb correctement
-    } else if (tblReponses[pCourante].valid) {
+    } else if (tblReponses[pCourante].valid) {//Déja validé et donc  sans verrouille
         $("#nav_3").addClass("actif");
         $("#nav_2").addClass("actif");
     } else { //sinon on revient à 2
+      console.log("*******\non passe ici au demarrage ? " + tblExo.scenario.accesQ + " - " );
+      console.log("tblReponses.length : "+JSON.stringify(tblReponses));
+
         $("#nav_2").addClass("actif"); // donc
         if (!$("#nav_1").hasClass("choisi")) {
             ongletsAffich(2); //on revient sur onglet2 (cas ou  on a pas encore validé
@@ -110,6 +112,7 @@ function affichPage() {
 
 function verifAccesCorr() {
     "use strict";
+    console.log("verifAccesCorr");
     var accesCor = true;
     var debug_tblReponses = tblReponses;
     for (var i = 0; i < tblExo.pages[pCourante].questions.length; i++) {
@@ -498,5 +501,5 @@ function afficheExo() {
     $("#ctnOutils").hide(); // on hide en plus de la transparence pour l'organisation de la page...
 
     //**** affichage de la page de question courante ;
-    affichPage();
+    //affichPage(); ça casse le verrouillage accesQ ... pourquoi j'ai mis ça là ?
 }

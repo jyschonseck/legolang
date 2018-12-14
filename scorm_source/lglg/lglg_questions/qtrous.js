@@ -62,7 +62,7 @@ var proto_qtrous = {
             btnExtrait_c1.onclick = lireExtraitVid;
             ctnFBl2.appendChild(btnExtrait_c1);
 
-            if (!this.donnees.extraitCorrection.affichST) { //test pour masquer deuxieme bouton si pas de ST
+            if (!this.donnees.extraitCorrection.masqueST) { //test pour masquer deuxieme bouton si pas de ST
                 var btnExtrait_c2 = document.createElement("button");
                 btnExtrait_c2.id = "btnVidExtrait_c_" + i + "_st";
                 btnExtrait_c2.className = "feedback btnExtraitVidSt";

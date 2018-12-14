@@ -10,10 +10,10 @@
 
 <h4>Extrait vidéo "question" : </h4>
 <div> <span class="clicHeure">début : </span>
-  <input type="number" id="extQDebQo" onChange="heureChange('Q');" />
+  <input type="number" id="extQDebQ" onChange="heureChange('Q');" />
   <span class="clicHeure">fin : </span>
-  <input type="number" id="extQFinQo" onChange="heureChange('Q');" />
-  <span id="btnLireExtraitQ" onClick="lireExtrait(document.getElementById('extQDebQo').value, document.getElementById('extQFinQo').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span>
+  <input type="number" id="extQFinQ" onChange="heureChange('Q');" />
+  <span id="btnLireExtraitQ" onClick="lireExtrait(document.getElementById('extQDebQ').value, document.getElementById('extQFinQ').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span>
 </div>
 
 <div class="">
@@ -28,14 +28,13 @@
 
 <h4>Extrait vidéo "correction" : </h4>
 <div> <span class="clicHeure">début : </span>
-  <input type="number" id="extCDebQo" onChange="heureChange('C');" />
+  <input type="number" id="extCDebQ" onChange="heureChange('C');" />
   <span class="clicHeure">fin : </span>
-  <input type="number" id="extCFinQo" onChange="heureChange('C');" />
-  <span id="btnLireExtraitC" onClick="lireExtrait(document.getElementById('extCDebQo').value, document.getElementById('extCFinQo').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span>
+  <input type="number" id="extCFinQ" onChange="heureChange('C');" />
+  <span id="btnLireExtraitC" onClick="lireExtrait(document.getElementById('extCDebQ').value, document.getElementById('extCFinQ').value)" class="btnLireExtrait" style="display:none;">Lire l'extrait</span>
 </div>
 <p id="optFBvidSt"> masquer la version sous-titrée de l'extrait :
   <input type="checkbox" id="inputAffichSt" /></p>
-
 
     <div id="ctnPopupGen"> </div>
 <script type="text/javascript">
@@ -106,22 +105,22 @@
     });
 
     //***** les extrait vidéo
-    document.getElementById('extQDebQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut;
-    document.getElementById('extQFinQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin;
-    if (parseFloat(document.getElementById('extQDebQo').value) > 0)
+    document.getElementById('extQDebQ').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut;
+    document.getElementById('extQFinQ').value = tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin;
+    if (parseFloat(document.getElementById('extQDebQ').value) > 0)
       $("#btnLireExtraitQ").show("fast");
     else
       $("#btnLireExtraitQ").hide("fast");
 
       document.getElementById('cbScore').checked = tblExo.pages[pageCourante].questions[questionCourante].scoreActif;
-    document.getElementById('extCDebQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut;
-    document.getElementById('extCFinQo').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin;
-    if (parseFloat(document.getElementById('extCDebQo').value) > 0) {
+    document.getElementById('extCDebQ').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut;
+    document.getElementById('extCFinQ').value = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin;
+    if (parseFloat(document.getElementById('extCDebQ').value) > 0) {
       $("#btnLireExtraitC").show("fast");
     } else {
       $("#btnLireExtraitC").hide("fast");
     }
-    document.getElementById('inputAffichSt').checked = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichST;
+    document.getElementById('inputAffichSt').checked = tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.masqueST;
 
 
     $(".clicHeure").click(function(e) {
@@ -134,13 +133,13 @@
   function questionEnregistre() {
     console.log("ENREGISTREMENT");
     tblExo.pages[pageCourante].questions[questionCourante].txtQuestion = questionFormat(tinymce.get('taTxtQuestion').getContent());
-    tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut = document.getElementById('extQDebQo').value;
-    tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin = document.getElementById('extQFinQo').value;
+    tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.debut = document.getElementById('extQDebQ').value;
+    tblExo.pages[pageCourante].questions[questionCourante].extraitQuestion.fin = document.getElementById('extQFinQ').value;
     tblExo.pages[pageCourante].questions[questionCourante].scoreActif = document.getElementById('cbScore').checked;
     tblExo.pages[pageCourante].questions[questionCourante].txtCorrection = questionFormat(tinymce.get('taTxtCorrection').getContent());
-    tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut = document.getElementById('extCDebQo').value;
-    tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin = document.getElementById('extCFinQo').value;
-    tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.affichST = document.getElementById('inputAffichSt').checked;
+    tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.debut = document.getElementById('extCDebQ').value;
+    tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.fin = document.getElementById('extCFinQ').value;
+    tblExo.pages[pageCourante].questions[questionCourante].extraitCorrection.masqueST = document.getElementById('inputAffichSt').checked;
     sauvTrous();
     affichTableauQuestions();
     $("#popupModifQuestion").dialog("close");
@@ -160,6 +159,9 @@
     }
     // var newTrou = $.parseHTML(editeur.selection.getContent()[0].textContent);
     var newTrou = $('<textarea/>').html(editeur.selection.getContent()).text();
+    // ***** virer les balises html
+    var erBalise = /<[^>]*>/g;
+    newTrou = newTrou.replace(erBalise, "");
     if (newTrou.length > 1) {
       var erSpace = /^\s/g;
       if (erSpace.test(newTrou)) {

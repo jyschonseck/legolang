@@ -5,7 +5,8 @@
 
 <div>Vers page :
   <input type="number" id="btnQChgPageCible" min="1" onChange="pageArr = (this.value - 1);">
-  <button id="btnQChgPage" onClick="btnQChgPageHdlr(event);">ok</button></div>
+  <button id="btnQChgPage" onClick="btnQChgPageHdlr(event);">ok</button>
+</div>
 
 <select onChange="selectChangeHdlr(event);">
   <option value="0">Ajouter une question </option>
@@ -13,7 +14,6 @@
   <option value="qtrous">Question à trous</option>
   <option value="qcm">Question à choix multiples</option>
 </select>
-
 
 <script>
   var pageArr = "0";

@@ -66,6 +66,12 @@
 
   <h2>Scénario</h2>
   <div class="boite1">
+    <h3><img src="img/help.svg" id="aide_scenST" class="aide" alt="aide">Utilisation des sous-titres dans les rétroactions (feedback)</h3>
+    <form name="usageGst" id="usageGst" onchange="tblExo.scenario.usageGst = fbSTgen.value;">
+      <input type="radio" name="fbSTgen" id="btnfbSTgen0" value="0" >Non
+      <input type="radio" name="fbSTgen" id="btnfbSTgen1" value="1" >Oui (sauf indication particulière question par question)
+    </form>
+
     <h3><img src="img/help.svg" id="aide_scenAccesQ" class="aide" alt="aide">Accès au questionnaire</h3>
     <form name="accesQuestionnaire" id="accesQuestionnaire" onchange="tblExo.scenario.accesQ = accesQ.value;">
       <input type="radio" name="accesQ" id="btnAccesQ0" value="0" />Accès immédiat
@@ -75,7 +81,7 @@
     <h3><img src="img/help.svg" id="aide_verrouCorr" class="aide" alt="aide">Retour à l'édition après correction</h3>
     <form name="verrCorrf" id="verrCorrf" onchange="tblExo.scenario.verrCorr = verrCorr.value;">
       <input type="radio" name="verrCorr" id="btnVerrCorrQ0" value="0">retour à l'édition autorisé
-      <input type="radio" name="verrCorr" id="btnVerrCorrQ1" value="1" />retour à l'édition interdit
+      <input type="radio" name="verrCorr" id="btnVerrCorrQ1" value="1">retour à l'édition interdit
     </form>
 
     <h3><img src="img/help.svg" id="aide_nbCarCorrection" class="aide" alt="aide">Nombre de caractères pour correction</h3>
@@ -237,6 +243,7 @@
     });
 
     //***** scenario
+    document.forms.usageGst.fbSTgen.value = tblExo.scenario.usageGst;
     document.forms.accesQuestionnaire.accesQ.value = tblExo.scenario.accesQ;
     document.forms.verrCorrf.verrCorr.value = tblExo.scenario.verrCorr;
 

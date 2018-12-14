@@ -13,7 +13,6 @@ var lancement = true;
 var modeAuteur = false;
 var scorm = false; //valeur à true si on a du scorm : utilisé dans enregistrementReponses
 var affichClavier = false; // variable pour affichage du clavier
-// var affichST = false; // mettre à true lors de afficheExo si on affiche les ST pour extrait)
 var scoreMax = 0; // le score max qu'on peut atteindre !
 var monScore = 0; //  score global car calculé/utilisé par majScore et utilisé par enregistreRep
 var nbRep = 0; // nb de reponse pour AE calculée/utilise par majAE et utilisé par enregistreRep
